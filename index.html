@@ -1,0 +1,1681 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Autoliv WarrantyAI</title>
+<meta name="description" content="Warranty recovery and field-quality console for Tier 1 automotive supply. Every task can be completed in the interface or handed to the agent.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+:root{
+  --navy:#0E2038; --navy-2:#1B3355;
+  --blue:#005495; --blue-2:#0075BB; --blue-soft:#E6EEFB; --blue-line:#C9DCF2;
+  --ground:#F6F8FB; --card:#FFFFFF; --line:#E3E9F1; --line-2:#EFF3F8;
+  --ink:#101B2B; --ink-2:#28394F; --slate:#5B6D85; --slate-2:#7D8FA6; --slate-3:#9CACC0;
+  --red:#C0392F; --red-bg:#FDE7E5; --red-line:#F5C7C3;
+  --amber:#8A5300; --amber-bg:#FDF0DC; --amber-line:#F2DAB0;
+  --green:#0B6B3F; --green-bg:#DCF3E6; --green-line:#B4E3C9;
+  --info:#0F5A96; --info-bg:#DDEBFA; --info-line:#BFD8F2;
+  --plum:#4C3D93; --plum-bg:#EAE6F8;
+  --neut:#5B6D85; --neut-bg:#EEF2F7;
+  --shadow-sm:0 1px 2px rgba(14,32,56,.06);
+  --shadow:0 4px 16px -6px rgba(14,32,56,.16);
+  --shadow-lg:0 18px 48px -20px rgba(14,32,56,.34);
+  --rail:392px; --top:58px;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%}
+body{font-family:Archivo,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;background:var(--ground);color:var(--ink);-webkit-font-smoothing:antialiased;letter-spacing:-.006em;font-size:14px}
+button{font-family:inherit;border:none;background:none;cursor:pointer;color:inherit}
+input,select,textarea{font-family:inherit;color:inherit}
+svg{display:block}
+.hide{display:none!important}
+.mono{font-family:"IBM Plex Mono",ui-monospace,Menlo,monospace}
+:focus-visible{outline:2px solid var(--blue-2);outline-offset:2px;border-radius:5px}
+@media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
+
+/* ---------------- SIGN IN ---------------- */
+#login{min-height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:36px 20px;
+ background:
+  radial-gradient(900px 420px at 50% -8%, #E9F1FA 0%, transparent 70%),
+  var(--ground);}
+.li-wrap{width:100%;max-width:404px}
+.li-lock{display:flex;align-items:center;gap:11px;justify-content:center;margin-bottom:26px}
+.li-mark{width:36px;height:36px;border-radius:9px;background:var(--blue);color:#fff;display:grid;place-items:center;font-weight:700;font-size:17px;letter-spacing:-.02em}
+.li-lock b{font-size:17px;font-weight:700;letter-spacing:-.02em;line-height:1.1;display:block}
+.li-lock b span{display:block;font-family:"IBM Plex Mono",monospace;font-size:9.5px;font-weight:400;letter-spacing:.18em;color:var(--slate-2);margin-top:2px}
+.li-card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:26px 24px;box-shadow:var(--shadow)}
+.li-card h1{font-size:19px;font-weight:700;letter-spacing:-.024em}
+.li-card .sub{color:var(--slate);font-size:13px;margin:6px 0 20px;line-height:1.5}
+.fld{margin-bottom:14px}
+.fld label{display:block;font-size:12px;font-weight:600;color:var(--ink-2);margin-bottom:6px}
+.fld .ctl{position:relative}
+.fld select,.fld input{width:100%;border:1px solid var(--line);border-radius:9px;padding:10px 12px;font-size:13.5px;background:var(--ground);appearance:none}
+.fld select{padding-right:34px;cursor:pointer;font-weight:500}
+.fld select:focus,.fld input:focus{outline:none;border-color:var(--blue);background:#fff}
+.fld .cv{position:absolute;right:11px;top:50%;transform:translateY(-50%);pointer-events:none;color:var(--slate-2)}
+.fld .cv svg{width:14px;height:14px}
+.fld .hint{font-size:11.5px;color:var(--slate-2);margin-top:6px;line-height:1.45}
+.btn-pri{width:100%;background:var(--navy);color:#fff;border-radius:9px;padding:11px;font-weight:600;font-size:14px}
+.btn-pri:hover{background:var(--navy-2)}
+.li-or{display:flex;align-items:center;gap:10px;margin:16px 0;color:var(--slate-3);font-size:10.5px;letter-spacing:.1em;text-transform:uppercase}
+.li-or:before,.li-or:after{content:"";flex:1;height:1px;background:var(--line)}
+.btn-sso{width:100%;display:flex;align-items:center;justify-content:center;gap:9px;border:1px solid var(--line);border-radius:9px;padding:10px;font-size:13.5px;font-weight:600;background:#fff}
+.btn-sso:hover{border-color:var(--blue-2);background:var(--blue-soft)}
+.msq{width:15px;height:15px;display:grid;grid-template-columns:1fr 1fr;gap:1.5px}
+.msq i{display:block}
+.li-role{border-top:1px solid var(--line-2);margin-top:20px;padding-top:16px}
+.li-role .rl{font-family:"IBM Plex Mono",monospace;font-size:9.5px;letter-spacing:.14em;color:var(--slate-2);margin-bottom:8px}
+.li-role p{font-size:12.5px;color:var(--slate);line-height:1.55}
+.li-role p b{color:var(--ink-2);font-weight:600}
+.li-foot{display:flex;align-items:center;justify-content:center;gap:9px;margin-top:26px;color:var(--slate-2);font-size:11.5px}
+.li-foot img{height:17px;width:auto;opacity:.92}
+.li-meta{text-align:center;margin-top:9px;font-family:"IBM Plex Mono",monospace;font-size:10px;letter-spacing:.1em;color:var(--slate-3)}
+
+/* ---------------- SHELL ---------------- */
+#app{height:100%;display:flex;flex-direction:column}
+.top{height:var(--top);flex-shrink:0;background:var(--card);border-bottom:1px solid var(--line);display:flex;align-items:center;gap:14px;padding:0 16px}
+.tlock{display:flex;align-items:center;gap:9px;flex-shrink:0}
+.tmark{width:28px;height:28px;border-radius:7px;background:var(--blue);color:#fff;display:grid;place-items:center;font-weight:700;font-size:14px}
+.tlock b{font-size:14px;font-weight:700;letter-spacing:-.02em;line-height:1.05}
+.tlock b span{display:block;font-family:"IBM Plex Mono",monospace;font-size:8.5px;font-weight:400;letter-spacing:.16em;color:var(--slate-2)}
+.tdiv{width:1px;height:24px;background:var(--line);flex-shrink:0}
+.crumb{display:flex;align-items:center;gap:6px;font-size:12.5px;color:var(--slate);min-width:0;overflow:hidden;flex-shrink:1}
+.crumb button{color:var(--slate);white-space:nowrap}
+.crumb button:hover{color:var(--blue)}
+.crumb b{color:var(--ink);font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:15vw}
+.crumb i{font-style:normal;color:var(--slate-3)}
+.nav{display:flex;gap:3px;margin:0 auto;flex-shrink:0;background:var(--ground);border:1px solid var(--line-2);border-radius:10px;padding:3px}
+.nav button{display:flex;align-items:center;gap:7px;padding:6px 13px;border-radius:8px;font-size:13px;font-weight:600;color:var(--slate);white-space:nowrap}
+.nav button svg{width:15px;height:15px}
+.nav button:hover{color:var(--ink)}
+.nav button.on{background:var(--blue);color:#fff;box-shadow:var(--shadow-sm)}
+.nav button .nb{font-size:10px;font-weight:700;background:var(--card);color:var(--slate);border-radius:99px;padding:1px 6px;min-width:17px;text-align:center}
+.nav button.on .nb{background:rgba(255,255,255,.24);color:#fff}
+.nav button.locked{opacity:.42;cursor:not-allowed}
+.tright{display:flex;align-items:center;gap:9px;flex-shrink:0;margin-left:auto}
+.iconbtn{width:32px;height:32px;border-radius:9px;border:1px solid var(--line);display:grid;place-items:center;background:var(--card);position:relative}
+.iconbtn svg{width:16px;height:16px;color:var(--slate)}
+.iconbtn:hover{border-color:var(--blue-2)}
+.iconbtn .dot{position:absolute;top:6px;right:7px;width:6px;height:6px;border-radius:50%;background:var(--red)}
+.scopechip{display:flex;align-items:center;gap:7px;border:1px solid var(--line);border-radius:9px;padding:6px 10px;font-size:12px;font-weight:600;background:var(--card);white-space:nowrap;position:relative}
+.scopechip .lb{color:var(--slate);font-weight:400}
+.scopechip svg{width:13px;height:13px;color:var(--slate-2)}
+.scopechip:hover{border-color:var(--blue-2)}
+.userchip{display:flex;align-items:center;gap:9px;border:1px solid var(--line);border-radius:10px;padding:5px 9px 5px 6px;background:var(--card);position:relative}
+.userchip:hover{border-color:var(--blue-2)}
+.uav{width:28px;height:28px;border-radius:50%;background:var(--navy);color:#fff;display:grid;place-items:center;font-size:11px;font-weight:700;flex-shrink:0}
+.userchip .um{text-align:left;line-height:1.25}
+.userchip .um b{display:block;font-size:12.5px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:140px}
+.userchip .um span{display:block;font-size:10.5px;color:var(--slate);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:140px}
+.userchip>svg{width:14px;height:14px;color:var(--slate-2)}
+.menu{position:absolute;top:calc(100% + 7px);right:0;background:var(--card);border:1px solid var(--line);border-radius:11px;box-shadow:var(--shadow-lg);padding:5px;min-width:232px;z-index:80;text-align:left}
+.menu .mh{font-family:"IBM Plex Mono",monospace;font-size:9.5px;letter-spacing:.14em;color:var(--slate-2);padding:8px 10px 6px}
+.menu button{display:flex;align-items:center;gap:9px;width:100%;text-align:left;padding:8px 10px;border-radius:8px;font-size:13px;font-weight:500}
+.menu button:hover{background:var(--blue-soft);color:var(--blue)}
+.menu button .mi{width:22px;height:22px;border-radius:6px;background:var(--neut-bg);color:var(--slate);display:grid;place-items:center;font-size:9.5px;font-weight:700;flex-shrink:0}
+.menu button small{display:block;font-size:10.5px;color:var(--slate-2);font-weight:400}
+.menu hr{border:none;border-top:1px solid var(--line-2);margin:5px 0}
+
+/* ---------------- TWO PANE ---------------- */
+.panes{flex:1;min-height:0;display:grid;grid-template-columns:var(--rail) 1fr}
+@media(max-width:1080px){.panes{grid-template-columns:1fr}.agent{display:none}.agent.open{display:flex;position:fixed;inset:var(--top) 0 0 0;z-index:70}}
+
+/* ---------------- AGENT RAIL ---------------- */
+.agent{background:var(--card);border-right:1px solid var(--line);display:flex;flex-direction:column;min-height:0}
+.ag-h{display:flex;align-items:center;gap:9px;padding:13px 16px;border-bottom:1px solid var(--line-2);flex-shrink:0}
+.ag-h .lbl{font-family:"IBM Plex Mono",monospace;font-size:9.5px;font-weight:500;letter-spacing:.15em;color:var(--slate-2)}
+.ag-h .live{margin-left:auto;display:flex;align-items:center;gap:5px;font-size:10.5px;font-weight:600;color:var(--green);background:var(--green-bg);border-radius:99px;padding:2px 8px}
+.ag-h .live i{width:5px;height:5px;border-radius:50%;background:var(--green);display:block}
+.ag-body{flex:1;min-height:0;overflow-y:auto;padding:16px}
+.ag-body::-webkit-scrollbar{width:9px}
+.ag-body::-webkit-scrollbar-thumb{background:var(--line);border-radius:99px;border:3px solid var(--card);background-clip:content-box}
+.ag-empty{padding:18px 4px 0;text-align:center}
+.ag-empty .ic{width:48px;height:48px;border-radius:13px;background:var(--blue-soft);display:grid;place-items:center;margin:0 auto 14px}
+.ag-empty .ic svg{width:24px;height:24px;color:var(--blue)}
+.ag-empty h3{font-family:"IBM Plex Mono",monospace;font-size:11px;font-weight:500;letter-spacing:.15em;color:var(--ink);margin-bottom:8px}
+.ag-empty p{font-size:13px;color:var(--slate);line-height:1.6;max-width:31ch;margin:0 auto}
+.ag-sug{margin-top:20px;display:grid;gap:7px}
+.ag-sug .sh{font-family:"IBM Plex Mono",monospace;font-size:9.5px;letter-spacing:.14em;color:var(--slate-2);text-align:left;margin-bottom:1px}
+.sug{display:flex;align-items:flex-start;gap:9px;width:100%;text-align:left;border:1px solid var(--line);border-radius:10px;padding:9px 11px;font-size:12.5px;line-height:1.45;background:var(--card);color:var(--ink-2)}
+.sug:hover{border-color:var(--blue-2);background:var(--blue-soft)}
+.sug .k{flex-shrink:0;width:17px;height:17px;border-radius:5px;display:grid;place-items:center;margin-top:1px}
+.sug .k svg{width:11px;height:11px}
+.sug.q .k{background:var(--green-bg);color:var(--green)}
+.sug.a .k{background:var(--info-bg);color:var(--info)}
+.ag-legend{display:flex;gap:14px;margin-top:14px;font-size:10.5px;font-weight:600;color:var(--slate);justify-content:center}
+.ag-legend i{width:6px;height:6px;border-radius:50%;display:inline-block;margin-right:5px}
+
+.msgs{display:grid;gap:14px}
+.msg{display:flex;gap:10px}
+.msg .who{width:26px;height:26px;border-radius:7px;flex-shrink:0;display:grid;place-items:center;font-size:9.5px;font-weight:700}
+.msg.u .who{background:var(--navy);color:#fff}
+.msg.a .who{background:var(--blue-soft);color:var(--blue)}
+.msg.a .who svg{width:14px;height:14px}
+.msg .bub{min-width:0;flex:1}
+.msg .nm{font-size:10.5px;font-weight:700;color:var(--slate-2);letter-spacing:.04em;margin-bottom:4px;text-transform:uppercase}
+.msg .tx{font-size:13px;line-height:1.62;color:var(--ink-2)}
+.msg .tx b{font-weight:600;color:var(--ink)}
+.msg .tx ul{list-style:none;margin:8px 0 0;display:grid;gap:5px}
+.msg .tx li{padding-left:13px;position:relative;font-size:12.5px;line-height:1.5}
+.msg .tx li:before{content:"";position:absolute;left:0;top:7px;width:5px;height:5px;border-radius:50%;background:var(--slate-3)}
+.cite{margin-top:8px;font-family:"IBM Plex Mono",monospace;font-size:10px;color:var(--slate-2);display:flex;align-items:flex-start;gap:6px;line-height:1.5}
+.cite svg{width:11px;height:11px;flex-shrink:0;margin-top:2px}
+.prop{margin-top:10px;border:1px solid var(--blue-line);border-radius:11px;overflow:hidden;background:#FBFDFF}
+.prop .ph{padding:9px 12px;background:var(--blue-soft);font-size:11px;font-weight:700;color:var(--blue);letter-spacing:.03em;display:flex;align-items:center;gap:7px}
+.prop .ph svg{width:13px;height:13px}
+.prop ol{list-style:none;padding:10px 12px;display:grid;gap:7px;counter-reset:p}
+.prop li{font-size:12px;line-height:1.5;color:var(--ink-2);display:flex;gap:8px}
+.prop li:before{counter-increment:p;content:counter(p);flex-shrink:0;width:16px;height:16px;border-radius:5px;background:var(--card);border:1px solid var(--blue-line);color:var(--blue);font-size:9.5px;font-weight:700;display:grid;place-items:center;margin-top:1px}
+.prop .pf{display:flex;gap:7px;padding:0 12px 12px}
+.prop .pf button{font-size:12px;font-weight:600;border-radius:8px;padding:6px 13px}
+.prop .pf .ap{background:var(--blue);color:#fff}
+.prop .pf .ap:hover{background:var(--navy)}
+.prop .pf .di{border:1px solid var(--line);color:var(--slate)}
+.prop .pf .di:hover{border-color:var(--slate-2)}
+.prop .gate{padding:0 12px 11px;font-size:10.5px;color:var(--slate-2);line-height:1.5}
+.prop.done .pf{display:none}
+.prop.done{border-color:var(--green-line);background:#FAFEFB}
+.prop.done .ph{background:var(--green-bg);color:var(--green)}
+.applied{padding:9px 12px;font-size:11.5px;font-weight:600;color:var(--green);display:flex;align-items:center;gap:7px}
+.applied svg{width:13px;height:13px}
+.typing{display:flex;gap:4px;padding:5px 0}
+.typing i{width:6px;height:6px;border-radius:50%;background:var(--slate-3);animation:bl 1.1s infinite}
+.typing i:nth-child(2){animation-delay:.16s}.typing i:nth-child(3){animation-delay:.32s}
+@keyframes bl{0%,60%,100%{opacity:.28}30%{opacity:1}}
+
+.ag-f{flex-shrink:0;border-top:1px solid var(--line-2);padding:12px 14px 10px}
+.ag-in{border:1px solid var(--line);border-radius:11px;background:var(--ground);padding:9px 10px 8px}
+.ag-in:focus-within{border-color:var(--blue);background:#fff}
+.ag-in textarea{width:100%;border:none;background:transparent;resize:none;font-size:13px;line-height:1.5;height:38px;outline:none}
+.ag-in textarea::placeholder{color:var(--slate-3)}
+.ag-in .r{display:flex;align-items:center;gap:7px;justify-content:flex-end}
+.ag-in .r .mic,.ag-in .r .snd{width:29px;height:29px;border-radius:8px;border:1px solid var(--line);display:grid;place-items:center;background:var(--card)}
+.ag-in .r .mic svg,.ag-in .r .snd svg{width:14px;height:14px;color:var(--slate)}
+.ag-in .r .snd{background:var(--navy);border-color:var(--navy)}
+.ag-in .r .snd svg{color:#fff}
+.ag-note{text-align:center;font-size:10.5px;color:var(--slate-3);margin-top:8px;line-height:1.5}
+
+/* ---------------- WORK PANE ---------------- */
+.work{min-width:0;overflow-y:auto;background:var(--ground)}
+.work::-webkit-scrollbar{width:11px}
+.work::-webkit-scrollbar-thumb{background:var(--line);border-radius:99px;border:3px solid var(--ground);background-clip:content-box}
+.wrap{max-width:1000px;padding:22px 28px 72px}
+.wh{display:flex;align-items:flex-start;gap:16px;flex-wrap:wrap;margin-bottom:20px}
+.wh .t{min-width:0;flex:1}
+.wh h1{font-size:22px;font-weight:700;letter-spacing:-.028em;line-height:1.2}
+.wh p{font-size:13.5px;color:var(--slate);margin-top:5px;line-height:1.5;max-width:74ch}
+.wh .acts{display:flex;gap:8px;flex-shrink:0}
+.bghost{border:1px solid var(--line);border-radius:9px;padding:9px 15px;font-size:13px;font-weight:600;background:var(--card);color:var(--ink-2)}
+.bghost:hover{border-color:var(--blue-2);color:var(--blue)}
+.bdark{background:var(--navy);color:#fff;border-radius:9px;padding:9px 17px;font-size:13px;font-weight:600}
+.bdark:hover{background:var(--navy-2)}
+
+.rec{background:var(--card);border:1px solid var(--line);border-radius:13px;padding:18px 20px;margin-bottom:18px}
+.rec-t{display:flex;align-items:flex-start;gap:14px;flex-wrap:wrap}
+.rec-av{width:44px;height:44px;border-radius:11px;background:var(--navy);color:#fff;display:grid;place-items:center;font-size:14px;font-weight:700;flex-shrink:0}
+.rec-t .rn{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.rec-t .rn b{font-size:16.5px;font-weight:700;letter-spacing:-.02em}
+.pill{font-size:10px;font-weight:700;letter-spacing:.06em;border-radius:5px;padding:3px 8px;white-space:nowrap}
+.p-neut{background:var(--neut-bg);color:var(--neut)} .p-info{background:var(--info-bg);color:var(--info)}
+.p-red{background:var(--red-bg);color:var(--red)} .p-amber{background:var(--amber-bg);color:var(--amber)}
+.p-green{background:var(--green-bg);color:var(--green)} .p-plum{background:var(--plum-bg);color:var(--plum)}
+.chips{display:flex;flex-wrap:wrap;gap:x;gap:9px 20px;margin-top:9px}
+.chip{display:flex;align-items:center;gap:7px;font-size:11.5px}
+.chip .ck{font-family:"IBM Plex Mono",monospace;font-size:9.5px;letter-spacing:.1em;color:var(--slate-2)}
+.chip .cv2{background:var(--ground);border:1px solid var(--line);border-radius:6px;padding:3px 8px;font-size:11.5px;font-weight:600;white-space:nowrap}
+.steps{display:flex;align-items:center;gap:0;margin-top:18px;padding-top:16px;border-top:1px solid var(--line-2);flex-wrap:wrap}
+.route{display:grid;grid-template-columns:1fr 1fr;gap:0 22px;margin-top:16px;padding-top:14px;border-top:1px solid var(--line-2)}
+@media(max-width:820px){.route{grid-template-columns:1fr;gap:12px}}
+.rt{display:flex;gap:10px;align-items:flex-start}
+.rt .ri{width:22px;height:22px;border-radius:7px;display:grid;place-items:center;flex-shrink:0;margin-top:1px}
+.rt .ri svg{width:13px;height:13px}
+.rt.a .ri{background:var(--neut-bg);color:var(--slate)}
+.rt.b .ri{background:var(--blue-soft);color:var(--brand-text)}
+.rt .rm{min-width:0}
+.rt .rk{display:block;font-family:"IBM Plex Mono",monospace;font-size:8.5px;letter-spacing:.13em;color:var(--slate-2);margin-bottom:3px}
+.rt .rv{display:block;font-size:12.5px;line-height:1.5;color:var(--ink-2)}
+.mapref{margin-left:auto;display:flex;align-items:center;gap:9px;font-size:11px;color:var(--slate-2);white-space:nowrap;padding-left:14px}
+.mapref b{font-family:"IBM Plex Mono",monospace;font-size:10px;letter-spacing:.08em;background:var(--blue-soft);color:var(--brand-text);border-radius:5px;padding:3px 8px;font-weight:600}
+.mapref a{color:var(--brand-text);text-decoration:none;font-weight:600}
+.mapref a:hover{text-decoration:underline}
+.stp{display:flex;align-items:center;gap:10px}
+.stp .sn{width:26px;height:26px;border-radius:50%;display:grid;place-items:center;font-size:11.5px;font-weight:700;flex-shrink:0;background:var(--neut-bg);color:var(--slate)}
+.stp.done .sn{background:var(--green-bg);color:var(--green)}
+.stp.now .sn{background:var(--blue);color:#fff}
+.stp .st b{display:block;font-size:12.5px;font-weight:600;color:var(--slate)}
+.stp.now .st b{color:var(--blue)}
+.stp.done .st b{color:var(--ink-2)}
+.stp .st span{display:block;font-size:11px;color:var(--slate-2);margin-top:1px}
+.sline{flex:1;height:1px;background:var(--line);margin:0 16px;min-width:24px}
+
+.scale{display:flex;align-items:center;gap:14px;flex-wrap:wrap;margin-bottom:12px;padding:0 2px}
+.scale .sl{font-family:"IBM Plex Mono",monospace;font-size:9.5px;letter-spacing:.13em;color:var(--slate-2)}
+.scale .sg{display:flex;align-items:center;gap:8px;font-size:11px;color:var(--slate)}
+.scale .sg .lg{font-size:10px;font-weight:700;letter-spacing:.04em;border-radius:5px;padding:3px 9px;display:flex;align-items:center;gap:6px}
+.scale .sg .lg i{width:6px;height:6px;border-radius:50%;display:block}
+
+.rows{display:grid;gap:9px}
+.row{background:var(--card);border:1px solid var(--line);border-radius:11px;overflow:hidden;position:relative}
+.row.set{border-color:var(--blue-line)}
+.row-h{display:flex;align-items:center;gap:8px;padding-right:14px}
+.row-h:hover{background:#FBFCFE}
+.row-click{flex:1;min-width:0;display:flex;align-items:center;gap:12px;padding:13px 15px;text-align:left}
+.row-cv{width:16px;flex-shrink:0;color:var(--slate-3);transition:transform .16s}
+.row-cv svg{width:15px;height:15px}
+.row.open .row-cv{transform:rotate(90deg)}
+.row-n{width:23px;height:23px;border-radius:6px;background:var(--blue-soft);color:var(--blue);display:grid;place-items:center;font-size:11px;font-weight:700;flex-shrink:0}
+.row-t{flex:1;min-width:0}
+.row-t b{display:block;font-size:14px;font-weight:600;letter-spacing:-.012em}
+.row-t span{display:block;font-size:11.5px;color:var(--slate);margin-top:2px;line-height:1.45}
+.row-r{display:flex;align-items:center;gap:8px;flex-shrink:0}
+.row-val{font-size:11.5px;color:var(--slate-2);font-weight:500;white-space:nowrap;flex-shrink:0;padding-left:10px}
+.row-val.on{font-weight:700}
+.mini{width:27px;height:27px;border-radius:7px;border:1px solid var(--line);display:grid;place-items:center;background:var(--card)}
+.mini svg{width:14px;height:14px;color:var(--slate-2)}
+.mini:hover{border-color:var(--blue-2)}
+.mini:hover svg{color:var(--blue)}
+.row-b{border-top:1px solid var(--line-2);padding:14px 15px 15px 43px;background:#FCFDFE}
+.ev{display:grid;grid-template-columns:auto 1fr;gap:6px 16px;margin-bottom:14px}
+.ev dt{font-size:11.5px;color:var(--slate);white-space:nowrap}
+.ev dd{font-size:12.5px;font-weight:500}
+.ev dd.pend{color:var(--slate-3);font-weight:400;font-style:italic}
+.opts{display:flex;flex-wrap:wrap;gap:7px}
+.opt{font-size:12px;font-weight:600;border:1px solid var(--line);border-radius:8px;padding:6px 12px;background:var(--card);display:flex;align-items:center;gap:7px;color:var(--ink-2)}
+.opt i{width:7px;height:7px;border-radius:50%;display:block;background:var(--slate-3)}
+.opt:hover{border-color:var(--slate-2)}
+.opt.on{border-width:1.5px}
+.opt.on.t-red{background:var(--red-bg);border-color:var(--red);color:var(--red)} .opt.on.t-red i{background:var(--red)}
+.opt.on.t-amber{background:var(--amber-bg);border-color:var(--amber);color:var(--amber)} .opt.on.t-amber i{background:var(--amber)}
+.opt.on.t-green{background:var(--green-bg);border-color:var(--green);color:var(--green)} .opt.on.t-green i{background:var(--green)}
+.opt.on.t-info{background:var(--info-bg);border-color:var(--info);color:var(--info)} .opt.on.t-info i{background:var(--info)}
+.opt.on.t-neut{background:var(--neut-bg);border-color:var(--slate);color:var(--ink-2)} .opt.on.t-neut i{background:var(--slate)}
+.selwrap{position:relative;max-width:420px}
+.selwrap select{width:100%;border:1px solid var(--line);border-radius:9px;padding:9px 34px 9px 11px;font-size:13px;background:var(--card);appearance:none;font-weight:500;cursor:pointer}
+.selwrap select:focus{outline:none;border-color:var(--blue)}
+.selwrap .cv{position:absolute;right:11px;top:50%;transform:translateY(-50%);pointer-events:none;color:var(--slate-2)}
+.selwrap .cv svg{width:14px;height:14px}
+.oplbl{font-family:"IBM Plex Mono",monospace;font-size:9.5px;letter-spacing:.13em;color:var(--slate-2);margin-bottom:8px}
+.whyline{font-size:12px;color:var(--blue);display:flex;align-items:flex-start;gap:7px;line-height:1.5;margin-top:12px}
+.whyline svg{width:13px;height:13px;flex-shrink:0;margin-top:2px}
+
+.sec{margin-top:26px}
+.sec-h{display:flex;align-items:center;gap:10px;margin-bottom:12px}
+.sec-h h2{font-size:14.5px;font-weight:700;letter-spacing:-.015em}
+.sec-h .n{font-size:11px;font-weight:700;background:var(--neut-bg);color:var(--slate);border-radius:99px;padding:1px 8px}
+.sec-h .hint{margin-left:auto;font-size:11.5px;color:var(--slate-2)}
+.panel{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:17px 19px}
+.fgrid{display:grid;gap:16px}
+.fitem label{display:block;font-size:12.5px;font-weight:600;margin-bottom:7px}
+.fitem .fh{font-size:11.5px;color:var(--slate-2);margin-top:6px;line-height:1.5}
+.fitem textarea{width:100%;border:1px solid var(--line);border-radius:9px;padding:10px 12px;font-size:13px;line-height:1.6;min-height:94px;resize:vertical;background:var(--ground)}
+.fitem textarea:focus{outline:none;border-color:var(--blue);background:#fff}
+.calc{display:flex;align-items:baseline;gap:10px;background:var(--ground);border:1px solid var(--line);border-radius:9px;padding:11px 13px}
+.calc b{font-size:20px;font-weight:700;letter-spacing:-.03em;font-variant-numeric:tabular-nums}
+.calc span{font-size:12px;color:var(--slate)}
+
+.act{display:grid;gap:0}
+.act-r{display:flex;gap:11px;padding:9px 0;font-size:12.5px;align-items:flex-start}
+.act-r .ad{width:7px;height:7px;border-radius:50%;flex-shrink:0;margin-top:6px}
+.act-r .at{line-height:1.5}
+.act-r .at b{font-weight:600}
+.act-r .aw{font-size:11px;color:var(--slate-3);margin-top:2px;font-family:"IBM Plex Mono",monospace}
+
+.tiles{display:grid;grid-template-columns:repeat(auto-fit,minmax(178px,1fr));gap:11px}
+.tile{background:var(--card);border:1px solid var(--line);border-radius:11px;padding:14px 16px}
+.tile .k{font-size:11.5px;color:var(--slate);font-weight:500}
+.tile .v{font-size:23px;font-weight:700;letter-spacing:-.035em;margin-top:6px;font-variant-numeric:tabular-nums;line-height:1}
+.tile .d{font-size:11px;font-weight:600;margin-top:6px;color:var(--slate-2)}
+.tile .d.up{color:var(--green)} .tile .d.dn{color:var(--red)}
+
+.qrow{background:var(--card);border:1px solid var(--line);border-radius:11px;padding:13px 15px;display:flex;align-items:center;gap:13px;width:100%;text-align:left;position:relative;overflow:hidden}
+.qrow:hover{border-color:var(--blue-2);box-shadow:var(--shadow)}
+.qrow .stripe{position:absolute;left:0;top:0;bottom:0;width:3px}
+.qrow .qi{width:32px;height:32px;border-radius:9px;display:grid;place-items:center;flex-shrink:0;margin-left:3px}
+.qrow .qi svg{width:16px;height:16px}
+.qrow .qm{flex:1;min-width:0;display:flex;flex-direction:column}
+.qrow .qt{display:flex;align-items:center;gap:9px;flex-wrap:wrap}
+.qrow .qt b{font-size:13.5px;font-weight:600}
+.qrow .qt .ref{font-family:"IBM Plex Mono",monospace;font-size:10.5px;color:var(--slate-2)}
+.qrow .qs{display:block;font-size:12px;color:var(--slate);margin-top:3px;line-height:1.45}
+.qrow .qw{font-size:11.5px;color:var(--blue);margin-top:5px;display:flex;align-items:flex-start;gap:6px;line-height:1.45}
+.qrow .qw svg{width:12px;height:12px;flex-shrink:0;margin-top:2px}
+.qrow .qr{text-align:right;flex-shrink:0;display:flex;flex-direction:column;align-items:flex-end;gap:3px}
+.qrow .qa{display:block;font-size:13.5px;font-weight:700;font-variant-numeric:tabular-nums;white-space:nowrap}
+.qrow .qd{display:block;font-size:11px;color:var(--slate-3);white-space:nowrap}
+
+.kf{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:11px}
+.kfc{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:16px 18px}
+.kfc .kt{display:flex;align-items:center;gap:9px;margin-bottom:9px}
+.kfc .kt .ki{width:28px;height:28px;border-radius:8px;background:var(--blue-soft);color:var(--blue);display:grid;place-items:center;flex-shrink:0}
+.kfc .kt .ki svg{width:15px;height:15px}
+.kfc .kt b{font-size:13.5px;font-weight:600;letter-spacing:-.012em}
+.kfc p{font-size:12.5px;color:var(--slate);line-height:1.55}
+.kfc .kn{margin-top:11px;padding-top:10px;border-top:1px solid var(--line-2);display:flex;gap:18px;flex-wrap:wrap}
+.kfc .kn div{font-size:11px;color:var(--slate-2)}
+.kfc .kn div b{display:block;font-size:14px;color:var(--ink);font-weight:700;font-variant-numeric:tabular-nums;letter-spacing:-.02em}
+
+.tblwrap{overflow-x:auto;background:var(--card);border:1px solid var(--line);border-radius:12px}
+table{width:100%;border-collapse:collapse;min-width:720px}
+th{text-align:left;font-family:"IBM Plex Mono",monospace;font-size:9.5px;font-weight:500;letter-spacing:.11em;color:var(--slate-2);padding:11px 15px;border-bottom:1px solid var(--line);background:#FBFCFE}
+td{padding:12px 15px;border-bottom:1px solid var(--line-2);font-size:13px}
+tbody tr:last-child td{border-bottom:none}
+tbody tr{cursor:pointer}
+tbody tr:hover{background:#FBFCFE}
+.ref{font-family:"IBM Plex Mono",monospace;font-size:11.5px;color:var(--blue);font-weight:500}
+.num{text-align:right;font-variant-numeric:tabular-nums;font-weight:600}
+.foot{margin-top:22px;padding-top:16px;border-top:1px solid var(--line);display:flex;align-items:center;gap:10px;flex-wrap:wrap;font-size:11.5px;color:var(--slate-2)}
+.foot img{height:15px;opacity:.85}
+.foot a{color:var(--blue);text-decoration:none;font-weight:600}
+.foot a:hover{text-decoration:underline}
+
+#toast{position:fixed;bottom:20px;left:50%;transform:translateX(-50%) translateY(150px);background:var(--navy);color:#fff;padding:11px 17px;border-radius:10px;font-size:12.5px;font-weight:500;z-index:300;transition:.26s;max-width:min(600px,90vw);box-shadow:var(--shadow-lg);line-height:1.5}
+#toast.on{transform:translateX(-50%) translateY(0)}
+.agtoggle{display:none}
+@media(max-width:1400px){.crumb{display:none}.userchip .um{display:none}}
+@media(max-width:1080px){
+ .agtoggle{display:grid}
+ .nav button span.nl{display:none}
+ .wrap{padding:20px 18px 64px}
+}
+</style>
+</head>
+<body>
+
+<!-- ============ SIGN IN ============ -->
+<section id="login">
+  <div class="li-wrap">
+    <div class="li-lock">
+      <div class="li-mark">A</div>
+      <b>Autoliv WarrantyAI<span>WARRANTY RECOVERY &amp; FIELD QUALITY</span></b>
+    </div>
+    <div class="li-card">
+      <h1>Sign in</h1>
+      <p class="sub">Access is scoped by function, customer and plant.</p>
+      <div class="fld">
+        <label for="uid">User ID</label>
+        <div class="ctl">
+          <select id="uid" onchange="loginPreview()"></select>
+          <span class="cv"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg></span>
+        </div>
+        <div class="hint">Demo environment. Pick a user ID to see the console scope to that role.</div>
+      </div>
+      <div class="fld">
+        <label for="pw">Password</label>
+        <div class="ctl"><input id="pw" type="password" value="demo-access-2026"></div>
+      </div>
+      <button class="btn-pri" onclick="signIn()">Sign in</button>
+      <div class="li-or">or</div>
+      <button class="btn-sso" onclick="signIn()">
+        <span class="msq"><i style="background:#F25022"></i><i style="background:#7FBA00"></i><i style="background:#00A4EF"></i><i style="background:#FFB900"></i></span>
+        Continue with Microsoft Entra ID
+      </button>
+      <div class="li-role">
+        <div class="rl">SCOPE FOR THIS USER</div>
+        <p id="loginPrev"></p>
+      </div>
+    </div>
+    <div class="li-foot">
+      <span>Built by</span>
+      <img src="data:image/png;base64,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" alt="Infinite Possibilities">
+    </div>
+    <div class="li-meta">DEMO BUILD 0.3 &middot; NOT CONNECTED TO PRODUCTION DATA</div>
+  </div>
+</section>
+
+<!-- ============ APP ============ -->
+<div id="app" class="hide">
+  <header class="top">
+    <div class="tlock"><div class="tmark">A</div><b>WarrantyAI<span>AUTOLIV</span></b></div>
+    <div class="tdiv"></div>
+    <div class="crumb" id="crumb"></div>
+    <nav class="nav" id="nav"></nav>
+    <div class="tright">
+      <button class="iconbtn agtoggle" onclick="toggleAgent()" title="Agent" aria-label="Agent">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3a4 4 0 014 4v1h1a3 3 0 010 6h-1v1a4 4 0 01-8 0v-1H7a3 3 0 010-6h1V7a4 4 0 014-4z"/></svg>
+      </button>
+      <button class="scopechip" onclick="openMenu(event,'scope')">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 21V9l9-6 9 6v12"/><path d="M9 21v-6h6v6"/></svg>
+        <span class="lb">Customer</span><span id="scopeName">Stellantis</span>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
+        <div class="menu hide" id="menu-scope"></div>
+      </button>
+      <button class="iconbtn" onclick="toast('Two notifications: a filing deadline inside five days, and an escalation waiting more than 24 hours on a named person. Nothing else is emailed &mdash; the queue is the notification.')" aria-label="Notifications">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8a6 6 0 10-12 0c0 7-3 8-3 8h18s-3-1-3-8"/><path d="M13.7 21a2 2 0 01-3.4 0"/></svg>
+        <span class="dot"></span>
+      </button>
+      <button class="userchip" onclick="openMenu(event,'user')">
+        <span class="uav" id="uav">EV</span>
+        <span class="um"><b id="uname">Elena Vargas</b><span id="urole">Warranty Claims Analyst</span></span>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
+        <div class="menu hide" id="menu-user"></div>
+      </button>
+    </div>
+  </header>
+  <div class="panes">
+    <aside class="agent" id="agent">
+      <div class="ag-h">
+        <span class="lbl" id="agTitle">WARRANTY AGENT</span>
+        <span class="live"><i></i>ready</span>
+      </div>
+      <div class="ag-body" id="agBody"></div>
+      <div class="ag-f">
+        <div class="ag-in">
+          <textarea id="agIn" rows="2" placeholder="Ask about this record, or tell the agent what to do&hellip;" onkeydown="agKey(event)"></textarea>
+          <div class="r">
+            <button class="mic" onclick="toast('Voice input is stubbed in this build.')" aria-label="Voice">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 3a3 3 0 013 3v5a3 3 0 01-6 0V6a3 3 0 013-3z"/><path d="M19 11a7 7 0 01-14 0M12 18v3"/></svg>
+            </button>
+            <button class="snd" onclick="agSend()" aria-label="Send">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 2L11 13M22 2l-7 20-4-9-9-4z"/></svg>
+            </button>
+          </div>
+        </div>
+        <div class="ag-note">The agent proposes; you confirm. Every applied change is written to the record's activity trail under your name.</div>
+      </div>
+    </aside>
+    <main class="work" id="work"></main>
+  </div>
+</div>
+<div id="toast" role="status"></div>
+
+<script>const BRIEF='features.html';
+const LOGO='data:image/png;base64,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';</script>
+<script>
+/* ============================================================
+   ICONS
+   ============================================================ */
+const IC={
+ home:'<path d="M3 11l9-8 9 8"/><path d="M5 10v10h14V10"/>',
+ intake:'<path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><path d="M7 10l5 5 5-5"/><path d="M12 15V3"/>',
+ cases:'<rect x="3" y="7" width="18" height="13" rx="2"/><path d="M9 7V5a2 2 0 012-2h2a2 2 0 012 2v2"/><path d="M3 12h18"/>',
+ improve:'<path d="M3 17l5-5 4 4 8-8"/><path d="M15 8h5v5"/>',
+ insights:'<path d="M4 20h16"/><rect x="6" y="10" width="3" height="7"/><rect x="11" y="5" width="3" height="12"/><rect x="16" y="13" width="3" height="4"/>',
+ bot:'<rect x="4" y="8" width="16" height="12" rx="3"/><path d="M12 4v4M9 14h.01M15 14h.01M9 17.5h6"/><path d="M2 13h2M20 13h2"/>',
+ feed:'<path d="M4 11a9 9 0 019 9"/><path d="M4 4a16 16 0 0116 16"/><circle cx="5" cy="19" r="1.6"/>',
+ memo:'<path d="M4 3h12l4 4v14H4z"/><path d="M16 3v4h4"/><path d="M8 12h8M8 16h5"/>',
+ bench:'<path d="M3 10h18"/><path d="M5 10V6h14v4"/><path d="M6 10v9M18 10v9"/><path d="M9 14h6"/>',
+ folder:'<path d="M3 7a2 2 0 012-2h4l2 3h8a2 2 0 012 2v8a2 2 0 01-2 2H5a2 2 0 01-2-2z"/>',
+ pulse:'<path d="M3 12h4l2.5-7 4 14L16 12h5"/>',
+ shield:'<path d="M12 2l8 3v6c0 5-3.5 8.5-8 11-4.5-2.5-8-6-8-11V5z"/><path d="M9 12l2 2 4-4"/>',
+ money:'<rect x="2" y="6" width="20" height="12" rx="2"/><circle cx="12" cy="12" r="2.6"/><path d="M6 12h.01M18 12h.01"/>',
+ scales:'<path d="M12 3v18"/><path d="M5 7h14"/><path d="M5 7l-3 6h6z"/><path d="M19 7l-3 6h6z"/><path d="M8 21h8"/>',
+ spark:'<path d="M12 3l1.9 5.1L19 10l-5.1 1.9L12 17l-1.9-5.1L5 10l5.1-1.9z"/>',
+ info:'<circle cx="12" cy="12" r="9"/><path d="M12 16v-4M12 8h.01"/>',
+ bolt:'<path d="M13 2L4.5 13H11l-1 9 8.5-11H12z"/>',
+ check:'<path d="M20 6L9 17l-5-5"/>',
+ chev:'<path d="M9 6l6 6-6 6"/>',
+ down:'<path d="M6 9l6 6 6-6"/>',
+ clock:'<circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/>',
+ hist:'<path d="M3 12a9 9 0 109-9 9 9 0 00-7.6 4.2"/><path d="M3 4v4h4"/><path d="M12 8v4l3 2"/>',
+ ask:'<path d="M21 15a2 2 0 01-2 2H8l-5 4V5a2 2 0 012-2h14a2 2 0 012 2z"/><path d="M9.5 9.5a2.5 2.5 0 114 2c-.8.6-1.5 1-1.5 2"/><path d="M12 15h.01"/>',
+ doc:'<path d="M14 3H6a2 2 0 00-2 2v14a2 2 0 002 2h12a2 2 0 002-2V9z"/><path d="M14 3v6h6"/><path d="M8 13h8M8 17h5"/>',
+ book:'<path d="M4 4h11a2 2 0 012 2v14H6a2 2 0 01-2-2z"/><path d="M8 8h6M8 12h6"/>',
+ out:'<path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"/><path d="M15 3h6v6M21 3l-9 9"/>'
+};
+const sv=(p,c)=>'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"'+(c?' class="'+c+'"':'')+'>'+p+'</svg>';
+
+/* ============================================================
+   USERS — one protagonist per module, plus the two gates
+   ============================================================ */
+const U={
+ analyst:{uid:'e.vargas',n:'Elena Vargas',i:'EV',role:'Warranty Claims Analyst',site:'Auburn Hills, MI',
+  scope:'Claims Intake for all customers. Read-only on cases. No provision or safety authority.',
+  nav:['home','intake','cases','insights'],
+  line:'Four extracts landed overnight and 214 claims could not be mapped.',
+  feats:[
+   {ic:'feed',t:'Dialect normalisation and part mapping',
+    p:'Five OEM extracts arrive on five schedules in five dialects. R/1000, C/1000 and 1000 FZG are normalised to IPTV on load and labour operations are mapped to Autoliv part numbers. What the agent cannot resolve is flagged with the reason, never guessed.',
+    n:[['5','claim feeds'],['92.4%','auto-mapped'],['0','codes guessed']]},
+   {ic:'memo',t:'Debit-memo validity screen',
+    p:'A debit memo is money already taken. Every memo is screened clause by clause against the recovery agreement — coverage window, MIS look-back, technical factor, prior settlement — inside the response window rather than after it.',
+    n:[['22','memos open'],['$487,920','found outside look-back'],['11 days','avg response']]}]},
+ cqe:{uid:'k.sato',n:'Kenji Sato',i:'KS',role:'Customer Quality Engineer',site:'Ogden, UT',
+  scope:'Cases and bench for Honda, Toyota and Stellantis. Disposition authority to $250,000.',
+  nav:['home','intake','cases','improve','insights'],
+  line:'The bench closed 214 units overnight and the filing window is running.',
+  feats:[
+   {ic:'bench',t:'Evidence-linked NTF adjudication',
+    p:'Bench results, dealer narratives and the applicable agreement clause are assembled into one worksheet. An NTF finding cannot be filed without naming the specification it was tested to, and the evidence stays attached when the customer disputes it eighteen months later.',
+    n:[['214','units on the bench'],['58%','NTF rate'],['6.4 days','median on bench']]},
+   {ic:'scales',t:'Reversal and appeal packets',
+    p:'Where the bench disagrees with the debit, the packet is drafted from the playbook for that denial class, citing the clause it relies on and the prior settlements that support it. The playbook is named on the output so a supervisor improves the playbook, not the letter.',
+    n:[['44%','appeal success'],['$3.14M','recovered YTD'],['34','packets filed']]}]},
+ manager:{uid:'i.halvorsen',n:'Ingrid Halvorsen',i:'IH',role:'Field Quality & Warranty Manager',site:'Vargarda, SE',
+  scope:'All modules, all customers, all plants. Containment authority. Approver to $250,000.',
+  nav:['home','intake','cases','improve','insights'],
+  line:'A 3-MIS signal moved four times over three build weeks.',
+  feats:[
+   {ic:'pulse',t:'Signal detection at 3 MIS',
+    p:'Claims are watched by part, plant and build week in the 3-MIS band — the earliest read available and the one the customer sees first. The dealer-concentration and seasonality controls are run before a signal reaches you, so what arrives is already worth a decision.',
+    n:[['19 days','median lead'],['21%','false positives'],['12','live signals']]},
+   {ic:'spark',t:'Narrative clustering',
+    p:'Coded warranty reasons hide failure modes. The agent reads dealer free text and clusters it, so a phrase repeated ninety-four times under "no fault found" becomes a named failure mode instead of a flat claim curve.',
+    n:[['94','narratives read'],['5','clusters'],['1','new failure mode']]}]},
+ controller:{uid:'a.berg',n:'Anders Berg',i:'AB',role:'Product-Related Liabilities Controller',site:'Stockholm, SE',
+  scope:'Provision, exposure and disclosure. Sign-off above $250,000. No claim editing.',
+  nav:['home','cases','insights'],
+  line:'Three provision movements are waiting on your position.',
+  feats:[
+   {ic:'money',t:'Exposure ledger with named unknowns',
+    p:'The agent proposes a reserve movement, names every input still open rather than estimating it, and drafts the disclosure note. It never posts. The posting happens in the system of record through a gated write on your confirmation.',
+    n:[['$82.0M','reserve balance'],['3','open inputs'],['0','direct postings']]}]},
+ safety:{uid:'l.fischer',n:'Dr. Lena Fischer',i:'LF',role:'Product Safety Lead',site:'Auburn Hills, MI',
+  scope:'Safety referrals across every customer and plant. Hard gate — no dollar band applies.',
+  nav:['home','improve','insights'],
+  line:'One field referral has eleven hours left on its clock.',
+  feats:[
+   {ic:'shield',t:'Population scoping from traceability',
+    p:'A referral is only answerable if the affected population can be defined. Build records, lot genealogy and shipment data are resolved into a VIN and lot population, with chain of custody on the retained units, inside the acknowledgement window.',
+    n:[['24h','decision clock'],['59,800','units traced'],['4','units sealed']]}]}
+};
+const NAVDEF=[['home','Home',IC.home],['intake','Claims Intake',IC.intake],['cases','Case Management',IC.cases],['improve','Triage & Improvement',IC.improve],['insights','Insights',IC.insights]];
+const MODMETA={
+ intake:{t:'Claims Intake',d:'Everything the customer sends us — claim extracts, debit memos, returned parts and field escalations — arriving on five schedules in five dialects and leaving as one claim record.'},
+ cases:{t:'Case Management',d:'A claim population with a shared failure mode becomes a case with one owner, one disposition and one evidence trail — through the bench, through the argument with the customer, and into the ledger.'},
+ improve:{t:'Triage & Improvement',d:'The loop that stops the next claim: signals found before the customer names them, containment decisions recorded rather than remembered, and 8Ds that close by changing a DFMEA.'}
+};
+const CUSTOMERS=['All customers','Stellantis','Toyota','Volkswagen Group','Honda','Ford','General Motors'];
+
+/* ============================================================
+   TASKS — every one completable in the interface or by the agent
+   ============================================================ */
+const T={
+
+/* ---------- 1 · CLAIMS INTAKE · FEED MAPPING ---------- */
+'SC-2026-11408':{sn:1,hand:['Stellantis eSupplierConnect, automatically at 03:14 CET','Stays with you &mdash; the mapped claims attach to CS-2026-04127 and re-cost'],mod:'intake',owner:'analyst',
+ q:{ic:'feed',tone:'red',t:'214 claims cannot be mapped to a part',
+   s:'Stellantis eSupplierConnect, week 32 extract. 1,628 of 1,842 claims mapped cleanly; the labour-operation column moved at week 31.',
+   w:'Unmapped claims cannot be costed or contested, and 187 of them fall on the curtain population already under review in CS-2026-04127.',
+   a:'$486,200',d:'landed 12 min ago'},
+ title:'Map the unmapped claims',
+ sub:'Assign an Autoliv part to each unresolved labour operation, then reprocess the extract.',
+ rec:{av:'ST',n:'Stellantis &middot; week 32 extract',b:['CLAIM FEED','p-info'],
+   chips:[['SOURCE','eSupplierConnect &middot; SQP'],['CLAIMS IN FILE','1,842'],['MAPPED','1,628 &middot; 88.4%'],['UNMAPPED','214'],['SCHEMA','rev 14'],['STATUS','Draft &middot; not started','p-amber']]},
+ steps:[['Extract received','1,842 claims, 38 duplicates removed'],['Map the operations','Assign a part to each group'],['Reprocess','Costs, cases and signals update']],
+ step:1,
+ rowsLabel:'UNRESOLVED LABOUR OPERATIONS',
+ scaleLabel:null,
+ opts:[['6-2431-0087-00','6-2431-0087-00 &mdash; Side curtain module, RH','info'],
+       ['6-2431-0088-00','6-2431-0088-00 &mdash; Side curtain module, LH','info'],
+       ['6-1902-0455-00','6-1902-0455-00 &mdash; Buckle pretensioner, front','info'],
+       ['6-1188-0342-00','6-1188-0342-00 &mdash; Seat belt buckle assembly','info'],
+       ['none','Not an Autoliv part &mdash; reject the claim','neut']],
+ rows:[
+  {n:'LAB-4471 &middot; "SEAT BELT CURTAIN AIRBAG R&amp;R"',s:'96 claims &middot; $214,800 &middot; renamed at rev 14 from LAB-4451',type:'select',val:null,
+   ev:[['Claims',"96"],['Claim value','$214,800'],['Previous code','LAB-4451 &middot; mapped to 6-2431-0087-00'],['Part-number match','6-2431-0087-00 on 94 of 96 claims'],['Open case','CS-2026-04127 &middot; 91 of these claims']],
+   why:'The code was renamed, not reassigned. The part number on the claim line still resolves on 94 of 96.',
+   ask:'Why did LAB-4471 stop mapping?'},
+  {n:'LAB-4479 &middot; "AIRBAG CURTAIN LH REPLACE"',s:'91 claims &middot; $203,100 &middot; renamed at rev 14 from LAB-4459',type:'select',val:null,
+   ev:[['Claims','91'],['Claim value','$203,100'],['Previous code','LAB-4459 &middot; mapped to 6-2431-0088-00'],['Part-number match','6-2431-0088-00 on 91 of 91'],['Open case','CS-2026-04127 &middot; 96 of these claims']],
+   why:'Left-hand equivalent of LAB-4471. Every claim carries the LH part number.',
+   ask:'Does LAB-4479 map to the LH module?'},
+  {n:'LAB-2210 &middot; "BUCKLE ASSY REPLACE"',s:'19 claims &middot; $41,300 &middot; new code, no history',type:'select',val:null,
+   ev:[['Claims','19'],['Claim value','$41,300'],['Previous code','&mdash; none, new at rev 14'],['Part-number match','6-1188-0342-00 on 15 of 19'],['Unresolved','4 claims carry no part number']],
+   why:'New code with no history. 15 of 19 resolve on part number; the remaining 4 carry no part number and stay unmapped.',
+   ask:'Can LAB-2210 be mapped safely?'},
+  {n:'LAB-9902 &middot; "TRIM PANEL B-PILLAR"',s:'8 claims &middot; $27,000 &middot; no Autoliv part on any line',type:'select',val:null,
+   ev:[['Claims','8'],['Claim value','$27,000'],['Part-number match','&mdash; none'],['Supplier on claim line','Interior trim supplier'],['Recommendation','Reject &mdash; not an Autoliv part']],
+   why:'No Autoliv part number appears on any of the eight claim lines. Mapping this to a part would put $27,000 of somebody else’s cost on our IPTV.',
+   ask:'Should LAB-9902 be rejected?'}],
+ wrap:{title:'Reprocess scope',hint:'What gets reprocessed once the mapping is saved.',
+  fields:[
+   {id:'scope',kind:'radio',label:'Reprocess',opts:['All 214 unmapped claims','Only the operations mapped above','Hold until the customer confirms rev 14'],val:null},
+   {id:'note',kind:'text',label:'Note for the audit trail',ph:'Why this mapping was chosen. Carried on every claim it touches.',val:''}]},
+ acts:{ghost:'Save as a draft',primary:'Reprocess feed',
+   pmsg:'Reprocess previewed: 210 claims re-cost, 8 rejected, 187 attach to CS-2026-04127. Confirm to run — the extract itself is never modified.'},
+ agent:{title:'CLAIMS INTAKE AGENT',
+  blurb:'Ask about this extract, or hand the mapping to the agent. It reads the rev 13 and rev 14 schemas, the part numbers on each claim line, and your mapping history.',
+  sug:[['a','Map all four operations for me'],['q','What changed in the week 31 schema?'],['q','How many unmapped claims touch an open case?'],['a','Draft the audit note']],
+  intents:[
+   {k:['map','all','four','assign','mapping','do it','for me'],
+    say:'I can resolve all four. Three map on part number with history behind them; the fourth has no Autoliv part on any claim line, so the honest answer there is a rejection rather than a mapping.',
+    cite:'Sources: rev 13 / rev 14 schema diff &middot; claim-line part numbers &middot; 18 months of mapping history',
+    prop:{t:'PROPOSED MAPPING &mdash; 4 OPERATIONS, 214 CLAIMS',
+     l:['LAB-4471 &rarr; 6-2431-0087-00, side curtain RH (94 of 96 confirmed on part number)',
+        'LAB-4479 &rarr; 6-2431-0088-00, side curtain LH (91 of 91 confirmed)',
+        'LAB-2210 &rarr; 6-1188-0342-00, buckle assembly (15 of 19; 4 stay unmapped, no part number)',
+        'LAB-9902 &rarr; rejected, not an Autoliv part (0 of 8 carry our part number)'],
+     ap:'SC.map'}},
+   {k:['schema','changed','week 31','rev 14','why','column'],
+    say:'The extract schema moved from rev 13 to rev 14 at week 31. Two changes matter: the labour-operation column moved from position 22 to 24, and four operation codes were renamed without being reassigned.<ul><li>LAB-4451 became LAB-4471</li><li>LAB-4459 became LAB-4479</li><li>LAB-2210 is new, with no predecessor</li><li>LAB-9902 is new and belongs to an interior trim supplier</li></ul>I detected the column shift and mapped what resolved on part number alone. I returned the rest as unresolved rather than inferring a code, because a wrong code puts another supplier’s cost on our IPTV.',
+    cite:'Source: eSupplierConnect schema rev 13 vs rev 14 &middot; loaded 12 Aug'},
+   {k:['open case','touch','curtain','cs-2026','how many'],
+    say:'187 of the 214 unmapped claims fall on the curtain population in <b>CS-2026-04127</b> &mdash; 91 on LAB-4471 and 96 on LAB-4479. That case is already at the policy gate with $4.12M at stake, so these claims change the population it is arguing over, not just the intake count.',
+    cite:'Source: CS-2026-04127 claim population &middot; matched on part and build lot'},
+   {k:['note','audit','draft'],
+    say:'Here is a note in the wording your audit trail uses. It states the basis rather than the conclusion, which is what a reviewer needs eighteen months from now.',
+    prop:{t:'PROPOSED AUDIT NOTE',
+     l:['"Mapped against rev 14 schema diff. LAB-4471 and LAB-4479 are renamed predecessors of LAB-4451 and LAB-4459 and were confirmed on claim-line part number (185 of 187). LAB-2210 mapped on part number for 15 of 19; 4 held unmapped, no part number present. LAB-9902 rejected — no Autoliv part on any claim line."'],
+     ap:'SC.note'}}]},
+ audit:[['sys','<b>System (intake)</b> pulled the week 32 extract from eSupplierConnect at 03:14 CET','12 min ago'],
+        ['ag','<b>Intake agent</b> normalised C/1000 to IPTV and removed 38 duplicate claims &middot; confidence 0.99','12 min ago'],
+        ['ag','<b>Intake agent</b> mapped 1,628 of 1,842 claims &middot; confidence 0.96','11 min ago'],
+        ['gate','<b>Intake agent</b> detected a schema change at column 22 and returned 214 claims unresolved rather than inferring a code','11 min ago']]},
+
+/* ---------- 2 · CLAIMS INTAKE · DEBIT MEMO ---------- */
+'DM-2026-0774':{sn:2,hand:['The Honda supplier portal, as a deduction already taken','Kenji Sato files the challenge with Honda; Ingrid Halvorsen approves above $250,000'],mod:'intake',owner:'analyst',
+ q:{ic:'memo',tone:'red',t:'Debit memo needs a validity screen',
+   s:'Honda buckle assembly, 449,000-vehicle population, $1,284,000 already taken. The response window closes on 22 September.',
+   w:'38% of the debited claims fall past the 24-MIS look-back in clause 4.2, and money already taken is only recoverable while the challenge is live.',
+   a:'$1,284,000',d:'raised 41 min ago'},
+ title:'Screen the debit memo',
+ sub:'Test the memo against the recovery agreement clause by clause, then set the response position.',
+ rec:{av:'HO',n:'Honda &middot; buckle assembly debit memo',b:['DEBIT MEMO','p-red'],
+   chips:[['PART','6-1188-0342-00'],['POPULATION','449,000 vehicles'],['CLAIMS','3,904'],['DEBITED','$1,284,000'],['TF APPLIED','100%'],['WINDOW CLOSES','22 Sep &middot; 19 days','p-amber']]},
+ steps:[['Memo received','3,904 claims matched to the part'],['Screen the agreement','Test each clause'],['File the response','Accept, or challenge with grounds']],
+ step:1,
+ rowsLabel:'AGREEMENT TESTS',
+ scaleLabel:'FINDING',
+ opts:[['pass','Complies',  'green'],['fail','Fails the agreement','red'],['review','Needs review','amber']],
+ rows:[
+  {n:'Coverage window &middot; clause 3.1',s:'Are the claims inside the warranty coverage period as filed?',type:'rate',val:null,
+   ev:[['Claims tested','3,904'],['Inside coverage','3,904'],['Outside coverage','0'],['Basis','Repair date against in-service date']],
+   why:'Every claim is inside coverage. This test does not help us.',ask:'Does the coverage window test pass?'},
+  {n:'MIS look-back &middot; clause 4.2',s:'Does the memo respect the 24-month look-back limit?',type:'rate',val:null,
+   ev:[['Look-back in agreement','24 MIS'],['Claims past look-back','1,483 of 3,904 &middot; 38%'],['Value past look-back','$487,920'],['Basis','Months in service at repair, per claim line']],
+   why:'1,483 claims sit past the 24-MIS limit written into clause 4.2. That is $487,920 the agreement does not permit Honda to debit.',
+   ask:'How much sits outside the look-back?'},
+  {n:'Technical factor &middot; clause 5.1',s:'Is the applied share consistent with the agreed schedule?',type:'rate',val:null,
+   ev:[['Applied on this memo','100%'],['Schedule for this part','48% &middot; settled Q2 2026'],['Prior settlement','$616,300 at 48% &middot; 22 Aug'],['Delta if corrected','$667,680']],
+   why:'The memo applies 100% where the schedule and the Q2 settlement both say 48%. Nothing in the agreement supports the step up.',
+   ask:'What technical factor did we settle at?'},
+  {n:'Prior settlement &middot; clause 9.4',s:'Have any of these claims already been settled once?',type:'rate',val:null,
+   ev:[['Claims in the Q2 settlement','912'],['Also on this memo','412 &middot; double-debited'],['Value','$135,400'],['Basis','Claim ID match against the Q2 schedule']],
+   why:'412 claims appear on both the Q2 settlement schedule and this memo. Clause 9.4 makes a settled claim final.',
+   ask:'Are any claims double-debited?'},
+  {n:'Returned parts &middot; clause 7.1',s:'Has the customer returned the units the debit relies on?',type:'rate',val:null,
+   ev:[['Units requested','96'],['Units received','0'],['Bench evidence','&mdash; none available',1],['Basis','RPA receiving log, Ogden and Marysville']],
+   why:'No units have arrived, so there is no bench evidence either way. This is a gap, not a finding — it should be recorded as needing review rather than scored.',
+   ask:'Do we have any returned units?'}],
+ wrap:{title:'Response position',hint:'The position filed with the customer, and the amount contested.',
+  fields:[
+   {id:'pos',kind:'radio',label:'Position',opts:['Accept in full','Challenge in part','Challenge in full'],val:null},
+   {id:'amt',kind:'calc',label:'Amount contested',val:'$0',sub:'Updates as findings are set'},
+   {id:'letter',kind:'text',label:'Challenge letter',ph:'Drafted from the Look-Back Challenge playbook, or written by hand.',val:''}]},
+ acts:{ghost:'Save as a draft',primary:'File the response',
+   pmsg:'Response previewed against clause 4.2, 5.1 and 9.4. Filing sends the challenge to the Honda supplier portal and holds $1,291,000 out of the accrual pending reply. Confirm to file.'},
+ agent:{title:'CLAIMS INTAKE AGENT',
+  blurb:'Ask about this memo, or hand the screen to the agent. It reads the Honda recovery agreement, the Q2 settlement schedule and the claim lines on the memo.',
+  sug:[['a','Run the validity screen'],['q','How much can we actually recover?'],['a','Draft the challenge letter'],['q','What are we missing to argue NTF?']],
+  intents:[
+   {k:['run','screen','validity','all','tests','check'],
+    say:'Screened against the Honda recovery agreement, rev of 30 July. Three clauses are breached, one passes, and one cannot be scored because no returned units have arrived.',
+    cite:'Sources: Honda supplier recovery agreement cl. 3.1 / 4.2 / 5.1 / 7.1 / 9.4 &middot; Q2 2026 settlement schedule &middot; RPA receiving log',
+    prop:{t:'PROPOSED FINDINGS &mdash; 5 TESTS',
+     l:['Coverage window cl. 3.1 &rarr; complies (3,904 of 3,904 inside coverage)',
+        'MIS look-back cl. 4.2 &rarr; fails ($487,920 past the 24-MIS limit)',
+        'Technical factor cl. 5.1 &rarr; fails (100% applied against a settled 48%)',
+        'Prior settlement cl. 9.4 &rarr; fails (412 claims already settled in Q2)',
+        'Returned parts cl. 7.1 &rarr; needs review (0 of 96 units received; no bench evidence)'],
+     ap:'DM.screen'}},
+   {k:['recover','how much','amount','money','contest'],
+    say:'On the three breached clauses, <b>$1,291,000</b> of the $1,284,000 debited is contestable &mdash; the overlaps mean the clauses cover almost the whole memo:<ul><li>$487,920 past the 24-MIS look-back</li><li>$667,680 from the technical factor stepped 100% to 48%</li><li>$135,400 double-debited against the Q2 settlement</li></ul>Netting the overlap between the look-back and the factor gives $1,291,000 contested and $-7,000 residual, so in practice this is a challenge in full. What we cannot yet argue is NTF, because no units have been returned.',
+    cite:'Sources: claim-line MIS values &middot; Q2 settlement schedule &middot; agreement cl. 4.2 and 5.1'},
+   {k:['letter','draft','challenge','write'],
+    say:'Drafted from the <b>Look-Back Challenge</b> playbook, which has been upheld on two of the last three filings. It leads with clause 9.4 because a settled claim is the hardest of the three to argue with.',
+    prop:{t:'PROPOSED LETTER AND POSITION',
+     l:['Set position to "Challenge in full"',
+        'Insert the challenge letter citing cl. 9.4, cl. 4.2 and cl. 5.1 in that order',
+        'Attach the Q2 settlement schedule and the per-claim MIS listing',
+        'Request the 96 outstanding units under cl. 7.1 before any share is conceded'],
+     ap:'DM.letter'}},
+   {k:['ntf','missing','bench','units','returned'],
+    say:'Nothing yet. Honda has returned <b>0 of the 96</b> units the debit relies on, so there is no functional test evidence and no NTF argument available. Clause 7.1 entitles us to the units before conceding a share. I have recorded that test as needing review rather than scoring it — an unproven test and a passed test should not look the same.',
+    cite:'Source: RPA receiving log &middot; Ogden and Marysville &middot; last checked 04:00'}]},
+ audit:[['sys','<b>System (intake)</b> received the debit memo from the Honda supplier portal','41 min ago'],
+        ['ag','<b>Intake agent</b> matched 3,904 claims to part 6-1188-0342-00 &middot; confidence 0.97','40 min ago'],
+        ['ag','<b>Intake agent</b> read clause 4.2 and flagged 1,483 claims past the look-back','39 min ago'],
+        ['gate','<b>Policy gate</b> routed to validity screen &mdash; $1.28M is above the $250,000 band','38 min ago']]},
+
+/* ---------- 3 · CASE MANAGEMENT · DISPOSITION ---------- */
+'CS-2026-04127':{sn:6,hand:['Elena Vargas &mdash; 1,412 claims assembled with the bench evidence attached','Anders Berg for the provision position &mdash; $4.12M is above the $250,000 band'],mod:'cases',owner:'manager',
+ q:{ic:'folder',tone:'red',t:'Disposition due, above your band',
+   s:'Stellantis side curtain module. 34 of 38 teardowns reproduce a weld crack at the inflator boss; 1,412 claims across 249,800 vehicles.',
+   w:'At $4.12M the policy gate holds the disposition for the division controller, so the evidence has to be complete before it leaves you.',
+   a:'$4,120,000',d:'bench closed 34 min ago'},
+ title:'Disposition worksheet',
+ sub:'Set each evidence finding, then propose a disposition and a technical-factor position.',
+ rec:{av:'ST',n:'Stellantis &middot; side curtain module',b:['CASE','p-plum'],
+   chips:[['PART','6-2431-0087-00'],['PROGRAMME','RU platform &middot; 2023&ndash;2025'],['CLAIMS','1,412'],['LOTS','Rovinari 25-W14 &rarr; 26-W30'],['IPTV 12 MIS','1.21 vs 0.90 target'],['DEBITED','$2,410,000'],['AT STAKE','$4,120,000','p-red'],['STATUS','Draft &middot; not started','p-amber']]},
+ steps:[['Evidence assembled','38 teardowns, 1,412 claims, 2 prior settlements'],['Score the findings','Attribute each one'],['Propose the disposition','Controller sign-off above $250,000']],
+ step:1,
+ rowsLabel:'EVIDENCE FINDINGS',
+ scaleLabel:'ATTRIBUTION',
+ opts:[['alv','Autoliv responsible','red'],['shared','Shared or sub-supplier','amber'],['not','Not our defect','green']],
+ rows:[
+  {n:'Teardown reproduction',s:'Does the bench reproduce the failure on the returned units?',type:'rate',val:null,
+   ev:[['Units received','38 of 38'],['Failure reproduced','34'],['Meets specification','4 &middot; recorded NTF separately'],['Finding','Circumferential crack at the inflator boss weld'],['Method','Cross-section &middot; incomplete weld penetration']],
+   why:'34 of 38 reproduce on our own process characteristic. This is the finding that decides the case.',
+   ask:'What did the teardowns actually show?'},
+  {n:'Failure clustering',s:'Does the failure follow our build, or the vehicle population?',type:'rate',val:null,
+   ev:[['Plant','Rovinari, RO &middot; laser weld cell 3'],['Build weeks','25-W14 to 26-W30, continuous'],['Same part, Vargarda','IPTV 0.31 over the same weeks'],['Root cause candidate','Laser power drift on cell 3'],['Vehicle-side factors','None found &middot; 4 assembly plants affected equally']],
+   why:'The failure is confined to one weld cell and does not follow the vehicle plant. That points at our process, not the customer’s assembly.',
+   ask:'Is this confined to one cell?'},
+  {n:'MIS position against coverage',s:'Are the claims inside the warranty period the agreement covers?',type:'rate',val:null,
+   ev:[['Median MIS at failure','9.4'],['Inside 12 MIS','62%'],['Inside coverage','1,412 of 1,412'],['Look-back limit','36 MIS &middot; cl. 4.2'],['Claims past look-back','0']],
+   why:'Everything is inside coverage and inside the look-back. There is no procedural defence available on this case.',
+   ask:'Is any of this outside coverage?'},
+  {n:'Prior settlements',s:'Has this failure mode been settled before, and at what share?',type:'rate',val:null,
+   ev:[['2024 population','Settled at 48% technical factor'],['Value','$914,000 &middot; 12 Aug 2026'],['Applied on this memo','65%'],['Basis for 48%','Shared inflator-boss geometry with the customer’s bracket'],['Delta at 48%','$629,200 recoverable']],
+   why:'The same failure mode settled at 48% two months ago on the shared boss geometry. The 65% on this memo has no new evidence behind it.',
+   ask:'What did the 2024 population settle at?'},
+  {n:'Propellant lot attribution',s:'Does any part of the failure sit with a sub-supplier?',type:'rate',val:null,
+   ev:[['Lot reviewed','24-PR-118'],['Deviation found','&mdash; none on the propellant',1],['Weld process owner','Autoliv &middot; Rovinari cell 3'],['Sub-supplier share','&mdash; pending, review open',1],['Finding','No sub-supplier contribution identified so far']],
+   why:'The review is open but has found nothing. Scoring this as shared without evidence would be an argument we lose in month six.',
+   ask:'Is there a sub-supplier share here?'},
+  {n:'Claim narrative consistency',s:'Do the dealer narratives match the bench finding?',type:'rate',val:null,
+   ev:[['Narratives read','1,412'],['Consistent with the finding','1,366 &middot; warning lamp, B-pillar tick'],['Inconsistent','46 &middot; unrelated trim complaints'],['Inadvertent deployment','0 reported'],['Method','Narrative clustering against the bench finding']],
+   why:'46 claims describe something else entirely and should come out of the population before the value is agreed.',
+   ask:'Do the narratives match the bench?'}],
+ wrap:{title:'Proposed disposition',hint:'What leaves you and goes to the controller.',
+  fields:[
+   {id:'disp',kind:'radio',label:'Disposition',opts:['Defect confirmed &mdash; Autoliv responsible','Shared &mdash; sub-supplier contribution','Not our defect &mdash; NTF, customer-induced or outside coverage'],val:null},
+   {id:'tf',kind:'select',label:'Technical-factor position',opts:['&mdash; not set','48% &mdash; matches the 2024 settlement','56% &mdash; midpoint','65% &mdash; as debited'],val:null},
+   {id:'rec',kind:'calc',label:'Recoverable at the selected factor',val:'&mdash; set a factor',sub:'Against $2,410,000 debited'}]},
+ acts:{ghost:'Save as a draft',primary:'Send to the controller',
+   pmsg:'Disposition previewed. It routes to Anders Berg with the six findings, the 2024 settlement and the 46 excluded narratives attached. Nothing posts to the ledger from here.'},
+ agent:{title:'CASE AGENT',
+  blurb:'Ask about this case, or hand the scoring to the agent. It reads the 38 bench records, the 1,412 claim narratives, the Stellantis agreement and both prior settlements.',
+  sug:[['a','Score the six findings'],['q','What did the 2024 population settle at?'],['a','Recalculate at a 48% factor'],['q','Where is our weakest argument?']],
+  intents:[
+   {k:['score','findings','six','all','evidence','do it'],
+    say:'Scored against the bench records and the claim population. Four findings sit with us, one is genuinely open, and one takes claims out of the population rather than defending them.',
+    cite:'Sources: 38 bench records &middot; 1,412 claim narratives &middot; Stellantis agreement cl. 4.2 &middot; settlements 12 Aug 2026 and Q4 2024',
+    prop:{t:'PROPOSED FINDINGS &mdash; 6 ITEMS',
+     l:['Teardown reproduction &rarr; Autoliv responsible (34 of 38 reproduce)',
+        'Failure clustering &rarr; Autoliv responsible (confined to Rovinari cell 3)',
+        'MIS position against coverage &rarr; Autoliv responsible (all inside coverage and look-back)',
+        'Prior settlements &rarr; Shared (2024 population settled at 48% on shared boss geometry)',
+        'Propellant lot attribution &rarr; Autoliv responsible (no sub-supplier deviation found)',
+        'Claim narrative consistency &rarr; Not our defect (46 unrelated claims to be removed)'],
+     ap:'CS.score'}},
+   {k:['2024','settle','settled','prior','settlement','population'],
+    say:'The 2024 population settled on <b>12 August 2026 at a 48% technical factor</b>, $914,000, on the same inflator-boss failure mode. The 48% rested on the boss geometry being shared with the customer’s own bracket design &mdash; an argument that has not changed. This memo applies 65% with no new evidence, which is the strongest point we have.',
+    cite:'Source: settlement record 12 Aug 2026 &middot; Stellantis technical-factor schedule cl. 5.1'},
+   {k:['recalculate','48','factor','tf','recoverable'],
+    say:'At 48% against $2,410,000 debited, the recoverable position is <b>$629,200</b> and our net cost falls from $1,566,500 to $1,156,800. I would also take the 46 inconsistent narratives out of the population first, which moves the debited base to $2,331,400.',
+    prop:{t:'PROPOSED POSITION',
+     l:['Set disposition to "Defect confirmed &mdash; Autoliv responsible"',
+        'Set technical-factor position to 48%, matching the 2024 settlement',
+        'Recoverable at 48% &rarr; $629,200'],
+     ap:'CS.tf'}},
+   {k:['weak','weakest','argument','risk','against us','lose'],
+    say:'Two places.<ul><li><b>The propellant lot review.</b> It is open and has found nothing. If it stays open when this reaches the controller, the sub-supplier share reads as wishful rather than evidenced &mdash; and a share we claim and cannot prove is worse than one we never claimed.</li><li><b>Coverage.</b> Every claim is inside the coverage window and inside the 36-MIS look-back, so there is no procedural defence at all. The whole case turns on the technical factor.</li></ul>The four NTF units are not a defence either &mdash; four out of thirty-eight reads as a manufacturing spread, not a customer problem.',
+    cite:'Sources: propellant lot 24-PR-118 review &middot; claim-line MIS values &middot; bench records 1&ndash;38'}]},
+ audit:[['sys','<b>System (intake)</b> grouped 1,412 claims into this case on part, failure mode and build lot','26 Aug'],
+        ['ag','<b>Adjudication agent</b> read 38 bench results and proposed defect confirmed &middot; confidence 0.91','34 min ago'],
+        ['ag','<b>Adjudication agent</b> recorded 4 units as no trouble found rather than folding them into the confirmed count','34 min ago'],
+        ['gate','<b>Policy gate</b> held the disposition &mdash; $4.12M is above the $250,000 controller band','34 min ago']]},
+
+/* ---------- 4 · CASE MANAGEMENT · NTF ADJUDICATION ---------- */
+'BN-2026-19188':{sn:5,hand:['The Ogden bench &mdash; 214 test records against ALV-TS-114 rev 6','You file the reversal packet with Toyota; the provision releases on acceptance'],mod:'cases',owner:'cqe',
+ q:{ic:'bench',tone:'amber',t:'NTF rate crosses the recovery clause',
+   s:'Toyota pretensioner. 214 returned units tested against ALV-TS-114 rev 6; 152 meet the good-part specification on every parameter.',
+   w:'Above 60% NTF clause 7.3 permits the chargeback to be reversed, but only if the evidence pack is filed within 30 days of bench close.',
+   a:'$402,900',d:'bench closed 3h ago'},
+ title:'NTF adjudication',
+ sub:'Set the finding for each test group, then decide whether the reversal is filed.',
+ rec:{av:'TO',n:'Toyota &middot; buckle pretensioner',b:['BENCH','p-info'],
+   chips:[['PART','6-1902-0455-00'],['PROGRAMME','TNGA-K &middot; 2022&ndash;2024'],['UNITS TESTED','214 of 240'],['SPECIFICATION','ALV-TS-114 rev 6'],['NTF THRESHOLD','60% &middot; cl. 7.3'],['DEBITED','$402,900'],['FILING WINDOW','3 Oct &middot; 29 days','p-amber']]},
+ steps:[['Units tested','214 units against rev 6'],['Adjudicate the findings','Attribute each test group'],['File the reversal','Within 30 days of bench close']],
+ step:1,
+ rowsLabel:'TEST GROUPS',
+ scaleLabel:'FINDING',
+ opts:[['spec','Meets specification','green'],['dev','Deviation confirmed','red'],['cust','Customer-induced','amber']],
+ rows:[
+  {n:'Deployment timing',s:'Firing delay against the rev 6 window',type:'rate',val:null,
+   ev:[['Units tested','214'],['Inside window','214'],['Mean delay','11.8 ms &middot; window 8&ndash;16 ms'],['Outliers','0']],
+   why:'Every unit fires inside the specified window. This is the parameter the claims describe, and it is clean.',
+   ask:'How did deployment timing test?'},
+  {n:'Load limit',s:'Load-limiting force against the rev 6 band',type:'rate',val:null,
+   ev:[['Units tested','214'],['Inside band','214'],['Mean force','3.9 kN &middot; band 3.4&ndash;4.6 kN'],['Outliers','0']],
+   why:'Clean across the population.',ask:'Any load-limit failures?'},
+  {n:'Webbing pull force',s:'Extraction force through full travel',type:'rate',val:null,
+   ev:[['Units tested','214'],['Inside band','196'],['Outside band','18'],['Common factor','Aftermarket seat cover witness marks on all 18']],
+   why:'The 18 failures all carry witness marks from an aftermarket seat cover. That is a customer-induced finding, not a part deviation.',
+   ask:'What is behind the 18 pull-force failures?'},
+  {n:'Locking threshold',s:'Locking onset angle and rate',type:'rate',val:null,
+   ev:[['Units tested','214'],['Inside band','170'],['At tolerance edge','44'],['Deviation','0.4&deg; above the upper limit &middot; mean'],['Assessment','Marginal, but outside the specification']],
+   why:'44 units sit just outside the upper limit. Marginal is still outside — conceding these is what makes the other 152 credible.',
+   ask:'Are the 44 locking-threshold units defensible?'},
+  {n:'Physical condition',s:'Corrosion, impact and installation damage',type:'rate',val:null,
+   ev:[['Units tested','214'],['No damage found','196'],['Installation damage','18 &middot; same units as pull force'],['Corrosion','0']],
+   why:'The same 18 units. No separate population.',ask:'Any damage findings?'}],
+ wrap:{title:'Reversal claim',hint:'What the packet claims, and when it is filed.',
+  fields:[
+   {id:'file',kind:'radio',label:'Filing',opts:['File the reversal packet now','Hold until the remaining 26 units arrive','Do not file &mdash; concede the memo'],val:null},
+   {id:'rev',kind:'calc',label:'Reversal claimed',val:'$0',sub:'Units meeting specification, at the debited rate'},
+   {id:'pack',kind:'text',label:'Reversal packet',ph:'Drafted from the NTF Reversal playbook, or written by hand.',val:''}]},
+ acts:{ghost:'Save as a draft',primary:'File the reversal',
+   pmsg:'Reversal previewed under clause 7.3: 152 units claimed, 44 conceded, 18 raised separately as customer-induced. Filing starts the customer response clock. Confirm to file.'},
+ agent:{title:'CASE AGENT',
+  blurb:'Ask about the bench population, or hand the adjudication to the agent. It reads all 214 test records, the specification revision and the Toyota recovery clause.',
+  sug:[['a','Adjudicate the five test groups'],['q','What is the reversal actually worth?'],['a','Draft the reversal packet'],['q','How did the Q4 2025 challenge go?']],
+  intents:[
+   {k:['adjudicate','five','test','groups','all','score','do it'],
+    say:'Adjudicated against ALV-TS-114 rev 6. Three groups are clean, one is a genuine deviation at the tolerance edge, and one is customer-induced with a physical cause on every unit.',
+    cite:'Sources: 214 test records &middot; ALV-TS-114 rev 6 &middot; Toyota recovery agreement cl. 7.3',
+    prop:{t:'PROPOSED FINDINGS &mdash; 5 TEST GROUPS',
+     l:['Deployment timing &rarr; meets specification (214 of 214 inside window)',
+        'Load limit &rarr; meets specification (214 of 214 inside band)',
+        'Webbing pull force &rarr; customer-induced (18 with aftermarket seat cover witness marks)',
+        'Locking threshold &rarr; deviation confirmed (44 units 0.4&deg; above the upper limit)',
+        'Physical condition &rarr; customer-induced (same 18 units, installation damage)'],
+     ap:'BN.adj'}},
+   {k:['worth','reversal','how much','value','money'],
+    say:'152 units meet the specification on every parameter, which is <b>71%</b> and clear of the 60% threshold in clause 7.3. At the debited rate that is a reversal of <b>$286,059</b>. The 44 marginal units are worth conceding: they cost $82,700 and they are what makes the other 152 credible when Toyota’s engineer reads the packet.',
+    cite:'Sources: 214 test records &middot; debited rate $1,882.71 per claim &middot; cl. 7.3'},
+   {k:['packet','draft','pack','write','reversal packet'],
+    say:'Drafted from the <b>NTF Reversal</b> playbook. It leads with the method rather than the conclusion, because the contested point is always what the good-part specification actually required.',
+    prop:{t:'PROPOSED PACKET AND FILING',
+     l:['Set filing to "File the reversal packet now" &mdash; 29 days of the window remain',
+        'Claim 152 units under cl. 7.3, $286,059',
+        'Concede the 44 locking-threshold units explicitly, $82,700',
+        'Raise the 18 seat-cover units separately as customer-induced, $33,889',
+        'Attach the rev 6 specification and all 214 test records'],
+     ap:'BN.pack'}},
+   {k:['q4','2025','challenge','precedent','before','history'],
+    say:'We filed the same clause in <b>Q4 2025</b> on a retractor population and it was <b>upheld in full</b> &mdash; 96 units, $141,200. Toyota contested one of the four packets we have filed in the last two years, and that one failed on incomplete test records rather than on the argument. All 214 records here are complete, which is the part that matters.',
+    cite:'Source: recovery register &middot; Q4 2025 filing &middot; 4 packets, 2024&ndash;2026'}]},
+ audit:[['sys','<b>System (intake)</b> booked 214 units to the Ogden bench','24 Aug'],
+        ['usr','<b>Bench (M. Okafor)</b> completed functional test on 214 units against ALV-TS-114 rev 6','3h ago'],
+        ['ag','<b>Adjudication agent</b> read 214 test records &middot; NTF 71% &middot; confidence 0.94','3h ago'],
+        ['ag','<b>Adjudication agent</b> matched clause 7.3 &mdash; NTF above 60% permits reversal within 30 days','3h ago']]},
+
+/* ---------- 5 · TRIAGE · CONTAINMENT ---------- */
+'CN-2026-0311':{sn:10,hand:['The signal agent &mdash; SIG-2026-0912, nine minutes ago','Rovinari plant quality for the containment; Dr. Lena Fischer if the mechanism proves safety-relevant'],mod:'improve',owner:'manager',
+ q:{ic:'pulse',tone:'red',t:'Containment decision due today',
+   s:'Curtain inflator, Rovinari cell 3. 3-MIS IPTV stepped from 0.28 to 1.14 across three consecutive build weeks.',
+   w:'18,600 vehicles from these lots have not reached a customer yet. Containing this week reaches them at about $41 a unit; after delivery it is a field action at customer rates.',
+   a:'$4,120,000',d:'signal fired 9 min ago'},
+ title:'Containment decision',
+ sub:'Set a decision for each build lot, then choose the measure and whether the customer is told now.',
+ rec:{av:'RO',n:'Rovinari cell 3 &middot; curtain inflator',b:['CONTAINMENT','p-red'],
+   chips:[['PART','6-2431-0087-00'],['PLANT','Rovinari, RO &middot; weld cell 3'],['BUILT','59,800 units'],['IN FIELD','41,200 vehicles'],['REACHABLE','18,600'],['3-MIS IPTV','0.28 &rarr; 1.14'],['DECISION CLOCK','24h','p-red']]},
+ steps:[['Signal confirmed','Dealer and seasonality controls held'],['Decide by lot','Contain, hold or stand down'],['Set the measure','Then notify the customer']],
+ step:1,
+ rowsLabel:'BUILD LOTS',
+ scaleLabel:'DECISION',
+ opts:[['contain','Contain','red'],['hold','Hold and watch','amber'],['stand','Stand down','green']],
+ rows:[
+  {n:'Lot 26-W28',s:'19,400 units &middot; 3-MIS IPTV 1.09 &middot; 6,100 reachable',type:'rate',val:null,
+   ev:[['Units built','19,400'],['3-MIS IPTV','1.09 vs 0.28 baseline'],['Claims to date','41'],['In field','13,300'],['Still reachable','6,100'],['Containment cost','$250,100 at $41/unit']],
+   why:'First week of the step change and the highest claim count. Nothing about this lot is ambiguous.',
+   ask:'What does lot 26-W28 look like?'},
+  {n:'Lot 26-W29',s:'20,100 units &middot; 3-MIS IPTV 1.18 &middot; 6,400 reachable',type:'rate',val:null,
+   ev:[['Units built','20,100'],['3-MIS IPTV','1.18 vs 0.28 baseline'],['Claims to date','44'],['In field','13,700'],['Still reachable','6,400'],['Containment cost','$262,400 at $41/unit']],
+   why:'Peak of the step change. Same cell, same shift pattern, same weld parameter drift.',
+   ask:'What does lot 26-W29 look like?'},
+  {n:'Lot 26-W30',s:'20,300 units &middot; 3-MIS IPTV 1.14 &middot; 6,100 reachable',type:'rate',val:null,
+   ev:[['Units built','20,300'],['3-MIS IPTV','1.14 vs 0.28 baseline'],['Claims to date','33'],['In field','14,200'],['Still reachable','6,100'],['Containment cost','$250,100 at $41/unit'],['Note','Cell 3 laser recalibrated 26-W31 &middot; last affected week']],
+   why:'Last week before the cell was recalibrated. Lower claim count only because the build is younger.',
+   ask:'What does lot 26-W30 look like?'},
+  {n:'Lot 26-W31',s:'20,600 units &middot; 3-MIS IPTV 0.31 &middot; adjacent week, post-recalibration',type:'rate',val:null,
+   ev:[['Units built','20,600'],['3-MIS IPTV','0.31 vs 0.28 baseline'],['Claims to date','3'],['Weld parameter','Within control limits from 26-W31 shift 1'],['Containment cost','$266,400 if included']],
+   why:'The rate returned to baseline the week the laser was recalibrated. Including this lot would cost $266,400 to contain a population with no signal.',
+   ask:'Should 26-W31 be included?'}],
+ wrap:{title:'Measure and notification',hint:'What is done to the contained lots, and what the customer is told.',
+  fields:[
+   {id:'measure',kind:'select',label:'Containment measure',opts:['&mdash; not set','Pure-lot hold plus 100% weld verification at end of line','100% weld verification at end of line only','Market hold on undelivered vehicles'],val:null},
+   {id:'cost',kind:'calc',label:'Containment cost at the selected scope',val:'$0',sub:'Reachable units at $41 each'},
+   {id:'notify',kind:'radio',label:'Customer notification',opts:['Notify Stellantis today, with the containment scope','Notify after the 8D reaches D3','Do not notify &mdash; internal containment only'],val:null}]},
+ acts:{ghost:'Save as a draft',primary:'Commit the containment',
+   pmsg:'Containment previewed: three lots held, one stood down, 18,600 reachable units routed to 100% weld verification. Committing notifies the plant and writes the decision with the evidence available today.'},
+ agent:{title:'FIELD QUALITY AGENT',
+  blurb:'Ask about the signal, or hand the lot decisions to the agent. It reads the weld process records, claim curves by build week, and the shipment position for every lot.',
+  sug:[['a','Recommend a scope'],['q','Did the credibility controls hold?'],['q','What does waiting a week cost?'],['a','Set the measure and notify']],
+  intents:[
+   {k:['recommend','scope','lots','decide','decision','do it','all'],
+    say:'Three lots in, one out. The signal starts at 26-W28 and ends when cell 3 was recalibrated in 26-W31 — the adjacent week is back at baseline and containing it would spend $266,400 on a population with no signal.',
+    cite:'Sources: weld parameter log cell 3 &middot; claim curves by build week &middot; shipment position 04:00',
+    prop:{t:'PROPOSED DECISIONS &mdash; 4 LOTS',
+     l:['26-W28 &rarr; contain (IPTV 1.09, 6,100 reachable)',
+        '26-W29 &rarr; contain (IPTV 1.18, 6,400 reachable)',
+        '26-W30 &rarr; contain (IPTV 1.14, 6,100 reachable)',
+        '26-W31 &rarr; stand down (IPTV 0.31, within baseline after recalibration)'],
+     ap:'CN.lots'}},
+   {k:['controls','credibility','hold','held','confirm','real','dealer','seasonality'],
+    say:'All three held, which is why this reached you rather than the watch list.<ul><li><b>Dealer concentration.</b> Remove the two highest-claim dealers and 3-MIS IPTV is still 1.02 &mdash; the signal is not two workshops.</li><li><b>Seasonality.</b> The same MIS window a year earlier ran at 0.30. This is not a seasonal pattern.</li><li><b>Bench corroboration.</b> 34 of 38 returned units from these lots reproduce the failure. The signal and the physical evidence agree.</li></ul>The step is also confined to cell 3: the same part built at Vargarda over the same weeks stayed at 0.31.',
+    cite:'Sources: dealer-concentration and seasonality controls &middot; bench records 1&ndash;38 &middot; Vargarda comparison'},
+   {k:['wait','waiting','cost','week','delay','later'],
+    say:'About <b>$1.4M</b>, on the shipment position as of 04:00.<ul><li>Containing now: 18,600 reachable units at roughly $41 each &rarr; $762,600</li><li>Waiting one week: 7,900 of those reach customers. At field-action rates of about $210 a vehicle that is $1,659,000 for the same units.</li></ul>The reachable population falls fastest in the first ten days, so the decision is worth more today than the extra evidence a week would add. The 8D root cause is already at D4 &mdash; laser power drift &mdash; so waiting buys confirmation, not direction.',
+    cite:'Sources: shipment position 04:00 &middot; field-action rate card &middot; 8D-2026-0442 at D4'},
+   {k:['measure','notify','set','notification','customer','tell'],
+    say:'Pure-lot hold plus 100% end-of-line weld verification is the measure that matches the root cause &mdash; verification alone would let the units already built through. On notification: Stellantis will read the containment scope in the claim data within about two weeks anyway, and telling them today is the difference between a supplier managing a problem and a supplier caught by one.',
+    prop:{t:'PROPOSED MEASURE AND NOTIFICATION',
+     l:['Set measure to "Pure-lot hold plus 100% weld verification at end of line"',
+        'Containment cost at the three contained lots &rarr; $762,600',
+        'Set notification to "Notify Stellantis today, with the containment scope"'],
+     ap:'CN.measure'}}]},
+ audit:[['ag','<b>Signal agent</b> detected a step change on part &times; plant &times; build week &middot; confidence 0.88','9 min ago'],
+        ['ag','<b>Signal agent</b> ran the dealer-concentration and seasonality controls &middot; signal held on both','9 min ago'],
+        ['ag','<b>Signal agent</b> linked CS-2026-04127 and 8D-2026-0442 on matching part and failure mode','8 min ago'],
+        ['gate','<b>Policy gate</b> opened a 24-hour containment decision window','8 min ago']]},
+
+/* ---------- 6 · TRIAGE · NARRATIVE CLUSTERS ---------- */
+'SIG-2026-0908':{sn:10,hand:['The signal agent &mdash; 1,208 narratives read and clustered','The 8D team once units are returned; the recode changes reported IPTV, so finance sees it too'],mod:'improve',owner:'manager',
+ q:{ic:'spark',tone:'amber',t:'A failure mode is hiding under the coded reason',
+   s:'Retractor, Hwasung. 94 dealer narratives describe a ratcheting noise on retraction; the coded warranty reason on all 94 is "customer concern, no fault found".',
+   w:'The coded reason is hiding a real failure mode, so the claim curve reads flat while the field experience does not.',
+   a:'$246,700',d:'clustered 1h ago'},
+ title:'Narrative cluster review',
+ sub:'Accept, merge or reject each cluster, then correct the coded reason and decide on an 8D.',
+ rec:{av:'HW',n:'Hwasung &middot; seat belt retractor',b:['SIGNAL','p-amber'],
+   chips:[['PART','6-1455-0210-00'],['PLANT','Hwasung, KR'],['CUSTOMER','Hyundai-Kia'],['NARRATIVES','1,208 read &middot; 94 clustered'],['CODED REASON','No fault found &middot; on all 94'],['CLAIM VALUE','$246,700']],
+ },
+ steps:[['Narratives read','1,208 free-text entries, 5 clusters found'],['Review the clusters','Accept, merge or reject'],['Correct and escalate','Recode, then decide on an 8D']],
+ step:1,
+ rowsLabel:'CLUSTERS FOUND',
+ scaleLabel:'REVIEW',
+ opts:[['accept','Accept as a failure mode','red'],['merge','Merge into another','amber'],['reject','Reject','green']],
+ rows:[
+  {n:'"Ratcheting or clicking on retraction"',s:'94 narratives &middot; 38 VINs &middot; 6&ndash;14 MIS',type:'rate',val:null,
+   ev:[['Narratives','94'],['Sample phrasing','"belt clicks as it winds in", "ratchet noise retracting", "sounds like a zip tie"'],['Coded reason on all 94','Customer concern, no fault found'],['Build lots','Hwasung 26-W12 to 26-W22'],['Bench units returned','0']],
+   why:'A specific mechanical description repeated 94 times is not a customer concern. The coded reason is wrong, and no units have been returned because nobody thought there was a fault to look at.',
+   ask:'Why is this cluster credible?'},
+  {n:'"Belt slow to retract"',s:'41 narratives &middot; 41 VINs &middot; 2&ndash;22 MIS',type:'rate',val:null,
+   ev:[['Narratives','41'],['Sample phrasing','"belt hangs", "slow to pull back", "have to feed it in"'],['Overlap with cluster 1','29 of 41 same VINs'],['Build lots','Hwasung 26-W12 to 26-W22'],['Assessment','Probably the same mechanism, described differently']],
+   why:'29 of these 41 VINs also appear in cluster 1. This is the same failure described by a different service writer.',
+   ask:'Is this the same as cluster 1?'},
+  {n:'"Warning chime with belt fastened"',s:'22 narratives &middot; 22 VINs &middot; 1&ndash;4 MIS',type:'rate',val:null,
+   ev:[['Narratives','22'],['Sample phrasing','"chime stays on", "says belt off when it is on"'],['Part implicated','Buckle switch, not the retractor'],['Overlap with cluster 1','0 VINs'],['Assessment','Separate failure mode, separate part']],
+   why:'Different part and no VIN overlap. It deserves its own signal rather than being folded into this one.',
+   ask:'Does the chime cluster belong here?'},
+  {n:'"Webbing frayed or twisted"',s:'18 narratives &middot; 18 VINs &middot; 14&ndash;30 MIS',type:'rate',val:null,
+   ev:[['Narratives','18'],['Sample phrasing','"webbing frayed at the loop", "belt twisted"'],['MIS at claim','Median 21'],['Bench precedent','BN-2026-19150 &mdash; wear consistent with load, not defect'],['Assessment','Consistent with normal wear at this age']],
+   why:'Late-life wear with a bench precedent already closed against it. Accepting this would put wear claims into a defect population.',
+   ask:'Is the fraying cluster a defect?'},
+  {n:'"Trim rattle near the B-pillar"',s:'12 narratives &middot; 12 VINs &middot; 3&ndash;18 MIS',type:'rate',val:null,
+   ev:[['Narratives','12'],['Sample phrasing','"rattle behind the trim", "noise from pillar"'],['Part implicated','Interior trim &mdash; not an Autoliv part'],['Overlap with cluster 1','2 VINs'],['Assessment','Not our part']],
+   why:'Interior trim, not the retractor. The two overlapping VINs are coincidence at this population size.',
+   ask:'Is the trim rattle ours?'}],
+ wrap:{title:'Correction and escalation',hint:'How the claims are recoded, and what happens next.',
+  fields:[
+   {id:'code',kind:'select',label:'Coded reason correction',opts:['&mdash; not set','Recode the accepted clusters to "retractor mechanism noise"','Leave the coded reason and add a narrative tag only','Ask the customer to recode at source'],val:null},
+   {id:'pop',kind:'calc',label:'Population recoded',val:'0 narratives',sub:'Accepted and merged clusters'},
+   {id:'eightd',kind:'radio',label:'Open an 8D',opts:['Open an 8D and request units from the field','Request units first, open the 8D on confirmation','Watch only &mdash; no 8D yet'],val:null}]},
+ acts:{ghost:'Save as a draft',primary:'Apply the correction',
+   pmsg:'Correction previewed: 135 narratives recoded to retractor mechanism noise, 3 clusters closed, 1 raised as a separate signal. The original claim text is never overwritten — the recode is an added field.'},
+ agent:{title:'FIELD QUALITY AGENT',
+  blurb:'Ask about the clusters, or hand the review to the agent. It reads all 1,208 narratives, the coded reasons, the VIN overlaps and the bench precedents.',
+  sug:[['a','Review the five clusters'],['q','Show me the actual phrasing'],['q','Why did the coded reason miss this?'],['a','Recode and open an 8D']],
+  intents:[
+   {k:['review','five','clusters','all','score','do it'],
+    say:'Reviewed. One is a real failure mode, one is the same mode described differently, and three belong somewhere else — two to other parts and one to normal wear with a bench precedent against it.',
+    cite:'Sources: 1,208 dealer narratives &middot; coded warranty reasons &middot; VIN overlap analysis &middot; BN-2026-19150',
+    prop:{t:'PROPOSED REVIEW &mdash; 5 CLUSTERS',
+     l:['"Ratcheting on retraction" &rarr; accept as a failure mode (94 narratives, 38 VINs)',
+        '"Belt slow to retract" &rarr; merge into cluster 1 (29 of 41 VINs shared)',
+        '"Warning chime with belt fastened" &rarr; reject here, raise as a separate buckle-switch signal',
+        '"Webbing frayed or twisted" &rarr; reject (late-life wear, precedent BN-2026-19150)',
+        '"Trim rattle near the B-pillar" &rarr; reject (interior trim, not an Autoliv part)'],
+     ap:'SIG.review'}},
+   {k:['phrasing','phrases','actual','words','show','text','narratives'],
+    say:'The cluster holds together on mechanism words, not on sentiment. A sample of the 94:<ul><li>"belt clicks as it winds in, customer says every time"</li><li>"ratchet noise retracting, could not duplicate at idle"</li><li>"sounds like a zip tie when the belt goes back"</li><li>"clicking on return, no fault codes, advised normal"</li></ul>The last one is the pattern that matters: the technician found no fault code, so the claim was coded as no fault found and the description was thrown away. Thirty-one of the 94 say some version of "could not duplicate".',
+    cite:'Source: dealer narrative text &middot; Hyundai-Kia claim extract, weeks 20&ndash;34'},
+   {k:['miss','missed','coded','reason','why','wrong','flat'],
+    say:'Because the coded reason describes what the technician <b>found</b>, not what the customer <b>reported</b>. A noise with no fault code and no reproduction at the workshop codes as "customer concern, no fault found" in every OEM taxonomy I read, and that code is excluded from the defect claim curve. So 94 real events were invisible: IPTV on this part reads 0.34 against a baseline of 0.31, which looks like nothing at all. The narrative is the only field that carried the truth, and it was free text.',
+    cite:'Sources: Hyundai-Kia warranty reason taxonomy &middot; IPTV series, part 6-1455-0210-00'},
+   {k:['recode','8d','open','escalate','apply','units'],
+    say:'Recode the accepted and merged clusters together — 135 narratives — and request units before opening the 8D. There is no bench evidence at all yet, and a D4 with no returned part stalls at root cause. Requesting first costs about nine days and gives the 8D something to work from.',
+    prop:{t:'PROPOSED CORRECTION AND ESCALATION',
+     l:['Set correction to "Recode the accepted clusters to retractor mechanism noise"',
+        'Population recoded &rarr; 135 narratives across 50 VINs',
+        'Set escalation to "Request units first, open the 8D on confirmation"',
+        'Raise the buckle-switch cluster as a separate signal'],
+     ap:'SIG.recode'}}]},
+ audit:[['ag','<b>Signal agent</b> read 1,208 dealer narratives on part 6-1455-0210-00','1h ago'],
+        ['ag','<b>Signal agent</b> found 5 clusters, 94 of them on one mechanism description &middot; confidence 0.83','1h ago'],
+        ['ag','<b>Signal agent</b> noted the coded reason on all 94 is "customer concern, no fault found"','1h ago'],
+        ['gate','<b>Policy gate</b> routed to review &mdash; a coded-reason correction changes reported IPTV','58 min ago']]},
+
+/* ---------- 7 · PROVISION ---------- */
+'PV-2026-0140':{sn:6,hand:['Ingrid Halvorsen &mdash; disposition above the controller band','Group finance as a gated write. WarrantyAI proposes; it does not post'],mod:'cases',owner:'controller',
+ q:{ic:'money',tone:'red',t:'Provision position due before quarter end',
+   s:'Stellantis delivered its cost calculation for the curtain field action — about 250,000 US vehicles, an estimated range of $0 to $123M, no accrual currently held.',
+   w:'A reasonably-possible range with no accrual needs a recorded position before quarter end, whether or not the range narrows.',
+   a:'$123,000,000',d:'proposed 22 min ago'},
+ title:'Provision position',
+ sub:'Assess each open input, then set the accounting position and the disclosure note.',
+ rec:{av:'AB',n:'Stellantis curtain &middot; product-related liability',b:['PROVISION','p-red'],
+   chips:[['LINKED CASE','CS-2026-04127'],['VEHICLES','~250,000 &middot; United States'],['RANGE','$0 &ndash; $123,000,000'],['ACCRUAL HELD','None'],['RESERVE','$82.0M &middot; closing H1'],['INSURANCE','$14.0M receivable'],['DUE','Quarter end','p-amber']]},
+ steps:[['Calculation received','Customer cost calculation, December'],['Assess the inputs','Estimable or not, one by one'],['Set the position','Accrue, or disclose only']],
+ step:1,
+ rowsLabel:'OPEN INPUTS',
+ scaleLabel:'ASSESSMENT',
+ opts:[['prob','Probable and estimable','red'],['poss','Reasonably possible','amber'],['rem','Remote','green']],
+ rows:[
+  {n:'Cost per vehicle',s:'Is the customer calculation agreed, or contested?',type:'rate',val:null,
+   ev:[['Customer figure','$492 per vehicle'],['Our estimate','$318 per vehicle'],['Difference across the population','$43,500,000'],['Basis of dispute','Labour time and parts price in the customer rate card'],['Status','Not agreed &middot; under review',1]],
+   why:'A $174 per-vehicle gap across 250,000 vehicles is $43.5M of the range. Until the rate card is agreed, no point in the range is more supportable than another.',
+   ask:'How far apart are the cost-per-vehicle figures?'},
+  {n:'Proportionate responsibility',s:'What share sits with us rather than the customer or a sub-supplier?',type:'rate',val:null,
+   ev:[['Prior settlement on the failure mode','48% technical factor'],['Applied by the customer here','65%'],['Sub-supplier review','Open &middot; propellant lot 24-PR-118',1],['Basis for 48%','Boss geometry shared with the customer bracket'],['Status','Not agreed',1]],
+   why:'The 48% precedent is strong but the sub-supplier review is still open, so the low end of the share is not yet defensible.',
+   ask:'What share is defensible?'},
+  {n:'Insurance recovery',s:'How much will the carrier actually pay?',type:'rate',val:null,
+   ev:[['Carrier notified','28 Aug 2026'],['Recall cost','Covered'],['Replacement parts','Excluded from cover'],['Replacement parts share of the estimate','About 61%'],['Receivable recognised','$14.0M &middot; group level'],['Status','No coverage position received',1]],
+   why:'Replacement parts are excluded and they are the larger share. Recognising more than the $14.0M already held would be recognising a recovery the policy does not promise.',
+   ask:'What does the insurance actually cover?'},
+  {n:'Second customer enquiry',s:'Could the same nonconformance reach another population?',type:'rate',val:null,
+   ev:[['Enquiry received','One further OEM, same nonconformance'],['Population if confirmed','Not yet scoped',1],['Their build lots','Under review &middot; overlap not confirmed',1],['Status','Enquiry only &middot; no claim raised']],
+   why:'An enquiry with no scoped population and no claim raised. Real, but not estimable — and disclosing it as a number would be inventing one.',
+   ask:'Should the second enquiry be provided for?'}],
+ wrap:{title:'Accounting position',hint:'What is recorded, and what is disclosed.',
+  fields:[
+   {id:'pos',kind:'radio',label:'Position',opts:['Disclosure only &mdash; no accrual, range stated','Accrue at the low end of the range','Accrue at the midpoint of the range'],val:null},
+   {id:'note',kind:'text',label:'Disclosure note',ph:'Drafted in the wording of the prior filing, or written by hand.',val:''}]},
+ acts:{ghost:'Save as a draft',primary:'Record the position',
+   pmsg:'Position previewed. Recording writes your assessment and the note to the case, and proposes the movement to the system of record as a gated write. WarrantyAI does not post.'},
+ agent:{title:'PROVISION AGENT',
+  blurb:'Ask about the exposure, or hand the assessment to the agent. It reads the customer cost calculation, the carrier correspondence, the settlement history and the prior filings.',
+  sug:[['a','Assess the four inputs'],['q','What is excluded from the insurance?'],['a','Draft the disclosure note'],['q','Model an accrual at the low end']],
+  intents:[
+   {k:['assess','four','inputs','all','score','do it'],
+    say:'Assessed. None of the four is both probable and estimable today, which is what decides the position — you cannot accrue a point in a range when the two inputs that set the range are unagreed.',
+    cite:'Sources: customer cost calculation Dec 2025 &middot; carrier correspondence 28 Aug &middot; settlement 12 Aug 2026 &middot; Q2 filing',
+    prop:{t:'PROPOSED ASSESSMENT &mdash; 4 INPUTS',
+     l:['Cost per vehicle &rarr; reasonably possible ($174/vehicle gap, rate card unagreed)',
+        'Proportionate responsibility &rarr; reasonably possible (48% precedent, sub-supplier review open)',
+        'Insurance recovery &rarr; reasonably possible (replacement parts excluded, no coverage position)',
+        'Second customer enquiry &rarr; remote (enquiry only, no population scoped, no claim raised)'],
+     ap:'PV.assess'}},
+   {k:['insurance','carrier','excluded','cover','coverage'],
+    say:'The policy covers <b>recall cost</b> and excludes <b>replacement parts</b>. On our own estimate replacement parts are about 61% of the total, so the exclusion sits on the larger share. The carrier was notified on 28 August and has not yet given a coverage position. The $14.0M receivable already recognised at group level relates to earlier issues, not this one.<br><br>Recognising a recovery beyond that would be recognising something the policy does not promise, which is the specific thing a reviewer will look for.',
+    cite:'Sources: carrier correspondence 28 Aug 2026 &middot; policy schedule, exclusions cl. 4 &middot; H1 receivable note'},
+   {k:['note','draft','disclosure','write'],
+    say:'Drafted in the wording of the Q2 filing so the two read consistently. It states the range, names the three open inputs, and says plainly why no accrual is held rather than leaving the reader to infer it.',
+    prop:{t:'PROPOSED POSITION AND NOTE',
+     l:['Set position to "Disclosure only &mdash; no accrual, range stated"',
+        'Insert the note: range $0&ndash;$123M, no point in the range more likely than another',
+        'Name the three open inputs: cost per vehicle, proportionate responsibility, insurance coverage position',
+        'State that a further customer enquiry exists but is not yet scoped or claimed'],
+     ap:'PV.note'}},
+   {k:['model','accrual','low end','midpoint','what if','number'],
+    say:'Three points, on our own inputs rather than the customer’s:<ul><li><b>Low end</b> &mdash; 250,000 vehicles at our $318, at a 48% share, less the covered recall element: about <b>$14.9M</b></li><li><b>Midpoint</b> &mdash; splitting the rate-card gap and the share: about <b>$46.2M</b></li><li><b>High end</b> &mdash; customer figures in full at 65%: <b>$123.0M</b></li></ul>I would not propose accruing at any of them. The spread between the low end and the midpoint is driven entirely by two inputs that are unagreed, so a point estimate today would be a guess dressed as a measurement. That said, the range itself is worth putting in front of the audit committee before quarter end rather than at it.',
+    cite:'Sources: customer rate card vs our estimate &middot; settlement 12 Aug 2026 &middot; policy exclusions'}]},
+ audit:[['sys','<b>System</b> linked the exposure to CS-2026-04127 on the customer cost calculation','12 Aug'],
+        ['ag','<b>Provision agent</b> read the customer calculation and named the three open inputs','22 min ago'],
+        ['ag','<b>Provision agent</b> proposed disclosure only, no accrual &middot; confidence 0.79','22 min ago'],
+        ['gate','<b>Policy gate</b> held for the controller &mdash; product-related liabilities carry no auto band','22 min ago']]},
+
+/* ---------- 8 · SAFETY REFERRAL ---------- */
+'CN-2026-0308':{sn:10,hand:['Ingrid Halvorsen &mdash; containment review CN-2026-0311','A product safety investigation, and the regulator if the reporting threshold is met'],mod:'improve',owner:'safety',
+ q:{ic:'shield',tone:'red',t:'Field referral on the safety clock',
+   s:'Inflator deployment in a parked vehicle, reported through a US market. Four units are sealed at Ogden under chain of custody.',
+   w:'A rupture or inadvertent-deployment claim cannot be closed by warranty alone. Product safety takes it or declines it within 24 hours, and no dollar band applies.',
+   a:'&mdash; pending',d:'referred 2h ago &middot; 11h left'},
+ title:'Safety referral',
+ sub:'Assess each criterion, then take or decline the referral and scope the population.',
+ rec:{av:'LF',n:'Inadvertent deployment &middot; parked vehicle',b:['SAFETY REFERRAL','p-red'],
+   chips:[['PART','6-2431-0087-00'],['REPORTS','2 &middot; same market'],['UNITS SEALED','4 &middot; Ogden'],['CHAIN OF CUSTODY','Intact'],['CLOCK','11h remaining','p-red'],['LINKED','CN-2026-0311 &middot; SIG-2026-0912']]},
+ steps:[['Referral received','2 reports, 4 units sealed'],['Assess the criteria','Four tests, one at a time'],['Take or decline','With the population scoped']],
+ step:1,
+ rowsLabel:'REFERRAL CRITERIA',
+ scaleLabel:'ASSESSMENT',
+ opts:[['met','Criterion met','red'],['part','Partly met','amber'],['no','Not met','green']],
+ rows:[
+  {n:'Field evidence',s:'Is there a credible report of an unintended deployment?',type:'rate',val:null,
+   ev:[['Reports','2 &middot; both US, 6 days apart'],['Vehicle state','Parked, ignition off &middot; both'],['Injury reported','None'],['Units sealed','4 &middot; 2 subject, 2 same lot'],['Photographic evidence','Present on both']],
+   why:'Two independent reports of deployment with the ignition off. That is the pattern that has preceded every inflator campaign in this industry.',
+   ask:'How credible is the field evidence?'},
+  {n:'Population definable from traceability',s:'Can the affected population be scoped from build records?',type:'rate',val:null,
+   ev:[['Data-matrix read','Complete on all 4 units'],['Lot resolved','Rovinari 26-W29 and 26-W30'],['Units in those lots','40,400'],['Shipment position','Resolved to 4 assembly plants'],['VIN population','Resolvable within 6 hours']],
+   why:'The genealogy is complete. A scoped population is available inside the clock, which is what makes a decision possible rather than deferred.',
+   ask:'Can we scope the population today?'},
+  {n:'Regulatory reporting trigger',s:'Does this meet a reporting threshold as it stands?',type:'rate',val:null,
+   ev:[['Reports','2'],['Injury or fatality','None'],['Early-warning quarterly','Reportable in the next cycle'],['573 defect report','Not triggered on 2 reports without injury'],['Assessment','Monitor &middot; threshold not met today']],
+   why:'Not triggered today on two reports with no injury, but the quarterly early-warning cycle picks it up. Scoring this as met would overstate where we are.',
+   ask:'Is a defect report triggered?'},
+  {n:'Precedent and adjacency',s:'Is there a related open issue on the same part?',type:'rate',val:null,
+   ev:[['Open containment','CN-2026-0311 &middot; same lots, weld crack'],['Open case','CS-2026-04127 &middot; $4.12M'],['Failure mode','Weld crack at the inflator boss'],['Relationship to deployment','Not established &middot; different mechanism',1],['Historic precedent','2016 curtain inflator campaign, weld crack']],
+   why:'Same part and same lots as an active containment, but a crack and an inadvertent deployment are different mechanisms. The adjacency is real; the causal link is not established.',
+   ask:'Is this the same failure as the containment?'}],
+ wrap:{title:'Decision and scope',hint:'What product safety takes on, and over what population.',
+  fields:[
+   {id:'dec',kind:'radio',label:'Decision',opts:['Take the referral &mdash; product safety investigation opens','Refer back to warranty with a monitoring instruction','Decline &mdash; criteria not met'],val:null},
+   {id:'scope',kind:'select',label:'Population scope',opts:['&mdash; not set','The 4 sealed units only','Rovinari 26-W29 and 26-W30 &mdash; 40,400 units','All Rovinari cell 3 lots &mdash; 59,800 units'],val:null},
+   {id:'pop',kind:'calc',label:'Vehicles in scope',val:'&mdash; set a scope',sub:'Resolved from lot genealogy and shipment records'}]},
+ acts:{ghost:'Save as a draft',primary:'Record the decision',
+   pmsg:'Decision previewed. Recording opens a product safety investigation, freezes the four sealed units, and notifies the containment owner. The 24-hour clock stops on your confirmation.'},
+ agent:{title:'PRODUCT SAFETY AGENT',
+  blurb:'Ask about the referral, or hand the assessment to the agent. It reads both field reports, the lot genealogy, shipment records and the campaign precedent.',
+  sug:[['a','Assess the four criteria'],['a','Scope the population from traceability'],['q','Is this the same mechanism as the containment?'],['q','What did the 2016 campaign look like?']],
+  intents:[
+   {k:['assess','four','criteria','all','score','do it'],
+    say:'Assessed. The field evidence and the traceability both support taking this. The regulatory threshold is not met today, and the link to the open containment is adjacency rather than cause.',
+    cite:'Sources: field reports 1 and 2 &middot; lot genealogy 26-W29/W30 &middot; early-warning reporting rules &middot; 2016 campaign record',
+    prop:{t:'PROPOSED ASSESSMENT &mdash; 4 CRITERIA',
+     l:['Field evidence &rarr; criterion met (2 independent reports, ignition off, units sealed)',
+        'Population definable from traceability &rarr; criterion met (VIN population resolvable in 6 hours)',
+        'Regulatory reporting trigger &rarr; not met today (2 reports, no injury; quarterly cycle picks it up)',
+        'Precedent and adjacency &rarr; partly met (same lots as CN-2026-0311, mechanism not established)'],
+     ap:'SF.assess'}},
+   {k:['scope','population','traceability','vins','how many'],
+    say:'Resolved from lot genealogy and shipment records. Both subject units come from <b>Rovinari 26-W29 and 26-W30</b>, which is <b>40,400 units</b> across four assembly plants. Narrowing to the four sealed units would be defensible only if the mechanism were unit-specific, and a deployment with the ignition off is not. Widening to all of cell 3 adds 19,400 units from 26-W28, where the weld signal exists but no deployment has been reported.<br><br>The full VIN list is available within six hours, inside the clock.',
+    prop:{t:'PROPOSED DECISION AND SCOPE',
+     l:['Set decision to "Take the referral &mdash; product safety investigation opens"',
+        'Set population scope to "Rovinari 26-W29 and 26-W30 &mdash; 40,400 units"',
+        'Freeze the four sealed units and extend the hold to any further return from these lots'],
+     ap:'SF.scope'}},
+   {k:['mechanism','same','containment','link','crack','cause'],
+    say:'Not established, and I would not let it be assumed either way.<ul><li><b>The containment</b> (CN-2026-0311) is a circumferential crack at the inflator boss weld, from laser power drift on cell 3. That is a loss-of-integrity mechanism.</li><li><b>This referral</b> is an unintended deployment with the ignition off, which points at the initiator circuit or the squib, not at the weld.</li></ul>Same part and same lots, different mechanism. A shared root cause is possible — the same shift, the same cell — but nothing in the two field reports supports it yet. The four sealed units are what settle it, and they have not been opened because opening them is your call, not the bench’s.',
+    cite:'Sources: 8D-2026-0442 at D4 &middot; field reports 1 and 2 &middot; bench records 1&ndash;38'},
+   {k:['2016','campaign','precedent','history','before'],
+    say:'A curtain inflator campaign, about <b>1.4 million vehicles worldwide</b> and roughly 482,000 in the United States, on a weld crack. What is worth remembering is how it started: <b>seven spontaneous deployments in parked vehicles</b> were logged before the campaign was scoped. The signal shape then is the signal shape here, and the population was defined from lot traceability in the same way.<br><br>That precedent is a reason to take the referral, not a reason to assume the same outcome. Two reports is not seven.',
+    cite:'Source: campaign register, 2016 curtain inflator &middot; internal precedent file'}]},
+ audit:[['sys','<b>System</b> received the field report through the US market quality channel','2h ago'],
+        ['usr','<b>Ogden bench</b> sealed 4 units under chain of custody and logged the data-matrix reads','2h ago'],
+        ['ag','<b>Signal agent</b> matched the units to Rovinari 26-W29 and 26-W30 and linked CN-2026-0311','2h ago'],
+        ['gate','<b>Policy gate</b> referred to product safety &mdash; hard gate, no dollar band applies','2h ago']]}
+};
+
+/* ============================================================
+   STATE
+   ============================================================ */
+let ST={u:'analyst',scope:'Stellantis',view:{v:'home'},data:{},open:{}};
+const $=id=>document.getElementById(id);
+const money=n=>'$'+Math.round(n).toLocaleString('en-US');
+const cur=()=>U[ST.u];
+function initTask(id){
+ if(ST.data[id])return ST.data[id];
+ const t=T[id];
+ ST.data[id]={rows:t.rows.map(()=>null),f:{},step:t.step,log:[]};
+ t.wrap.fields.forEach(f=>{ST.data[id].f[f.id]=f.val});
+ return ST.data[id];
+}
+function logIt(id,type,html){initTask(id).log.push([type,html,'just now']);}
+
+/* ============================================================
+   AGENT APPLY REGISTRY — the same mutations the controls make
+   ============================================================ */
+function setRows(id,vals){const d=initTask(id);vals.forEach((v,i)=>{if(v!==undefined)d.rows[i]=v});}
+const APPLY={
+ 'SC.map':id=>{setRows(id,['6-2431-0087-00','6-2431-0088-00','6-1188-0342-00','none']);
+   return 'mapped 4 labour operations covering 214 claims'},
+ 'SC.note':id=>{initTask(id).f.note='Mapped against rev 14 schema diff. LAB-4471 and LAB-4479 are renamed predecessors of LAB-4451 and LAB-4459 and were confirmed on claim-line part number (185 of 187). LAB-2210 mapped on part number for 15 of 19; 4 held unmapped, no part number present. LAB-9902 rejected - no Autoliv part on any claim line.';
+   return 'inserted the audit note'},
+ 'DM.screen':id=>{setRows(id,['pass','fail','fail','fail','review']);return 'screened 5 agreement tests'},
+ 'DM.letter':id=>{const d=initTask(id);d.f.pos='Challenge in full';
+   d.f.letter='Honda Supplier Recovery, ref DM-2026-0774. Autoliv challenges this memo in full on three grounds. First, clause 9.4: 412 of the debited claims were settled on 22 August 2026 and a settled claim is final. Second, clause 4.2: 1,483 claims carry months-in-service values past the agreed 24-month look-back, representing $487,920. Third, clause 5.1: the memo applies a 100% technical factor where the schedule and the Q2 2026 settlement both establish 48%. Under clause 7.1 we further request the 96 returned units the debit relies on, none of which have been received, before any share is conceded. Attachments: Q2 settlement schedule; per-claim months-in-service listing.';
+   return 'set the position to challenge in full and inserted the letter'},
+ 'CS.score':id=>{setRows(id,['alv','alv','alv','shared','alv','not']);return 'scored 6 evidence findings'},
+ 'CS.tf':id=>{const d=initTask(id);d.f.disp='Defect confirmed &mdash; Autoliv responsible';d.f.tf='48% &mdash; matches the 2024 settlement';
+   return 'set the disposition and a 48% technical-factor position'},
+ 'BN.adj':id=>{setRows(id,['spec','spec','cust','dev','cust']);return 'adjudicated 5 test groups'},
+ 'BN.pack':id=>{const d=initTask(id);d.f.file='File the reversal packet now';
+   d.f.pack='Toyota Supplier Quality, ref BN-2026-19188. Autoliv claims reversal under recovery clause 7.3. 214 of 240 requested units were received and tested against ALV-TS-114 rev 6. 152 units (71%) meet the specification on deployment timing, load limit, webbing pull force, locking threshold and physical condition, exceeding the 60% threshold in clause 7.3. Reversal claimed: $286,059. Autoliv concedes 44 units on locking threshold, mean 0.4 degrees above the upper limit, $82,700, and raises 18 units separately as customer-induced on aftermarket seat-cover installation damage, $33,889. Attachments: ALV-TS-114 rev 6; test records for all 214 units.';
+   return 'set filing to now and inserted the reversal packet'},
+ 'CN.lots':id=>{setRows(id,['contain','contain','contain','stand']);return 'set decisions on 4 build lots'},
+ 'CN.measure':id=>{const d=initTask(id);d.f.measure='Pure-lot hold plus 100% weld verification at end of line';
+   d.f.notify='Notify Stellantis today, with the containment scope';
+   return 'set the containment measure and same-day customer notification'},
+ 'SIG.review':id=>{setRows(id,['accept','merge','reject','reject','reject']);return 'reviewed 5 narrative clusters'},
+ 'SIG.recode':id=>{const d=initTask(id);d.f.code='Recode the accepted clusters to "retractor mechanism noise"';
+   d.f.eightd='Request units first, open the 8D on confirmation';
+   return 'set the coded-reason correction and the escalation path'},
+ 'PV.assess':id=>{setRows(id,['poss','poss','poss','rem']);return 'assessed 4 open inputs'},
+ 'PV.note':id=>{const d=initTask(id);d.f.pos='Disclosure only &mdash; no accrual, range stated';
+   d.f.note='The Company has been notified by a customer of a field action affecting approximately 250,000 vehicles in the United States relating to a side curtain airbag module supplied by the Company. The customer delivered its cost calculation in December. The Company estimates the range of possible loss at $0 to $123 million. No accrual has been recorded because no point within the range is more likely than another. Three inputs remain open: the cost per vehicle, which is not agreed; the proportionate responsibility among the customer, the Company and its sub-suppliers; and the coverage position of the Company insurers, whose policy covers recall cost but excludes replacement parts. One further customer has enquired about the same nonconformance; no population has been scoped and no claim has been raised.';
+   return 'set the position to disclosure only and inserted the note'},
+ 'SF.assess':id=>{setRows(id,['met','met','no','part']);return 'assessed 4 referral criteria'},
+ 'SF.scope':id=>{const d=initTask(id);d.f.dec='Take the referral &mdash; product safety investigation opens';
+   d.f.scope='Rovinari 26-W29 and 26-W30 &mdash; 40,400 units';
+   return 'took the referral and scoped it to 40,400 units'}
+};
+
+/* ============================================================
+   DERIVED FIGURES — the calc fields
+   ============================================================ */
+function calc(id,fid){
+ const d=initTask(id),r=d.rows;
+ if(id==='DM-2026-0774'&&fid==='amt'){
+  let n=0;if(r[1]==='fail')n+=487920;if(r[2]==='fail')n+=667680;if(r[3]==='fail')n+=135400;
+  return n?money(Math.min(n,1291000)):'$0';}
+ if(id==='CS-2026-04127'&&fid==='rec'){
+  const tf=d.f.tf;if(!tf||tf.indexOf('%')<0)return '&mdash; set a factor';
+  const p=parseInt(tf,10);return money(2410000*(1-p/100))+' recoverable at '+p+'%';}
+ if(id==='BN-2026-19188'&&fid==='rev'){
+  let u=0;if(r[0]==='spec')u+=1;if(r[1]==='spec')u+=1;
+  const n=(r[0]==='spec'&&r[1]==='spec'&&r[3]==='dev'&&r[2]==='cust')?286059:(u?152*1882.71*(u/2):0);
+  return n?money(n)+' on 152 units':'$0';}
+ if(id==='CN-2026-0311'&&fid==='cost'){
+  const reach=[6100,6400,6100,6600];let n=0;
+  r.forEach((v,i)=>{if(v==='contain')n+=reach[i]*41});
+  return n?money(n):'$0';}
+ if(id==='SIG-2026-0908'&&fid==='pop'){
+  const c=[94,41,22,18,12];let n=0;
+  r.forEach((v,i)=>{if(v==='accept'||v==='merge')n+=c[i]});
+  return n+' narratives';}
+ if(id==='CN-2026-0308'&&fid==='pop'){
+  const s=d.f.scope;if(!s||s.indexOf('&mdash;')===0)return '&mdash; set a scope';
+  if(s.indexOf('4 sealed')>-1)return '4 units';
+  if(s.indexOf('40,400')>-1)return '40,400 units &middot; 4 assembly plants';
+  return '59,800 units &middot; 4 assembly plants';}
+ return '&mdash;';
+}
+function stepOf(id){
+ const d=initTask(id),t=T[id];
+ const done=d.rows.filter(v=>v!==null).length;
+ const wrapSet=t.wrap.fields.filter(f=>f.kind!=='calc').every(f=>d.f[f.id]&&String(d.f[f.id]).indexOf('&mdash; not')!==0);
+ if(done===0)return 1;
+ if(done<t.rows.length||!wrapSet)return 2;
+ return 3;
+}
+
+/* ============================================================
+   AUTH
+   ============================================================ */
+function loginPreview(){
+ const k=$('uid').value,u=U[k];
+ $('loginPrev').innerHTML='<b>'+u.n+'</b> &middot; '+u.role+', '+u.site+'<br>'+u.scope;
+}
+function signIn(){
+ ST.u=$('uid').value;ST.view={v:'home'};ST.data={};ST.open={};
+ $('login').classList.add('hide');$('app').classList.remove('hide');
+ paintUser();render();
+}
+function signOut(){$('app').classList.add('hide');$('login').classList.remove('hide');closeMenus();}
+function switchUser(k){ST.u=k;ST.view={v:'home'};closeMenus();paintUser();render();
+ toast('Signed in as '+U[k].n+'. The console re-scoped to '+U[k].role+' &mdash; areas outside that scope stay visible but locked.');}
+function paintUser(){const u=cur();$('uav').textContent=u.i;$('uname').textContent=u.n;$('urole').textContent=u.role;}
+
+/* ============================================================
+   NAV / ROUTER
+   ============================================================ */
+const canSee=k=>cur().nav.indexOf(k)>-1;
+const ownedTasks=()=>Object.keys(T).filter(id=>T[id].owner===ST.u);
+const modTasks=m=>Object.keys(T).filter(id=>T[id].mod===m);
+const scopeTasks=()=>Object.keys(T).filter(id=>canSee(T[id].mod));
+
+function go(v,a){ST.view={v:v,m:a,id:a};ST.open={};window.scrollTo(0,0);render();}
+function openTask(id){initTask(id);ST.view={v:'task',id:id};ST.open={};render();}
+
+function render(){
+ navRender();crumbRender();
+ const w=$('work');
+ const v=ST.view.v;
+ w.innerHTML='<div class="wrap">'+(v==='task'?viewTask():v==='module'?viewModule():v==='insights'?viewInsights():viewHome())+footer()+'</div>';
+ w.scrollTop=0;
+ agRender();
+}
+function navRender(){
+ $('nav').innerHTML=NAVDEF.map(([k,l,ic])=>{
+  const ok=canSee(k);
+  const on=(ST.view.v==='home'&&k==='home')||(ST.view.v==='insights'&&k==='insights')||
+           ((ST.view.v==='module'&&ST.view.m===k))||(ST.view.v==='task'&&T[ST.view.id].mod===k);
+  const n=k==='intake'||k==='cases'||k==='improve'?modTasks(k).length:0;
+  const cl='nav-'+k;
+  return '<button class="'+(on?'on ':'')+(ok?'':'locked ')+cl+'" onclick="'+(ok?"nav('"+k+"')":"lockMsg('"+k+"')")+'">'+
+   sv(ic)+'<span class="nl">'+l+'</span>'+(ok&&n?'<span class="nb">'+n+'</span>':'')+'</button>';
+ }).join('');
+}
+function nav(k){if(k==='home')go('home');else if(k==='insights')go('insights');else go('module',k);}
+function lockMsg(k){const l=(NAVDEF.find(x=>x[0]===k)||[])[1];toast(l+' is outside your scope as '+cur().role+'. It stays visible so you can see the shape of the system, but it is locked server-side, not just hidden.');}
+function crumbRender(){
+ const v=ST.view;let h='<button onclick="go(\'home\')">Home</button>';
+ if(v.v==='module')h+='<i>/</i><b>'+MODMETA[v.m].t+'</b>';
+ if(v.v==='insights')h+='<i>/</i><b>Insights</b>';
+ if(v.v==='task'){const t=T[v.id];
+  h+='<i>/</i><button onclick="go(\'module\',\''+t.mod+'\')">'+MODMETA[t.mod].t+'</button><i>/</i><b>'+v.id+'</b>';}
+ $('crumb').innerHTML=h;
+}
+function footer(){
+ return '<div class="foot"><span>Autoliv WarrantyAI &middot; demo build 0.4 &middot; not connected to production data</span>'+
+  '<a href="'+BRIEF+'" target="_blank" rel="noopener">AI capability brief '+'&rarr;</a>'+
+  '<span style="margin-left:auto;display:flex;align-items:center;gap:8px">Built by <img src="'+LOGO+'" alt="Infinite Possibilities"></span></div>';
+}
+
+/* ============================================================
+   VIEW · HOME
+   ============================================================ */
+const TONE={red:['var(--red-bg)','var(--red)','var(--red)'],amber:['var(--amber-bg)','var(--amber)','var(--amber)'],info:['var(--info-bg)','var(--info)','var(--info)'],green:['var(--green-bg)','var(--green)','var(--green)']};
+function qrow(id){
+ const t=T[id],q=t.q,c=TONE[q.tone]||TONE.info;
+ const st=stepOf(id),done=st===3;
+ return '<button class="qrow" onclick="openTask(\''+id+'\')">'+
+  '<span class="stripe" style="background:'+c[2]+'"></span>'+
+  '<span class="qi" style="background:'+c[0]+';color:'+c[1]+'">'+sv(IC[q.ic])+'</span>'+
+  '<span class="qm"><span class="qt"><b>'+q.t+'</b><span class="ref">'+id+'</span>'+
+   (done?'<span class="pill p-green">READY TO SUBMIT</span>':st===2?'<span class="pill p-info">IN PROGRESS</span>':'<span class="pill p-amber">NOT STARTED</span>')+'</span>'+
+  '<span class="qs">'+q.s+'</span>'+
+  '<span class="qw">'+sv(IC.spark)+'<span>'+q.w+'</span></span></span>'+
+  '<span class="qr"><span class="qa">'+q.a+'</span><span class="qd">'+q.d+'</span></span></button>';
+}
+function viewHome(){
+ const u=cur(),own=ownedTasks(),rest=scopeTasks().filter(id=>own.indexOf(id)<0);
+ return '<div class="wh"><div class="t">'+
+  '<h1>'+u.n.split(' ')[0].replace('Dr.','Dr')+', you have '+own.length+' record'+(own.length===1?'':'s')+' waiting on a decision.</h1>'+
+  '<p>'+u.line+' Everything else in your scope is handled or waiting on someone else.</p></div>'+
+  '<div class="acts"><button class="bghost" onclick="toast(\'Queue exported as CSV in a production build.\')">Export queue</button></div></div>'+
+
+  '<div class="sec-h"><h2>What you own</h2><span class="n">'+own.length+'</span>'+
+   '<span class="hint">Ordered by what it costs to leave alone</span></div>'+
+  '<div class="rows">'+own.map(qrow).join('')+'</div>'+
+
+  '<div class="sec"><div class="sec-h"><h2>What this does for your role</h2></div>'+
+  '<div class="kf">'+u.feats.map(f=>'<div class="kfc"><div class="kt"><span class="ki">'+sv(IC[f.ic])+'</span><b>'+f.t+'</b></div>'+
+   '<p>'+f.p+'</p><div class="kn">'+f.n.map(x=>'<div><b>'+x[0]+'</b>'+x[1]+'</div>').join('')+'</div></div>').join('')+'</div></div>'+
+
+  (rest.length?'<div class="sec"><div class="sec-h"><h2>Also in your scope</h2><span class="n">'+rest.length+'</span>'+
+   '<span class="hint">Owned by someone else &middot; open to read, not to action</span></div>'+
+   '<div class="tblwrap"><table><thead><tr><th>REFERENCE</th><th>RECORD</th><th>OWNER</th><th>MODULE</th><th style="text-align:right">AT STAKE</th></tr></thead><tbody>'+
+   rest.map(id=>{const t=T[id];return '<tr onclick="openTask(\''+id+'\')"><td><span class="ref">'+id+'</span></td>'+
+    '<td>'+t.q.t+'</td><td>'+U[t.owner].n+'</td><td>'+MODMETA[t.mod].t+'</td><td class="num">'+t.q.a+'</td></tr>'}).join('')+
+   '</tbody></table></div></div>':'');
+}
+
+/* ============================================================
+   VIEW · MODULE
+   ============================================================ */
+function viewModule(){
+ const m=ST.view.m,meta=MODMETA[m],ids=modTasks(m);
+ return '<div class="wh"><div class="t"><h1>'+meta.t+'</h1><p>'+meta.d+'</p></div></div>'+
+  '<div class="sec-h"><h2>Open records</h2><span class="n">'+ids.length+'</span><span class="hint">Scoped to '+ST.scope+'</span></div>'+
+  '<div class="tblwrap"><table><thead><tr><th>REFERENCE</th><th>RECORD</th><th style="width:150px">PROGRESS</th><th style="width:150px">OWNER</th><th style="width:120px;text-align:right">AT STAKE</th><th style="width:130px">AGE</th></tr></thead><tbody>'+
+  ids.map(id=>{const t=T[id],st=stepOf(id);
+   return '<tr onclick="openTask(\''+id+'\')"><td><span class="ref">'+id+'</span></td><td>'+t.q.t+'</td>'+
+   '<td>'+(st===3?'<span class="pill p-green">READY TO SUBMIT</span>':st===2?'<span class="pill p-info">IN PROGRESS</span>':'<span class="pill p-amber">NOT STARTED</span>')+'</td>'+
+   '<td>'+U[t.owner].n+'</td><td class="num">'+t.q.a+'</td><td style="color:var(--slate)">'+t.q.d+'</td></tr>'}).join('')+
+  '</tbody></table></div>'+
+  '<p style="margin-top:14px;font-size:12.5px;color:var(--slate);line-height:1.55;max-width:80ch">Every record opens as a worksheet with the agent alongside it. You can complete the worksheet yourself, or ask the agent to complete it and confirm what it proposes. Both paths write the same activity trail.</p>';
+}
+
+/* ============================================================
+   VIEW · INSIGHTS
+   ============================================================ */
+const PERF=[
+ ['Stellantis','1.21','$2.34','29%','ABOVE TARGET','p-red','$4,120,000'],
+ ['Honda','1.04','$1.94','38%','WATCH','p-amber','$1,284,000'],
+ ['Volkswagen Group','0.88','$1.66','33%','ON TARGET','p-green','$318,900'],
+ ['Ford','0.79','$1.48','36%','ON TARGET','p-green','$268,400'],
+ ['Toyota','0.61','$1.12','41%','ON TARGET','p-green','$402,900']];
+function viewInsights(){
+ return '<div class="wh"><div class="t"><h1>Insights</h1><p>Reporting over the same records the three modules work from. Measures are held in your definitions &mdash; IPTV at 12 MIS, CPV on a rolling twelve months, recovery as a share of value debited. Where no target exists the field is left empty rather than filled with a placeholder.</p></div></div>'+
+  '<div class="tiles">'+
+   [['IPTV &mdash; 12 MIS','0.94','target &le; 1.10','up'],['CPV &mdash; rolling 12m','$1.82','target $1.75','dn'],
+    ['NTF rate','58%','industry band 40&ndash;70%',''],['Recovery rate','35.3%','$3.14M of $8.90M','up'],
+    ['Reserve balance','$82.0M','closing H1',''],['Value in open cases','$9.42M','38 cases',''],
+    ['Held at the policy gate','$5.10M','6 cases','dn'],['Disclosed, unaccrued','$0&ndash;123M','range','']]
+   .map(k=>'<div class="tile"><div class="k">'+k[0]+'</div><div class="v">'+k[1]+'</div><div class="d '+k[3]+'">'+k[2]+'</div></div>').join('')+
+  '</div>'+
+  '<div class="sec"><div class="sec-h"><h2>By customer</h2><span class="hint">Rolling twelve months</span></div>'+
+  '<div class="tblwrap"><table><thead><tr><th>CUSTOMER</th><th style="text-align:right">IPTV 12 MIS</th><th style="text-align:right">CPV</th><th style="text-align:right">RECOVERY</th><th>POSITION</th><th style="text-align:right">OPEN VALUE</th></tr></thead><tbody>'+
+  PERF.map(p=>'<tr onclick="toast(\'Opens the '+p[0]+' cases behind these figures. Every number here clicks through to the records it counted.\')"><td style="font-weight:600">'+p[0]+'</td>'+
+   '<td class="num">'+p[1]+'</td><td class="num">'+p[2]+'</td><td class="num">'+p[3]+'</td>'+
+   '<td><span class="pill '+p[5]+'">'+p[4]+'</span></td><td class="num">'+p[6]+'</td></tr>').join('')+
+  '</tbody></table></div></div>';
+}
+
+/* ============================================================
+   VIEW · TASK WORKSHEET
+   ============================================================ */
+function viewTask(){
+ const id=ST.view.id,t=T[id],d=initTask(id),st=stepOf(id);
+ const readOnly=t.owner!==ST.u;
+ let h='<div class="wh"><div class="t"><h1>'+t.title+'</h1><p>'+t.sub+'</p></div>'+
+  '<div class="acts"><button class="bghost" onclick="saveDraft(\''+id+'\')">'+t.acts.ghost+'</button>'+
+  '<button class="bdark" onclick="submitTask(\''+id+'\')">'+t.acts.primary+'</button></div></div>';
+
+ /* record card */
+ h+='<div class="rec"><div class="rec-t"><div class="rec-av">'+t.rec.av+'</div>'+
+  '<div style="flex:1;min-width:0"><div class="rn"><b>'+t.rec.n+'</b><span class="pill '+t.rec.b[1]+'">'+t.rec.b[0]+'</span>'+
+  (readOnly?'<span class="pill p-neut">READ ONLY &middot; OWNED BY '+U[t.owner].n.toUpperCase()+'</span>':'')+
+  '<span class="mapref">Step <b>'+t.sn+' of 11</b><a href="'+BRIEF+'" target="_blank" rel="noopener">process map &rarr;</a></span>'+'</div>'+
+  '<div class="chips">'+t.rec.chips.map(c=>'<span class="chip"><span class="ck">'+c[0]+'</span><span class="cv2'+(c[2]?' '+c[2]:'')+'" '+(c[2]?'style="border:none"':'')+'>'+c[1]+'</span></span>').join('')+'</div></div></div>'+
+  '<div class="steps">'+t.steps.map((s,i)=>{const n=i+1,cl=st>n?'done':st===n?'now':'';
+   return (i?'<span class="sline"></span>':'')+'<span class="stp '+cl+'"><span class="sn">'+(st>n?'&#10003;':n)+'</span>'+
+   '<span class="st"><b>'+s[0]+'</b><span>'+s[1]+'</span></span></span>'}).join('')+
+   '</div>'+
+   '<div class="route">'+
+    '<div class="rt a"><span class="ri">'+sv(IC.intake)+'</span><span class="rm"><span class="rk">CAME FROM</span><span class="rv">'+t.hand[0]+'</span></span></div>'+
+    '<div class="rt b"><span class="ri">'+sv(IC.chev)+'</span><span class="rm"><span class="rk">GOES TO NEXT</span><span class="rv">'+t.hand[1]+'</span></span></div>'+
+   '</div></div>';
+
+ /* scale legend */
+ if(t.scaleLabel){
+  h+='<div class="scale"><span class="sl">'+t.scaleLabel+'</span>'+
+   t.opts.map(o=>'<span class="sg"><span class="lg" style="background:var(--'+o[2]+'-bg);color:var(--'+o[2]+')"><i style="background:var(--'+o[2]+')"></i>'+o[1].toUpperCase()+'</span></span>').join('')+
+   '</div>';
+ }else{
+  h+='<div class="scale"><span class="sl">'+t.rowsLabel+'</span><span class="sg" style="color:var(--slate-2)">Assign a part, or reject the claim group. Nothing is inferred.</span></div>';
+ }
+
+ /* rows */
+ h+='<div class="rows">'+t.rows.map((r,i)=>{
+  const val=d.rows[i],op=t.opts.find(o=>o[0]===val),isOpen=ST.open[i];
+  const label=op?op[1]:(r.type==='select'?'Not mapped':'Not set');
+  const tone=op?op[2]:null;
+  return '<div class="row '+(val?'set ':'')+(isOpen?'open':'')+'">'+
+   '<div class="row-h">'+
+    '<button class="row-click" onclick="tog('+i+')">'+
+     '<span class="row-cv">'+sv(IC.chev)+'</span>'+
+     '<span class="row-n">'+(i+1)+'</span>'+
+     '<span class="row-t"><b>'+r.n+'</b><span>'+r.s+'</span></span>'+
+     '<span class="row-val'+(val?' on':'')+'" '+(tone?'style="color:var(--'+tone+')"':'')+'>'+label+'</span>'+
+    '</button>'+
+    '<button class="mini" title="Ask the agent about this finding" onclick="rowAsk(\''+id+'\','+i+')">'+sv(IC.ask)+'</button>'+
+    '<button class="mini" title="Evidence history" onclick="toast(\'Evidence history for this finding: every value, where it came from, and who last changed it.\')">'+sv(IC.hist)+'</button>'+
+   '</div>'+
+   (isOpen?'<div class="row-b"><dl class="ev">'+r.ev.map(e=>'<dt>'+e[0]+'</dt><dd'+(e[2]?' class="pend"':'')+'>'+e[1]+'</dd>').join('')+'</dl>'+
+    '<div class="oplbl">'+(t.scaleLabel||'ASSIGN A PART')+'</div>'+
+    (r.type==='rate'
+      ? '<div class="opts">'+t.opts.map(o=>'<button class="opt t-'+o[2]+(val===o[0]?' on':'')+'" onclick="setRow(\''+id+'\','+i+',\''+o[0]+'\')"><i></i>'+o[1]+'</button>').join('')+'</div>'
+      : '<div class="selwrap"><select onchange="setRow(\''+id+'\','+i+',this.value)">'+
+        '<option value="">&mdash; not mapped</option>'+
+        t.opts.map(o=>'<option value="'+o[0]+'"'+(val===o[0]?' selected':'')+'>'+o[1]+'</option>').join('')+
+        '</select><span class="cv">'+sv(IC.down)+'</span></div>')+
+    '<div class="whyline">'+sv(IC.spark)+'<span>'+r.why+'</span></div></div>':'')+
+   '</div>';
+ }).join('')+'</div>';
+
+ /* wrap panel */
+ h+='<div class="sec"><div class="sec-h"><h2>'+t.wrap.title+'</h2><span class="hint">'+t.wrap.hint+'</span></div>'+
+  '<div class="panel"><div class="fgrid">'+t.wrap.fields.map(f=>{
+   const v=d.f[f.id];
+   if(f.kind==='calc')return '<div class="fitem"><label>'+f.label+'</label><div class="calc"><b>'+calc(id,f.id)+'</b><span>'+f.sub+'</span></div></div>';
+   if(f.kind==='radio')return '<div class="fitem"><label>'+f.label+'</label><div class="opts">'+
+     f.opts.map(o=>'<button class="opt t-info'+(v===o?' on':'')+'" onclick="setF(\''+id+'\',\''+f.id+'\',\''+o.replace(/'/g,"\\'")+'\')"><i></i>'+o+'</button>').join('')+'</div></div>';
+   if(f.kind==='select')return '<div class="fitem"><label>'+f.label+'</label><div class="selwrap"><select onchange="setF(\''+id+'\',\''+f.id+'\',this.value)">'+
+     f.opts.map(o=>'<option'+(v===o?' selected':'')+'>'+o+'</option>').join('')+'</select><span class="cv">'+sv(IC.down)+'</span></div></div>';
+   return '<div class="fitem"><label>'+f.label+'</label><textarea placeholder="'+f.ph+'" oninput="setF(\''+id+'\',\''+f.id+'\',this.value,1)">'+(v||'')+'</textarea>'+
+     '<div class="fh">The agent can draft this. You own the final wording.</div></div>';
+  }).join('')+'</div></div></div>';
+
+ /* activity */
+ const log=t.audit.concat(d.log);
+ const dot={sys:'var(--info-dot,var(--info))',ag:'var(--green)',gate:'var(--amber)',usr:'var(--navy)'};
+ h+='<div class="sec"><div class="sec-h"><h2>Activity</h2><span class="n">'+log.length+'</span>'+
+  '<span class="hint">Human and agent write the same record</span></div><div class="panel"><div class="act">'+
+  log.map(a=>'<div class="act-r"><span class="ad" style="background:'+(dot[a[0]]||'var(--slate)')+'"></span>'+
+   '<span class="at">'+a[1]+'<span class="aw">'+a[2]+'</span></span></div>').join('')+'</div></div></div>';
+ return h;
+}
+function tog(i){ST.open[i]=!ST.open[i];render();}
+function setRow(id,i,v){
+ const t=T[id],d=initTask(id);d.rows[i]=v||null;
+ const op=t.opts.find(o=>o[0]===v);
+ logIt(id,'usr','<b>'+cur().n+'</b> set "'+t.rows[i].n.replace(/&middot;.*$/,'').trim()+'" to '+(op?op[1]:'not set'));
+ render();
+}
+function setF(id,fid,v,noRender){
+ const d=initTask(id);d.f[fid]=v;
+ const f=T[id].wrap.fields.find(x=>x.id===fid);
+ if(!noRender){logIt(id,'usr','<b>'+cur().n+'</b> set '+f.label.toLowerCase()+' to "'+v+'"');render();}
+}
+function saveDraft(id){logIt(id,'usr','<b>'+cur().n+'</b> saved a draft');toast('Draft saved. Nothing has been sent to the customer or to the ledger.');render();}
+function submitTask(id){
+ const st=stepOf(id);
+ if(st<3){toast('Not ready. '+(initTask(id).rows.filter(v=>v===null).length||'0')+' finding(s) unset and the wrap-up panel is incomplete. A required field blocks submission outright &mdash; an advisory rule only warns.');return;}
+ logIt(id,'gate','<b>Policy gate</b> previewed '+T[id].acts.primary.toLowerCase()+' for confirmation');
+ toast(T[id].acts.pmsg);render();
+}
+
+/* ============================================================
+   AGENT PANEL
+   ============================================================ */
+const GEN={
+ home:{title:'WARRANTY AGENT',
+  blurb:'Ask about your queue, or hand a record to the agent. It can rank what needs you first, explain why something is in front of you, and open the worksheet for you.',
+  sug:[['q','What should I do first?'],['q','What is at stake across my queue?'],['q','What can you do that the old process could not?']],
+  intents:[
+   {k:['first','priority','order','start','what should'],
+    say:'Take them in this order. Priority here is derived from value at stake, the gate band it falls in and days to the deadline &mdash; not typed by hand, because a field people set by hand drifts to High within a month.',
+    fn:'rankQueue'},
+   {k:['stake','value','total','money','across'],fn:'sumQueue'},
+   {k:['do','could not','different','old','why','better','ai'],
+    say:'Three things, concretely.<ul><li><b>I read what the coded fields throw away.</b> Dealer free text, teardown records, agreement clauses, prior settlements. A phrase repeated ninety-four times under "no fault found" is a failure mode, not a customer concern.</li><li><b>I do the whole worksheet, not one field.</b> You can complete any record here yourself. Or ask me, confirm what I propose, and it is done in one step with the same activity trail.</li><li><b>I say when I do not know.</b> An unproven test and a passed test do not look the same on these screens. Where I cannot ground an answer I return it as unresolved rather than inventing a value.</li></ul>What I never do is decide. Every proposal waits on your confirmation, and anything with money attached passes the policy gate first.'}]},
+ module:{title:'WARRANTY AGENT',
+  blurb:'Ask about the records in this module, or open one and the agent follows you into it.',
+  sug:[['q','Which record here is most urgent?'],['q','How does this module work?']],
+  intents:[
+   {k:['urgent','first','priority','which'],fn:'rankQueue'},
+   {k:['how','work','module','explain'],
+    say:'Every record in this module opens as a worksheet: a record card with the facts, a set of findings to attribute, and a wrap-up panel that turns the findings into a position. You can fill it in yourself, or ask me to and confirm what I propose. Both paths write the same activity trail, and nothing with money attached leaves without passing the policy gate.'}]},
+ insights:{title:'REPORTING AGENT',
+  blurb:'Ask about any figure here. The agent reads the same records the modules work from, so a number and the cases behind it never disagree.',
+  sug:[['q','Why is Stellantis IPTV above target?'],['q','How is recovery rate defined?']],
+  intents:[
+   {k:['stellantis','iptv','above','target','why'],
+    say:'One population, mostly. The side curtain module built at Rovinari cell 3 contributes <b>0.34 of the 1.21</b> on its own, from three build weeks between 26-W28 and 26-W30. Strip those lots out and Stellantis IPTV is 0.87, which is inside target.<br><br>That is why CS-2026-04127 and CN-2026-0311 matter more than their value suggests: they are the same three build weeks.',
+    cite:'Sources: IPTV series by part and build lot &middot; CS-2026-04127 &middot; CN-2026-0311'},
+   {k:['recovery','defined','definition','rate','how is'],
+    say:'Recovery rate here is <b>value recovered or reversed, divided by value debited</b>, on a rolling twelve months, counted when the customer accepts rather than when we file. $3.14M of $8.90M gives 35.3%.<br><br>Two things it deliberately excludes: amounts still in negotiation, and write-offs. A definition that counted filings would read 61% and would not survive a conversation with your controller.',
+    cite:'Source: recovery register &middot; definition agreed with group finance, Q1 2026'}]}};
+
+function ctxKey(){const v=ST.view;return v.v==='task'?v.id:v.v==='module'?'module:'+v.m:v.v;}
+function agentCfg(){const v=ST.view;return v.v==='task'?T[v.id].agent:v.v==='module'?GEN.module:v.v==='insights'?GEN.insights:GEN.home;}
+if(!ST.chat)ST.chat={};
+function agRender(){
+ const key=ctxKey(),cfg=agentCfg();
+ ST.chat=ST.chat||{};
+ const msgs=ST.chat[key]||[];
+ $('agTitle').textContent=cfg.title;
+ let h='';
+ if(!msgs.length){
+  h='<div class="ag-empty"><div class="ic">'+sv(IC.bot)+'</div><h3>'+cfg.title+'</h3><p>'+cfg.blurb+'</p></div>'+
+    '<div class="ag-sug"><div class="sh">TRY ONE OF THESE</div>'+
+    cfg.sug.map((s,i)=>'<button class="sug '+s[0]+'" onclick="agSug('+i+')"><span class="k">'+sv(s[0]==='q'?IC.info:IC.bolt)+'</span><span>'+s[1]+'</span></button>').join('')+
+    '</div><div class="ag-legend"><span><i style="background:var(--green)"></i>Question &mdash; returns an answer</span><span><i style="background:var(--info)"></i>Action &mdash; proposes a change</span></div>';
+ }else{
+  h='<div class="msgs">'+msgs.map((m,i)=>{
+   if(m.r==='u')return '<div class="msg u"><div class="who">'+cur().i+'</div><div class="bub"><div class="nm">'+cur().n+'</div><div class="tx">'+m.tx+'</div></div></div>';
+   if(m.typing)return '<div class="msg a"><div class="who">'+sv(IC.bot)+'</div><div class="bub"><div class="nm">'+cfg.title+'</div><div class="typing"><i></i><i></i><i></i></div></div></div>';
+   let b='<div class="tx">'+m.tx+'</div>';
+   if(m.cite)b+='<div class="cite">'+sv(IC.book)+'<span>'+m.cite+'</span></div>';
+   if(m.prop){
+    b+='<div class="prop'+(m.applied?' done':'')+'"><div class="ph">'+sv(m.applied?IC.check:IC.bolt)+(m.applied?'APPLIED TO THE RECORD':m.prop.t)+'</div>'+
+      '<ol>'+m.prop.l.map(x=>'<li>'+x+'</li>').join('')+'</ol>'+
+      (m.applied?'<div class="applied">'+sv(IC.check)+'Written to the activity trail under your name</div>'
+       :'<div class="pf"><button class="ap" onclick="applyProp('+i+')">Apply to the record</button><button class="di" onclick="discardProp('+i+')">Discard</button></div>'+
+        '<div class="gate">Nothing changes until you apply. The policy gate still decides who confirms the submission itself.</div>')+
+      '</div>';
+   }
+   return '<div class="msg a"><div class="who">'+sv(IC.bot)+'</div><div class="bub"><div class="nm">'+cfg.title+'</div>'+b+'</div></div>';
+  }).join('')+'</div>'+
+  '<div class="ag-sug" style="margin-top:18px"><div class="sh">ALSO ASK</div>'+
+   cfg.sug.map((s,i)=>'<button class="sug '+s[0]+'" onclick="agSug('+i+')"><span class="k">'+sv(s[0]==='q'?IC.info:IC.bolt)+'</span><span>'+s[1]+'</span></button>').join('')+'</div>';
+ }
+ $('agBody').innerHTML=h;
+ $('agBody').scrollTop=$('agBody').scrollHeight;
+}
+function agSug(i){agAsk(agentCfg().sug[i][1]);}
+function rowAsk(id,i){agAsk(T[id].rows[i].ask);}
+function agKey(e){if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();agSend();}}
+function agSend(){const el=$('agIn'),v=el.value.trim();if(!v)return;el.value='';agAsk(v);}
+
+function agAsk(text){
+ const key=ctxKey(),cfg=agentCfg();
+ ST.chat[key]=ST.chat[key]||[];
+ const arr=ST.chat[key];
+ arr.push({r:'u',tx:text});
+ arr.push({r:'a',typing:1});
+ agRender();
+ setTimeout(()=>{
+  arr.pop();
+  const low=text.toLowerCase();
+  let best=null,score=0;
+  (cfg.intents||[]).forEach(it=>{
+   let s=0;it.k.forEach(k=>{if(low.indexOf(k)>-1)s++});
+   if(s>score){score=s;best=it;}
+  });
+  if(best){
+   let say=best.say;
+   if(best.fn&&FN[best.fn])say=(say?say+'<br><br>':'')+FN[best.fn]();
+   arr.push({r:'a',tx:say,cite:best.cite,prop:best.prop?{t:best.prop.t,l:best.prop.l,ap:best.prop.ap}:null});
+  }else{
+   arr.push({r:'a',tx:notFound(cfg)});
+  }
+  agRender();
+ },460);
+}
+function notFound(cfg){
+ return 'I cannot ground that in anything on this record, so I am not going to answer it. Here is what I can do here:<ul>'+
+  cfg.sug.map(s=>'<li>'+s[1]+'</li>').join('')+
+  '</ul>An answer I cannot cite is worse than no answer, so I return not found rather than improvising one.';
+}
+const FN={
+ rankQueue:()=>{
+  const ids=(ST.view.v==='module'?modTasks(ST.view.m):ownedTasks());
+  if(!ids.length)return 'Your queue is clear.';
+  return '<ul>'+ids.map((id,n)=>'<li><b>'+(n+1)+'. '+id+'</b> &mdash; '+T[id].q.t.toLowerCase()+'. '+T[id].q.w+'</li>').join('')+'</ul>';
+ },
+ sumQueue:()=>{
+  const ids=ownedTasks();let n=0,c=0;
+  ids.forEach(id=>{const a=T[id].q.a.replace(/[^0-9]/g,'');if(a){n+=parseInt(a,10);c++}});
+  return '<b>'+money(n)+'</b> across '+c+' record'+(c===1?'':'s')+' with a value attached'+(ids.length>c?', plus '+(ids.length-c)+' where no value is assigned yet &mdash; a safety referral and a field escalation carry a clock rather than a figure.':'.')+
+   ' The single largest item is '+ids.reduce((a,b)=>{const x=parseInt(T[a].q.a.replace(/[^0-9]/g,'')||0,10),y=parseInt(T[b].q.a.replace(/[^0-9]/g,'')||0,10);return y>x?b:a})+'.';
+ }};
+function applyProp(i){
+ const key=ctxKey(),m=ST.chat[key][i];
+ if(!m||!m.prop||m.applied)return;
+ const id=ST.view.id;
+ let what='applied a proposal';
+ if(m.prop.ap&&APPLY[m.prop.ap]&&id)what=APPLY[m.prop.ap](id);
+ m.applied=1;
+ if(id)logIt(id,'ag','<b>'+agentCfg().title.replace(/(^|\s)\S/g,c=>c.toUpperCase()).replace(/ AGENT/,' agent')+'</b> '+what+' &mdash; applied on '+cur().n+"'s confirmation");
+ toast('Applied. The agent '+what+'. It is on the record and in the activity trail under your name.');
+ render();
+}
+function discardProp(i){
+ const m=ST.chat[ctxKey()][i];if(!m)return;
+ ST.chat[ctxKey()].splice(i,1);
+ ST.chat[ctxKey()].push({r:'a',tx:'Discarded &mdash; nothing was written. Tell me what to change and I will propose it again.'});
+ agRender();
+}
+function toggleAgent(){$('agent').classList.toggle('open');}
+
+/* ============================================================
+   MENUS, TOAST, BOOT
+   ============================================================ */
+function closeMenus(){['menu-scope','menu-user'].forEach(k=>{const e=$(k);if(e)e.classList.add('hide')});}
+function openMenu(e,k){
+ e.stopPropagation();
+ const other=k==='scope'?'menu-user':'menu-scope';
+ $('menu-'+other).classList.add('hide');
+ const el=$('menu-'+k);
+ if(k==='scope'){
+  el.innerHTML='<div class="mh">CUSTOMER SCOPE</div>'+CUSTOMERS.map(c=>'<button onclick="setScope(event,\''+c+'\')">'+c+'</button>').join('');
+ }else{
+  el.innerHTML='<div class="mh">SIGNED IN AS</div>'+
+   '<button style="pointer-events:none"><span class="mi">'+cur().i+'</span><span>'+cur().n+'<small>'+cur().role+'</small></span></button><hr>'+
+   '<div class="mh">SWITCH USER</div>'+
+   Object.keys(U).filter(k2=>k2!==ST.u).map(k2=>'<button onclick="switchUser(\''+k2+'\')"><span class="mi">'+U[k2].i+'</span><span>'+U[k2].n+'<small>'+U[k2].role+'</small></span></button>').join('')+
+   '<hr><button onclick="window.open(BRIEF,\'_blank\')"><span class="mi">'+sv(IC.doc)+'</span><span>AI capability brief<small>What the agent does, and why</small></span></button>'+
+   '<button onclick="signOut()"><span class="mi">'+sv(IC.out)+'</span><span>Sign out</span></button>';
+ }
+ el.classList.toggle('hide');
+}
+function setScope(e,c){e.stopPropagation();ST.scope=c;$('scopeName').textContent=c;closeMenus();
+ toast('Scope re-applied to every view &mdash; '+c+'. Figures, queues and role permissions all re-scope together.');render();}
+document.addEventListener('click',closeMenus);
+function toast(m){const t=$('toast');t.innerHTML=m;t.classList.add('on');clearTimeout(window._t);window._t=setTimeout(()=>t.classList.remove('on'),5200);}
+
+$('uid').innerHTML=Object.keys(U).map(k=>'<option value="'+k+'">'+U[k].uid+' &mdash; '+U[k].role+'</option>').join('');
+loginPreview();
+</script>
+</body>
+</html>
