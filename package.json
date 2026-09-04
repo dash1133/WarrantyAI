@@ -1,0 +1,12 @@
+{
+  "name": "autoliv-warrantyai",
+  "version": "0.4.0",
+  "private": true,
+  "description": "Autoliv WarrantyAI - warranty recovery and field-quality console for Tier 1 automotive supply. Static prototype, Vercel-ready.",
+  "scripts": {
+    "dev": "npx --yes serve . -l 3000",
+    "start": "npx --yes serve . -l 3000",
+    "build": "echo \"Static site - no build step required\""
+  },
+  "license": "UNLICENSED"
+}

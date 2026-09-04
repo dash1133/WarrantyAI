@@ -1,0 +1,776 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>WarrantyAI — process map and AI capability brief</title>
+<meta name="description" content="How a warranty claim reaches a Tier 1 supplier, the eleven steps WarrantyAI supports, who hands what to whom, and where AI is genuinely required.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+:root{--navy:#0E2038;--blue:#005495;--blue-2:#0075BB;--soft:#E6EEFB;--line:#DCE4EF;--line-2:#EDF2F8;
+ --ink:#101B2B;--ink-2:#28394F;--slate:#55677E;--slate-2:#7D8FA6;--ground:#FFFFFF;
+ --red:#C0392F;--red-bg:#FDE7E5;--amber:#8A5300;--amber-bg:#FDF0DC;--green:#0B6B3F;--green-bg:#DCF3E6;}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:Archivo,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;background:#F6F8FB;color:var(--ink);
+ -webkit-font-smoothing:antialiased;letter-spacing:-.006em;line-height:1.62;font-size:15px}
+.page{max-width:1000px;margin:0 auto;background:var(--ground)}
+a{color:var(--blue)}
+
+.hdr{background:linear-gradient(140deg,#0d2347 0%,#12335f 52%,#005495 100%);color:#fff;padding:44px 56px 40px}
+.hdr .lock{display:flex;align-items:center;gap:11px;margin-bottom:30px}
+.hdr .mk{width:34px;height:34px;border-radius:9px;background:#fff;color:#005495;display:grid;place-items:center;font-weight:700;font-size:16px}
+.hdr .lock b{font-size:16px;font-weight:700;letter-spacing:-.01em;line-height:1.1}
+.hdr .lock b span{display:block;font-family:"IBM Plex Mono",monospace;font-size:8.5px;font-weight:400;letter-spacing:.17em;color:#9FC8E8;margin-top:2px}
+.hdr .eb{font-family:"IBM Plex Mono",monospace;font-size:10.5px;letter-spacing:.17em;color:#7FD0F2;margin-bottom:13px}
+.hdr h1{font-size:34px;font-weight:700;letter-spacing:-.032em;line-height:1.12;max-width:26ch}
+.hdr p{margin-top:14px;color:#C7D8EA;font-size:15.5px;line-height:1.6;max-width:64ch}
+.hdr .meta{display:flex;flex-wrap:wrap;gap:0;margin-top:28px;border-top:1px solid rgba(255,255,255,.2);padding-top:18px}
+.hdr .meta div{padding-right:30px;margin-right:30px;border-right:1px solid rgba(255,255,255,.16)}
+.hdr .meta div:last-child{border:none;margin:0;padding:0}
+.hdr .meta b{display:block;font-size:12.5px;color:#fff;font-weight:600}
+.hdr .meta span{font-family:"IBM Plex Mono",monospace;font-size:9.5px;letter-spacing:.13em;color:#8FB2D2}
+
+.toc{background:#FBFCFE;border-bottom:1px solid var(--line);padding:16px 56px;display:flex;flex-wrap:wrap;gap:8px 22px}
+.toc span{font-family:"IBM Plex Mono",monospace;font-size:9.5px;letter-spacing:.13em;color:var(--slate-2);margin-right:6px}
+.toc a{font-size:12.5px;font-weight:600;text-decoration:none;color:var(--ink-2)}
+.toc a:hover{color:var(--blue)}
+
+.body{padding:38px 56px 48px}
+section{margin-bottom:40px}
+.num{font-family:"IBM Plex Mono",monospace;font-size:10.5px;letter-spacing:.16em;color:var(--blue);margin-bottom:9px}
+h2{font-size:23px;font-weight:700;letter-spacing:-.028em;line-height:1.2;margin-bottom:12px}
+h3{font-size:15.5px;font-weight:700;letter-spacing:-.014em;margin:24px 0 8px}
+p{margin-bottom:12px;max-width:78ch;color:var(--ink-2)}
+p.lead{font-size:16px;color:var(--ink);max-width:70ch}
+ul{list-style:none;margin:0 0 14px;max-width:78ch}
+li{padding-left:18px;position:relative;margin-bottom:8px;color:var(--ink-2)}
+li:before{content:"";position:absolute;left:2px;top:9px;width:5px;height:5px;border-radius:50%;background:var(--blue-2)}
+strong{font-weight:600;color:var(--ink)}
+.rule{height:1px;background:var(--line-2);margin:34px 0}
+
+.chain{display:grid;grid-template-columns:repeat(5,1fr);gap:0;margin:18px 0 8px}
+.ch{padding:0 12px 0 0;position:relative}
+.ch:not(:last-child):after{content:"";position:absolute;right:5px;top:16px;width:8px;height:8px;border-right:1.5px solid var(--blue-2);border-top:1.5px solid var(--blue-2);transform:rotate(45deg)}
+.ch .cn{font-family:"IBM Plex Mono",monospace;font-size:9px;letter-spacing:.13em;color:var(--slate-2);margin-bottom:5px}
+.ch b{display:block;font-size:13px;font-weight:600;margin-bottom:3px;letter-spacing:-.012em}
+.ch p{font-size:12px;margin:0;color:var(--slate);line-height:1.5}
+.ch.hot b{color:var(--blue)}
+
+.vocab{border:1px solid var(--line);border-radius:12px;padding:4px 20px 14px;margin:18px 0;background:#FBFCFE}
+.vocab .vt{font-family:"IBM Plex Mono",monospace;font-size:9.5px;letter-spacing:.14em;color:var(--slate-2);padding:14px 0 8px;border-bottom:1px solid var(--line-2)}
+.vocab dl{display:grid;grid-template-columns:auto 1fr;gap:0}
+.vocab dt{font-size:12.5px;font-weight:700;padding:9px 20px 9px 0;border-bottom:1px solid var(--line-2);white-space:nowrap;color:var(--ink)}
+.vocab dd{font-size:13px;padding:9px 0;border-bottom:1px solid var(--line-2);color:var(--ink-2);line-height:1.55}
+.vocab dl>*:nth-last-child(-n+2){border-bottom:none}
+
+figure{margin:20px 0 8px}
+.figbox{overflow-x:auto;border:1px solid var(--line);border-radius:12px;background:#fff;padding:14px 16px}
+figcaption{font-size:12.5px;color:var(--slate);margin-top:10px;line-height:1.55;max-width:88ch}
+figcaption b{color:var(--ink-2)}
+
+.steps{margin:22px 0}
+.hand{display:flex;align-items:center;gap:10px;margin:14px 0;padding-left:2px}
+.hand .hl{flex:1;height:1px;background:var(--line)}
+.hand .ht{font-family:"IBM Plex Mono",monospace;font-size:9px;letter-spacing:.12em;color:var(--amber);
+ background:var(--amber-bg);border-radius:5px;padding:4px 10px;white-space:nowrap}
+.step{display:grid;grid-template-columns:44px 1fr;gap:14px;padding:13px 0;border-bottom:1px solid var(--line-2)}
+.step:last-child{border-bottom:none}
+.step .sn{width:28px;height:28px;border-radius:50%;background:var(--blue);color:#fff;display:grid;place-items:center;
+ font-size:13px;font-weight:700;margin-top:1px}
+.step .sc{min-width:0}
+.step .sh{display:flex;align-items:baseline;gap:10px;flex-wrap:wrap;margin-bottom:5px}
+.step .sh b{font-size:15.5px;font-weight:600;letter-spacing:-.016em}
+.step .sc p{font-size:13.5px;margin:0 0 6px;max-width:76ch}
+.own{font-family:"IBM Plex Mono",monospace;font-size:9px;letter-spacing:.1em;border-radius:5px;padding:3px 8px;white-space:nowrap}
+.o-an{background:var(--soft);color:var(--blue)}
+.o-mg{background:#DDE7F6;color:#153A6B}
+.o-sp{background:#EEF2F7;color:var(--slate)}
+.feat{border-left:2.5px solid var(--blue-2);background:#F8FBFE;border-radius:0 8px 8px 0;padding:9px 13px;margin-top:9px}
+.feat .fl{font-family:"IBM Plex Mono",monospace;font-size:8.5px;letter-spacing:.13em;color:var(--blue);margin-bottom:4px;
+ display:flex;align-items:center;gap:7px}
+.feat .fl i{font-style:normal;background:var(--soft);border-radius:4px;padding:1px 5px;font-weight:700}
+.feat p{font-size:12.5px;margin:0;color:var(--ink-2)}
+.feat.g{border-left-color:var(--amber);background:#FFFCF6}
+.feat.g .fl{color:var(--amber)}.feat.g .fl i{background:var(--amber-bg)}
+
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin:16px 0}
+.card{border:1px solid var(--line);border-radius:11px;padding:16px 18px;background:#fff}
+.card .ct{font-family:"IBM Plex Mono",monospace;font-size:9.5px;letter-spacing:.14em;color:var(--slate-2);margin-bottom:7px}
+.card b{display:block;font-size:15px;font-weight:600;letter-spacing:-.015em;margin-bottom:6px}
+.card p{font-size:13.5px;margin:0;color:var(--slate)}
+.card .fig2{display:flex;gap:22px;margin-top:12px;padding-top:11px;border-top:1px solid var(--line-2);flex-wrap:wrap}
+.card .fig2 div{font-size:11px;color:var(--slate-2)}
+.card .fig2 b{font-size:17px;font-weight:700;letter-spacing:-.025em;margin:0;font-variant-numeric:tabular-nums}
+
+table{width:100%;border-collapse:collapse;margin:14px 0;font-size:13.5px}
+th{text-align:left;font-family:"IBM Plex Mono",monospace;font-size:9.5px;font-weight:500;letter-spacing:.11em;
+ color:var(--slate-2);padding:10px 12px;border-bottom:1.5px solid var(--line);vertical-align:bottom}
+td{padding:12px;border-bottom:1px solid var(--line-2);vertical-align:top;color:var(--ink-2);line-height:1.55}
+td b{color:var(--ink);font-weight:600}
+tbody tr:last-child td{border-bottom:1.5px solid var(--line)}
+.tag{display:inline-block;font-size:10px;font-weight:700;letter-spacing:.05em;border-radius:5px;padding:3px 7px;white-space:nowrap}
+.t-ai{background:var(--soft);color:var(--blue)}
+.t-rule{background:var(--green-bg);color:var(--green)}
+.t-both{background:var(--amber-bg);color:var(--amber)}
+.stepref{font-family:"IBM Plex Mono",monospace;font-size:11px;color:var(--blue);font-weight:500;white-space:nowrap}
+.wrapt{overflow-x:auto}
+
+.callout{border-left:3px solid var(--blue);background:#F8FBFE;border-radius:0 10px 10px 0;padding:16px 20px;margin:18px 0}
+.callout .ct{font-family:"IBM Plex Mono",monospace;font-size:9.5px;letter-spacing:.14em;color:var(--blue);margin-bottom:7px}
+.callout p{margin:0;font-size:14px}
+.callout.warn{border-left-color:var(--amber);background:#FFFCF6}
+.callout.warn .ct{color:var(--amber)}
+
+.won{display:grid;grid-template-columns:auto 1fr;gap:10px 14px;margin:14px 0;max-width:78ch}
+.won .x{width:20px;height:20px;border-radius:6px;background:var(--red-bg);color:var(--red);display:grid;place-items:center;font-size:12px;font-weight:700;margin-top:2px}
+.won div p{margin:0;font-size:13.5px}
+.won div b{display:block;font-size:14px;margin-bottom:2px}
+
+.ftr{border-top:1px solid var(--line);padding:24px 56px 40px;display:flex;align-items:center;gap:14px;flex-wrap:wrap;
+ font-size:12px;color:var(--slate-2)}
+.ftr img{height:18px}
+.ftr .r{margin-left:auto;display:flex;align-items:center;gap:9px}
+
+@media(max-width:820px){.hdr,.body,.ftr,.toc{padding-left:24px;padding-right:24px}.grid2,.chain{grid-template-columns:1fr}
+ .hdr h1{font-size:27px}.chain .ch:after{display:none}.vocab dl{grid-template-columns:1fr}.vocab dt{border-bottom:none;padding-bottom:0}}
+@media print{
+ body{background:#fff;font-size:10pt;line-height:1.5}
+ .page{max-width:none}.toc{display:none}
+ .hdr{padding:26px 30px 24px}.hdr h1{font-size:23pt}.body{padding:22px 30px 18px}.ftr{padding:16px 30px 20px}
+ section{margin-bottom:22px}
+ table{font-size:8.6pt}h2{font-size:14.5pt}h3{font-size:11pt}.card p{font-size:8.6pt}
+ tr,li,.card,.callout,.step,.feat,figure{break-inside:avoid}
+ figure svg{width:100%}
+ @page{margin:11mm}
+}
+</style>
+</head>
+<body>
+<div class="page">
+
+<header class="hdr">
+  <div class="lock"><div class="mk">A</div><b>Autoliv WarrantyAI<span>WARRANTY RECOVERY &amp; FIELD QUALITY</span></b></div>
+  <div class="eb">PROCESS MAP &amp; AI CAPABILITY BRIEF &middot; SEPTEMBER 2026</div>
+  <h1>Eleven steps, two people who carry them, and the four places AI earns its keep.</h1>
+  <p>Written for a reader who has never worked a warranty claim. It starts with how a claim reaches a supplier at all, maps the eleven steps the application supports, shows where the record changes hands, and marks the capabilities on the steps where they actually act.</p>
+  <div class="meta">
+    <div><b>Autoliv, Inc.</b><span>PREPARED FOR</span></div>
+    <div><b>Global warranty &amp; field quality</b><span>FUNCTION</span></div>
+    <div><b>11 steps &middot; 2 owners &middot; 4 gates</b><span>SCOPE</span></div>
+    <div><b>Infinite Possibilities</b><span>PREPARED BY</span></div>
+  </div>
+</header>
+
+<nav class="toc">
+  <span>CONTENTS</span>
+  <a href="#ctx">00 &middot; Context</a>
+  <a href="#leak">01 &middot; Where the money leaks</a>
+  <a href="#map">02 &middot; The process map</a>
+  <a href="#walk">03 &middot; The eleven steps</a>
+  <a href="#who">04 &middot; Who does what</a>
+  <a href="#built">05 &middot; How it is built</a>
+  <a href="#caps">06 &middot; Capabilities</a>
+  <a href="#alt">07 &middot; Alternatives</a>
+  <a href="#guard">08 &middot; Guardrails</a>
+  <a href="#meas">09 &middot; Measurement</a>
+  <a href="#need">10 &middot; What it needs</a>
+</nav>
+
+<div class="body">
+
+<section id="ctx">
+  <div class="num">00 &mdash; CONTEXT</div>
+  <h2>How a warranty claim reaches a company that never sold the car</h2>
+  <p class="lead">Autoliv does not sell vehicles. It sells airbags, seatbelts, steering wheels and inflators to the companies that do. So when a safety part fails in the field, Autoliv is the last party to hear about it &mdash; and the first to be charged for it.</p>
+  <p>The chain runs like this, and every step of it happens before Autoliv is involved at all.</p>
+  <div class="chain">
+    <div class="ch"><div class="cn">01</div><b>A part fails</b><p>A driver notices a warning lamp, a noise, a belt that will not retract.</p></div>
+    <div class="ch"><div class="cn">02</div><b>A dealer repairs it</b><p>Under the vehicle warranty, at no cost to the driver. The dealer raises a repair order.</p></div>
+    <div class="ch"><div class="cn">03</div><b>The OEM pays the dealer</b><p>Parts and labour. The claim is coded to a labour operation and a part number.</p></div>
+    <div class="ch hot"><div class="cn">04</div><b>The OEM charges Autoliv</b><p>A <strong>debit memo</strong> against the supplier whose part is on the claim. The money is taken, not requested.</p></div>
+    <div class="ch hot"><div class="cn">05</div><b>Autoliv must answer</b><p>Inside a response window. Prove the part met specification, or the charge stands.</p></div>
+  </div>
+  <div class="callout">
+    <div class="ct">THE CONSTRAINT THAT SHAPES EVERYTHING</div>
+    <p>Autoliv never sees the vehicle, the driver, or the repair. Its entire knowledge of the failure is <strong>a row of data and, sometimes, a part in a box.</strong> Every capability in this document exists to get more out of those two things, faster, than a person reading them one at a time can.</p>
+  </div>
+  <h3>Why the volumes are what they are</h3>
+  <p>Autoliv holds roughly 44% of the global passive-safety market and builds around 143 million seatbelt systems, 143 million side airbags, 61 million frontal airbags and 21 million steering wheels a year, from 62 plants in 23 countries. Its five largest customers &mdash; Stellantis, Toyota, Volkswagen, Honda and Ford &mdash; are about 44% of sales between them.</p>
+  <p>At that scale even an excellent defect rate produces a large number of claim rows. And because these are safety parts, the tail risk is severe rather than frequent: the product-related liability reserve sits at $82.0m against $10.8bn of sales &mdash; under one percent &mdash; but a single field action can carry a disclosed range of $0 to $123m. <strong>That combination, high volume and low frequency with severe tails, is why the process below has both an industrial front end and a very carefully gated back end.</strong></p>
+  <div class="vocab">
+    <div class="vt">THE VOCABULARY, ONCE</div>
+    <dl>
+      <dt>Debit memo</dt><dd>The customer charging Autoliv for warranty repairs it attributes to an Autoliv part. Money already deducted from payment, not an invoice awaiting approval. Contesting it has a deadline.</dd>
+      <dt>Recovery agreement</dt><dd>The contract that governs what the customer may charge and on what basis. It fixes the coverage period, the look-back limit and the technical factor. Every recovery argument cites a clause of it.</dd>
+      <dt>Technical factor</dt><dd>Autoliv's agreed percentage share of a claim's cost. A memo applying 100% where the schedule says 48% is the single most common overcharge.</dd>
+      <dt>Look-back</dt><dd>How far back in a vehicle's life the customer may reach. Past that limit &mdash; typically 24 or 36 months in service &mdash; a charge is not permitted, however genuine the failure.</dd>
+      <dt>MIS</dt><dd>Months in service. A vehicle's age at the moment of repair. The axis every warranty rate is measured on.</dd>
+      <dt>IPTV</dt><dd>Incidents per thousand vehicles, at a stated MIS band. The industry's core failure-rate measure. Each customer has its own name for it &mdash; R/1000 at Ford, C/1000 at Stellantis, 1000&nbsp;FZG at Volkswagen &mdash; which is why the extracts have to be normalised before they can be compared.</dd>
+      <dt>3-MIS band</dt><dd>Failures in the first three months. The earliest signal available and the one the customer notices first, because it lands while the vehicle is still new to its owner.</dd>
+      <dt>CPV</dt><dd>Cost per vehicle. Total warranty cost divided by vehicles built. The figure that carries an annual reduction target in the customer contract.</dd>
+      <dt>NTF</dt><dd>No trouble found. A returned part that meets its full specification on every test. It is a finding, not a shrug &mdash; and it is the basis on which a charge can be reversed.</dd>
+      <dt>RPA / the bench</dt><dd>Returned-parts analysis. The centres at Ogden, V&aring;rg&aring;rda and Hwasung where returned units are torn down, tested and adjudicated. The only place physical evidence exists.</dd>
+      <dt>Containment</dt><dd>Stopping suspect product from reaching customers &mdash; a lot hold, a 100% re-test at end of line, a market hold. It costs money whether or not the suspicion proves out.</dd>
+      <dt>8D</dt><dd>The eight-discipline problem-solving format the industry runs on, D1 to D8. D3 is interim containment, D4 root cause, D5 permanent corrective action, D7 the update to the design and process documents so it cannot recur.</dd>
+      <dt>DFMEA / PFMEA</dt><dd>The design and process failure-mode analyses. An 8D that closes without changing one of these has taught the organisation nothing.</dd>
+      <dt>Provision</dt><dd>The money set aside in the accounts for warranty and recall exposure. Accrued when a loss is probable and estimable; disclosed but not accrued when it is only reasonably possible.</dd>
+    </dl>
+  </div>
+</section>
+
+<div class="rule"></div>
+
+<section id="leak">
+  <div class="num">01 &mdash; WHERE THE MONEY LEAKS</div>
+  <h2>Not in the arguments Autoliv loses &mdash; in the ones it never gets to make</h2>
+  <p class="lead">Across the industry, parts suppliers carry roughly a third of automotive revenue and report roughly a tenth of warranty expense. That gap is not OEM generosity. It is recovery that was available and never claimed.</p>
+  <ul>
+    <li><strong>Deadlines beat arguments.</strong> A debit memo that breached the recovery agreement becomes a memo Autoliv accepted, simply because the window closed. Screening one memo properly means reading the agreement, the MIS value on every claim line and the settlement history &mdash; for one memo, of twenty-two open.</li>
+    <li><strong>Five customers, five dialects.</strong> Each publishes claims on its own schedule in its own schema using its own rate metric. Reconciling them to one part-level view is a week of somebody's month, every month &mdash; and during that week the data is not being looked at.</li>
+    <li><strong>Evidence is assembled too late.</strong> An NTF finding is worth what its evidence is worth. The bench records that support it are pulled together when the customer disputes the disposition, eighteen months after it was made.</li>
+    <li><strong>Coded reasons hide real failures.</strong> A noise with no fault code and no reproduction at the workshop codes as "customer concern, no fault found" in every OEM taxonomy &mdash; and that code is excluded from the defect curve. Ninety-four of them can describe the same mechanism while the reported rate stays flat.</li>
+    <li><strong>Containment is judged on hindsight.</strong> The decision is taken in week one with partial evidence and reviewed in month six with all of it. If what was known at the time was never written down, the reviewer has nothing to judge but the outcome.</li>
+    <li><strong>Provisions rest on unagreed inputs.</strong> Cost per vehicle, proportionate responsibility, insurance coverage. A number that averages three unagreed inputs is a guess wearing a measurement's clothes.</li>
+  </ul>
+</section>
+
+<div class="rule"></div>
+<section id="map">
+  <div class="num">02 &mdash; THE PROCESS MAP</div>
+  <h2>What the application supports, end to end</h2>
+  <p class="lead">Two people carry the record. The <strong>warranty analyst</strong> holds it from the moment it arrives until it is ready to argue; the <strong>warranty manager</strong> takes every decision that costs money or changes the product. Everyone else &mdash; the bench, the customer quality engineer, the controller, product safety &mdash; is called in at a defined point and hands it straight back.</p>
+  <figure>
+    <div class="figbox">
+<svg viewBox="0 0 930 1252" role="img" aria-label="Vertical process map of the Autoliv warranty workflow, read top to bottom with one column per role. Claim extracts, debit memos and returned parts arrive from the customer. The warranty analyst normalises and maps the extract, screens the debit memo and matches returned parts. The bench tears down and adjudicates, the analyst assembles the case, the warranty manager sets the disposition with the controller signing off any provision, the analyst drafts the recovery packet, the customer quality engineer files and negotiates, and the manager sets the recovery position, the containment decision with a product safety branch, and closes the 8D. Every closed 8D that changes a design lowers the claims arriving at step one." style="max-width:100%;height:auto;font-family:Archivo,sans-serif;color:#101B2B">
+<defs><marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 z" fill="currentColor"/></marker><marker id="arg" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 z" fill="#C07A0A"/></marker><marker id="arl" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="5.5" markerHeight="5.5" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 z" fill="#7D8FA6"/></marker><marker id="ara" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 z" fill="#0075BB"/></marker></defs>
+<rect x="48" y="44" width="202" height="1088" rx="8" fill="#FAFBFD"/>
+<text x="149.0" y="28" text-anchor="middle" font-size="10.5" font-weight="700" letter-spacing="1.2" fill="#55677E">FIELD &amp; CUSTOMER</text>
+<text x="149.0" y="40" text-anchor="middle" font-size="8.6" fill="#7D8FA6">what arrives, what comes back</text>
+<rect x="246" y="44" width="232" height="1088" rx="8" fill="#F2F7FD"/>
+<rect x="246" y="44" width="232" height="3.5" rx="1.8" fill="#005495"/>
+<text x="362.0" y="28" text-anchor="middle" font-size="10.5" font-weight="700" letter-spacing="1.2" fill="#005495">WARRANTY ANALYST</text>
+<text x="362.0" y="40" text-anchor="middle" font-size="8.6" fill="#7D8FA6">the record lives here</text>
+<rect x="474" y="44" width="232" height="1088" rx="8" fill="#F2F7FD"/>
+<rect x="474" y="44" width="232" height="3.5" rx="1.8" fill="#005495"/>
+<text x="590.0" y="28" text-anchor="middle" font-size="10.5" font-weight="700" letter-spacing="1.2" fill="#005495">WARRANTY MANAGER</text>
+<text x="590.0" y="40" text-anchor="middle" font-size="8.6" fill="#7D8FA6">every decision that costs money</text>
+<rect x="702" y="44" width="222" height="1088" rx="8" fill="#FAFBFD"/>
+<text x="813.0" y="28" text-anchor="middle" font-size="10.5" font-weight="700" letter-spacing="1.2" fill="#55677E">SUPPORTING CAST</text>
+<text x="813.0" y="40" text-anchor="middle" font-size="8.6" fill="#7D8FA6">bench, CQE, controller, safety</text>
+<rect x="14" y="136" width="3.5" height="238" rx="1.8" fill="#C9D5E4"/>
+<text x="30" y="255.0" text-anchor="middle" font-size="9" font-weight="700" letter-spacing="1.5" fill="#7D8FA6" transform="rotate(-90 30 255.0)">INTAKE</text>
+<rect x="14" y="388" width="3.5" height="574" rx="1.8" fill="#C9D5E4"/>
+<text x="30" y="675.0" text-anchor="middle" font-size="9" font-weight="700" letter-spacing="1.5" fill="#7D8FA6" transform="rotate(-90 30 675.0)">CASE</text>
+<rect x="14" y="976" width="3.5" height="154" rx="1.8" fill="#C9D5E4"/>
+<text x="30" y="1053.0" text-anchor="middle" font-size="9" font-weight="700" letter-spacing="1.5" fill="#7D8FA6" transform="rotate(-90 30 1053.0)">IMPROVEMENT</text>
+<rect x="54" y="60" width="190" height="54" rx="9" fill="#FFFFFF" stroke="#C9D5E4" stroke-width="1.1" stroke-dasharray="3.5 3"/>
+<text x="68" y="84.25" font-size="11" font-weight="600" fill="#101B2B">Claim extract &#183; debit memo &#183; returned parts</text>
+<text x="68" y="97.75" font-size="9.4" font-weight="500" fill="#55677E">from five customer portals, on five schedules</text>
+<rect x="252" y="144" width="220" height="54" rx="9" fill="#FFFFFF" stroke="#0075BB" stroke-width="1.5"/>
+<rect x="252" y="145.5" width="3.5" height="51" rx="1.8" fill="#0075BB"/>
+<circle cx="273" cy="171.0" r="12" fill="#005495"/>
+<text x="273" y="175.0" text-anchor="middle" font-size="12" font-weight="700" fill="#FFFFFF">1</text>
+<rect x="448" y="151" width="15" height="15" rx="4" fill="#E6EEFB"/>
+<text x="455.5" y="162" text-anchor="middle" font-size="9.5" font-weight="700" fill="#005495">A</text>
+<text x="293" y="168.25" font-size="11" font-weight="600" fill="#101B2B">Normalise the extract</text>
+<text x="293" y="181.75" font-size="9.4" font-weight="500" fill="#55677E">map each claim to an Autoliv part</text>
+<rect x="252" y="228" width="220" height="54" rx="9" fill="#FFFFFF" stroke="#0075BB" stroke-width="1.5"/>
+<rect x="252" y="229.5" width="3.5" height="51" rx="1.8" fill="#0075BB"/>
+<circle cx="273" cy="255.0" r="12" fill="#005495"/>
+<text x="273" y="259.0" text-anchor="middle" font-size="12" font-weight="700" fill="#FFFFFF">2</text>
+<rect x="448" y="235" width="15" height="15" rx="4" fill="#E6EEFB"/>
+<text x="455.5" y="246" text-anchor="middle" font-size="9.5" font-weight="700" fill="#005495">A</text>
+<text x="293" y="252.25" font-size="11" font-weight="600" fill="#101B2B">Screen the debit memo</text>
+<text x="293" y="265.75" font-size="9.4" font-weight="500" fill="#55677E">clause by clause, inside the window</text>
+<rect x="252" y="312" width="220" height="54" rx="9" fill="#FFFFFF" stroke="#C9D5E4" stroke-width="1.1"/>
+<circle cx="273" cy="339.0" r="12" fill="#005495"/>
+<text x="273" y="343.0" text-anchor="middle" font-size="12" font-weight="700" fill="#FFFFFF">3</text>
+<text x="293" y="336.25" font-size="11" font-weight="600" fill="#101B2B">Match the returned parts</text>
+<text x="293" y="349.75" font-size="9.4" font-weight="500" fill="#55677E">no claim reference, no disposition</text>
+<rect x="708" y="396" width="210" height="54" rx="9" fill="#FFFFFF" stroke="#C9D5E4" stroke-width="1.1"/>
+<circle cx="729" cy="423.0" r="12" fill="#005495"/>
+<text x="729" y="427.0" text-anchor="middle" font-size="12" font-weight="700" fill="#FFFFFF">4</text>
+<text x="749" y="420.25" font-size="11" font-weight="600" fill="#101B2B">Bench teardown, NTF call</text>
+<text x="749" y="433.75" font-size="9.4" font-weight="500" fill="#55677E">the only physical evidence</text>
+<rect x="252" y="480" width="220" height="54" rx="9" fill="#FFFFFF" stroke="#0075BB" stroke-width="1.5"/>
+<rect x="252" y="481.5" width="3.5" height="51" rx="1.8" fill="#0075BB"/>
+<circle cx="273" cy="507.0" r="12" fill="#005495"/>
+<text x="273" y="511.0" text-anchor="middle" font-size="12" font-weight="700" fill="#FFFFFF">5</text>
+<rect x="448" y="487" width="15" height="15" rx="4" fill="#E6EEFB"/>
+<text x="455.5" y="498" text-anchor="middle" font-size="9.5" font-weight="700" fill="#005495">A</text>
+<text x="293" y="504.25" font-size="11" font-weight="600" fill="#101B2B">Assemble the case</text>
+<text x="293" y="517.75" font-size="9.4" font-weight="500" fill="#55677E">evidence attributed, one finding at a time</text>
+<rect x="480" y="564" width="220" height="54" rx="9" fill="#FFFFFF" stroke="#C9D5E4" stroke-width="1.1"/>
+<circle cx="501" cy="591.0" r="12" fill="#005495"/>
+<text x="501" y="595.0" text-anchor="middle" font-size="12" font-weight="700" fill="#FFFFFF">6</text>
+<rect x="676" y="571" width="15" height="15" rx="4" fill="#FDF0DC"/>
+<text x="683.5" y="582" text-anchor="middle" font-size="9.5" font-weight="700" fill="#C07A0A">G</text>
+<text x="521" y="588.25" font-size="11" font-weight="600" fill="#101B2B">Disposition</text>
+<text x="521" y="601.75" font-size="9.4" font-weight="500" fill="#55677E">what we accept, and at what factor</text>
+<rect x="708" y="648" width="210" height="54" rx="9" fill="#FFFFFF" stroke="#0075BB" stroke-width="1.5"/>
+<rect x="708" y="649.5" width="3.5" height="51" rx="1.8" fill="#0075BB"/>
+<rect x="894" y="655" width="15" height="15" rx="4" fill="#FDF0DC"/>
+<text x="901.5" y="666" text-anchor="middle" font-size="9.5" font-weight="700" fill="#C07A0A">G</text>
+<rect x="876" y="655" width="15" height="15" rx="4" fill="#E6EEFB"/>
+<text x="883.5" y="666" text-anchor="middle" font-size="9.5" font-weight="700" fill="#005495">A</text>
+<text x="722" y="672.25" font-size="11" font-weight="600" fill="#101B2B">Provision sign-off</text>
+<text x="722" y="685.75" font-size="9.4" font-weight="500" fill="#55677E">Controller &#183; accrue or disclose</text>
+<rect x="252" y="732" width="220" height="54" rx="9" fill="#FFFFFF" stroke="#0075BB" stroke-width="1.5"/>
+<rect x="252" y="733.5" width="3.5" height="51" rx="1.8" fill="#0075BB"/>
+<circle cx="273" cy="759.0" r="12" fill="#005495"/>
+<text x="273" y="763.0" text-anchor="middle" font-size="12" font-weight="700" fill="#FFFFFF">7</text>
+<rect x="448" y="739" width="15" height="15" rx="4" fill="#E6EEFB"/>
+<text x="455.5" y="750" text-anchor="middle" font-size="9.5" font-weight="700" fill="#005495">A</text>
+<text x="293" y="756.25" font-size="11" font-weight="600" fill="#101B2B">Draft the packet</text>
+<text x="293" y="769.75" font-size="9.4" font-weight="500" fill="#55677E">reversal or appeal, citing the clause</text>
+<rect x="708" y="816" width="210" height="54" rx="9" fill="#FFFFFF" stroke="#C9D5E4" stroke-width="1.1"/>
+<circle cx="729" cy="843.0" r="12" fill="#005495"/>
+<text x="729" y="847.0" text-anchor="middle" font-size="12" font-weight="700" fill="#FFFFFF">8</text>
+<text x="749" y="840.25" font-size="11" font-weight="600" fill="#101B2B">File and negotiate</text>
+<text x="749" y="853.75" font-size="9.4" font-weight="500" fill="#55677E">Customer Quality Engineer</text>
+<rect x="54" y="900" width="190" height="34" rx="9" fill="#FFFFFF" stroke="#C9D5E4" stroke-width="1.1" stroke-dasharray="3.5 3"/>
+<text x="68" y="921.0" font-size="11" font-weight="500" fill="#101B2B">OEM response</text>
+<rect x="480" y="900" width="220" height="54" rx="9" fill="#FFFFFF" stroke="#C9D5E4" stroke-width="1.1"/>
+<circle cx="501" cy="927.0" r="12" fill="#005495"/>
+<text x="501" y="931.0" text-anchor="middle" font-size="12" font-weight="700" fill="#FFFFFF">9</text>
+<rect x="676" y="907" width="15" height="15" rx="4" fill="#FDF0DC"/>
+<text x="683.5" y="918" text-anchor="middle" font-size="9.5" font-weight="700" fill="#C07A0A">G</text>
+<text x="521" y="924.25" font-size="11" font-weight="600" fill="#101B2B">Recovery position</text>
+<text x="521" y="937.75" font-size="9.4" font-weight="500" fill="#55677E">accept, settle, or write off</text>
+<rect x="480" y="984" width="220" height="54" rx="9" fill="#FFFFFF" stroke="#0075BB" stroke-width="1.5"/>
+<rect x="480" y="985.5" width="3.5" height="51" rx="1.8" fill="#0075BB"/>
+<circle cx="501" cy="1011.0" r="12" fill="#005495"/>
+<text x="501" y="1015.0" text-anchor="middle" font-size="12" font-weight="700" fill="#FFFFFF">10</text>
+<rect x="676" y="991" width="15" height="15" rx="4" fill="#FDF0DC"/>
+<text x="683.5" y="1002" text-anchor="middle" font-size="9.5" font-weight="700" fill="#C07A0A">G</text>
+<rect x="658" y="991" width="15" height="15" rx="4" fill="#E6EEFB"/>
+<text x="665.5" y="1002" text-anchor="middle" font-size="9.5" font-weight="700" fill="#005495">A</text>
+<text x="521" y="1008.25" font-size="11" font-weight="600" fill="#101B2B">Signal and containment</text>
+<text x="521" y="1021.75" font-size="9.4" font-weight="500" fill="#55677E">by part, plant and build week, at 3 MIS</text>
+<rect x="708" y="984" width="210" height="54" rx="9" fill="#FFFFFF" stroke="#0075BB" stroke-width="1.5"/>
+<rect x="708" y="985.5" width="3.5" height="51" rx="1.8" fill="#0075BB"/>
+<rect x="894" y="991" width="15" height="15" rx="4" fill="#FDF0DC"/>
+<text x="901.5" y="1002" text-anchor="middle" font-size="9.5" font-weight="700" fill="#C07A0A">G</text>
+<rect x="876" y="991" width="15" height="15" rx="4" fill="#E6EEFB"/>
+<text x="883.5" y="1002" text-anchor="middle" font-size="9.5" font-weight="700" fill="#005495">A</text>
+<text x="722" y="1008.25" font-size="11" font-weight="600" fill="#101B2B">Safety referral</text>
+<text x="722" y="1021.75" font-size="9.4" font-weight="500" fill="#55677E">Product Safety &#183; hard gate</text>
+<rect x="480" y="1068" width="220" height="54" rx="9" fill="#FFFFFF" stroke="#0075BB" stroke-width="1.5"/>
+<rect x="480" y="1069.5" width="3.5" height="51" rx="1.8" fill="#0075BB"/>
+<circle cx="501" cy="1095.0" r="12" fill="#005495"/>
+<text x="501" y="1099.0" text-anchor="middle" font-size="12" font-weight="700" fill="#FFFFFF">11</text>
+<rect x="676" y="1075" width="15" height="15" rx="4" fill="#E6EEFB"/>
+<text x="683.5" y="1086" text-anchor="middle" font-size="9.5" font-weight="700" fill="#005495">A</text>
+<text x="521" y="1092.25" font-size="11" font-weight="600" fill="#101B2B">8D and the design loop</text>
+<text x="521" y="1105.75" font-size="9.4" font-weight="500" fill="#55677E">D7 &#8212; the DFMEA actually changes</text>
+<path d="M 149.0 114 V 131 H 362.0 V 141" fill="none" stroke="currentColor" stroke-width="1.4" marker-end="url(#ar)" opacity=".6"/>
+<text x="255.5" y="125" text-anchor="middle" font-size="9" font-weight="600" fill="#55677E">lands automatically</text>
+<line x1="362.0" y1="198" x2="362.0" y2="225" stroke="currentColor" stroke-width="1.4" marker-end="url(#ar)" opacity=".6"/>
+<line x1="362.0" y1="282" x2="362.0" y2="309" stroke="currentColor" stroke-width="1.4" marker-end="url(#ar)" opacity=".6"/>
+<path d="M 362.0 366 V 383 H 813.0 V 393" fill="none" stroke="currentColor" stroke-width="1.4" marker-end="url(#ar)" opacity=".6"/>
+<text x="587.5" y="377" text-anchor="middle" font-size="9" font-weight="600" fill="#55677E">parts to the bench</text>
+<path d="M 813.0 450 V 467 H 362.0 V 477" fill="none" stroke="currentColor" stroke-width="1.4" marker-end="url(#ar)" opacity=".6"/>
+<text x="587.5" y="461" text-anchor="middle" font-size="9" font-weight="600" fill="#55677E">test records back</text>
+<path d="M 362.0 534 V 551 H 590.0 V 561" fill="none" stroke="currentColor" stroke-width="1.4" marker-end="url(#ar)" opacity=".6"/>
+<text x="476.0" y="545" text-anchor="middle" font-size="9" font-weight="600" fill="#55677E">the case, with its evidence</text>
+<path d="M 590.0 618 V 675.0 H 704" fill="none" stroke="#C07A0A" stroke-width="1.4" marker-end="url(#arg)"/>
+<text x="661.0" y="667.0" text-anchor="middle" font-size="9" font-weight="600" fill="#C07A0A">gate &#183; above band</text>
+<path d="M 590.0 618 V 635 H 362.0 V 729" fill="none" stroke="currentColor" stroke-width="1.4" marker-end="url(#ar)" opacity=".6"/>
+<text x="476.0" y="629" text-anchor="middle" font-size="9" font-weight="600" fill="#55677E">disposition set</text>
+<path d="M 362.0 786 V 803 H 813.0 V 813" fill="none" stroke="currentColor" stroke-width="1.4" marker-end="url(#ar)" opacity=".6"/>
+<text x="587.5" y="797" text-anchor="middle" font-size="9" font-weight="600" fill="#55677E">packet out</text>
+<path d="M 813.0 870 V 887 H 590.0 V 897" fill="none" stroke="currentColor" stroke-width="1.4" marker-end="url(#ar)" opacity=".6"/>
+<text x="701.5" y="881" text-anchor="middle" font-size="9" font-weight="600" fill="#55677E">customer reply</text>
+<path d="M 246 917 H 476" fill="none" stroke="#7D8FA6" stroke-width="1.2" stroke-dasharray="3.5 3" marker-end="url(#arl)"/>
+<line x1="590.0" y1="954" x2="590.0" y2="981" stroke="currentColor" stroke-width="1.4" marker-end="url(#ar)" opacity=".6"/>
+<path d="M 702 1011.0 H 704" fill="none" stroke="#C07A0A" stroke-width="1.4" marker-end="url(#arg)"/>
+<line x1="590.0" y1="1038" x2="590.0" y2="1065" stroke="currentColor" stroke-width="1.4" marker-end="url(#ar)" opacity=".6"/>
+<path d="M 590.0 1122 V 1144 H 38 V 171.0 H 247" fill="none" stroke="#0075BB" stroke-width="1.5" stroke-dasharray="5 3.5" marker-end="url(#ara)"/>
+<text x="330.0" y="1136" text-anchor="middle" font-size="9.4" font-weight="600" fill="#0075BB">the loop &#8212; every 8D that changes a DFMEA lowers the claims that arrive at step 1</text>
+<line x1="14" y1="1172" x2="916" y2="1172" stroke="#C9D5E4" stroke-width="1"/>
+<rect x="14" y="1186" width="14" height="14" rx="4" fill="#E6EEFB"/>
+<text x="21" y="1196.5" text-anchor="middle" font-size="9" font-weight="700" fill="#005495">A</text>
+<text x="35" y="1197" font-size="9.6" fill="#55677E">the agent can complete this step</text>
+<rect x="272" y="1186" width="14" height="14" rx="4" fill="#FDF0DC"/>
+<text x="279" y="1196.5" text-anchor="middle" font-size="9" font-weight="700" fill="#C07A0A">G</text>
+<text x="293" y="1197" font-size="9.6" fill="#55677E">policy gate &#8212; a named person confirms</text>
+<line x1="580" y1="1193" x2="604" y2="1193" stroke="currentColor" stroke-width="1.4" marker-end="url(#ar)" opacity=".6"/>
+<text x="612" y="1197" font-size="9.6" fill="#55677E">an arrow crossing a column is a hand-off</text>
+</svg>
+    </div>
+    <figcaption><b>The eleven steps, and the six points where the record changes hands.</b> An arrow that stays inside a lane is the same person continuing. An arrow that crosses a lane is a hand-off, and it is labelled with what is handed over. The <b>A</b> badge marks the four steps the agent can complete on its own proposal; <b>G</b> marks a policy gate where a named person must confirm. The dashed line along the bottom is the only part of this that reduces future work rather than processing present work.</figcaption>
+  </figure>
+  <div class="callout">
+    <div class="ct">THE ONE THING TO TAKE FROM THE PICTURE</div>
+    <p>The record moves <strong>analyst &rarr; manager &rarr; analyst &rarr; supporting cast &rarr; manager</strong> and never leaves those two lanes for long. Steps 4, 8 and the two gate branches are the only places it leaves the warranty team, and in each case it comes back. <strong>Design for two people and four visitors, not for six equal roles.</strong></p>
+  </div>
+</section>
+
+<div class="rule"></div>
+
+<section id="walk">
+  <div class="num">03 &mdash; THE ELEVEN STEPS</div>
+  <h2>Step by step, with the hand-offs called out</h2>
+  <p>Each step below is a worksheet in the application. Where a capability acts on that step, it is marked on the step rather than listed separately &mdash; a feature that cannot be placed on a step in this list is a feature nobody asked for.</p>
+
+  <div class="steps">
+
+  <div class="hand"><span class="ht">ARRIVES AUTOMATICALLY &mdash; FIVE CUSTOMER PORTALS, ON THEIR OWN SCHEDULES</span><span class="hl"></span></div>
+
+  <div class="step"><div class="sn">1</div><div class="sc">
+    <div class="sh"><b>Normalise the extract, map it to a part</b><span class="own o-an">WARRANTY ANALYST</span></div>
+    <p>A weekly or monthly claim extract lands from a customer portal. Rate metrics are converted to one IPTV series, duplicates removed, and each claim's labour operation resolved to an Autoliv part number. Without this step nothing downstream can be costed, compared or contested.</p>
+    <div class="feat"><div class="fl"><i>A</i>DIALECT NORMALISATION AND PART MAPPING</div>
+      <p>Runs on arrival rather than on a monthly cycle. When a customer renames four labour-operation codes mid-quarter, 185 of 187 claims still resolve on claim-line part number; the rest arrive flagged with the reason they could not, never with a guessed code. A wrong code puts another supplier's cost onto Autoliv's IPTV.</p></div>
+  </div></div>
+
+  <div class="step"><div class="sn">2</div><div class="sc">
+    <div class="sh"><b>Screen the debit memo</b><span class="own o-an">WARRANTY ANALYST</span></div>
+    <p>Each memo is tested against the recovery agreement clause by clause: coverage window, MIS look-back, technical factor, prior settlement, whether the units the charge relies on were actually returned. The output is a position &mdash; accept, challenge in part, challenge in full &mdash; and the amount contested.</p>
+    <div class="feat"><div class="fl"><i>A</i>AGREEMENT SCREENING</div>
+      <p>Every memo screened, not the largest few. Reading the agreement text against the claim data is what finds the money: on one Honda memo, $487,920 past the 24-MIS look-back, $667,680 from a factor stepped to 100% against a settled 48%, and 412 claims already settled once. Each finding cites the clause it rests on.</p></div>
+  </div></div>
+
+  <div class="step"><div class="sn">3</div><div class="sc">
+    <div class="sh"><b>Match the returned parts</b><span class="own o-an">WARRANTY ANALYST</span></div>
+    <p>Physical units arrive at an analysis centre, often on a pack list with a partial data-matrix read and no claim reference. A part with no claim reference cannot be dispositioned, and the customer's return window does not stop for it.</p>
+  </div></div>
+
+  <div class="hand"><span class="ht">HANDS OFF &rarr; THE BENCH, WITH THE MATCHED UNITS</span><span class="hl"></span></div>
+
+  <div class="step"><div class="sn">4</div><div class="sc">
+    <div class="sh"><b>Bench teardown and the NTF call</b><span class="own o-sp">RPA BENCH &middot; SUPPORTING</span></div>
+    <p>Teardown, functional test against the specification revision in force, and a finding per unit: meets specification, deviation confirmed, or customer-induced. This is the only physical evidence that will ever exist, and the specification revision it was tested to is part of the finding.</p>
+  </div></div>
+
+  <div class="hand"><span class="ht">HANDS BACK &rarr; WARRANTY ANALYST, WITH THE TEST RECORDS</span><span class="hl"></span></div>
+
+  <div class="step"><div class="sn">5</div><div class="sc">
+    <div class="sh"><b>Assemble the case</b><span class="own o-an">WARRANTY ANALYST</span></div>
+    <p>Claims that share a part and a failure mode become one case. Bench results, dealer narratives, the applicable agreement clause and any prior settlement on the same failure mode are attached, and each evidence finding is attributed: Autoliv responsible, shared or sub-supplier, or not our defect.</p>
+    <div class="feat"><div class="fl"><i>A</i>EVIDENCE-LINKED DISPOSITION</div>
+      <p>The evidence is attached at the moment of the decision rather than reconstructed after it, and a disposition cannot be set without naming what it rests on. Eighteen months later, when the customer reopens it, the argument is still readable &mdash; including which four of thirty-eight units passed and were recorded separately rather than folded into the confirmed count.</p></div>
+  </div></div>
+
+  <div class="hand"><span class="ht">HANDS OFF &rarr; WARRANTY MANAGER, WITH THE CASE AND ITS EVIDENCE</span><span class="hl"></span></div>
+
+  <div class="step"><div class="sn">6</div><div class="sc">
+    <div class="sh"><b>Disposition</b><span class="own o-mg">WARRANTY MANAGER</span><span class="own o-sp">GATE</span></div>
+    <p>The decision on what Autoliv accepts, and at what technical factor. This is the first point in the process where money is committed rather than measured. Below $25,000 it auto-processes; to $250,000 a named approver confirms; above that it routes to the controller.</p>
+    <div class="feat g"><div class="fl"><i>G</i>POLICY GATE &mdash; CONFIGURATION, NOT CODE</div>
+      <p>The bands are a tenant setting a supervisor edits, not a release. A customer changing its policy does not wait for a sprint. The gate also records which threshold caught a case and which role it is waiting on, so a case sitting still has a visible reason.</p></div>
+  </div></div>
+
+  <div class="hand"><span class="ht">BRANCH &rarr; CONTROLLER, IF THE EXPOSURE IS PRODUCT-RELATED OR ABOVE BAND</span><span class="hl"></span></div>
+
+  <div class="step"><div class="sn">&mdash;</div><div class="sc">
+    <div class="sh"><b>Provision sign-off</b><span class="own o-sp">CONTROLLER &middot; SUPPORTING</span></div>
+    <p>Whether the exposure is accrued or disclosed, and on what basis. Each open input is assessed as probable and estimable, reasonably possible, or remote &mdash; and named rather than averaged into a single figure.</p>
+    <div class="feat"><div class="fl"><i>A</i>EXPOSURE LEDGER WITH NAMED UNKNOWNS</div>
+      <p>The agent proposes the movement, names every input still open, and drafts the disclosure note in the wording of the prior filing so the two read consistently. It never posts: the posting is a gated write into the system of record on the controller's confirmation.</p></div>
+  </div></div>
+
+  <div class="hand"><span class="ht">HANDS BACK &rarr; WARRANTY ANALYST, WITH THE DISPOSITION SET</span><span class="hl"></span></div>
+
+  <div class="step"><div class="sn">7</div><div class="sc">
+    <div class="sh"><b>Draft the packet</b><span class="own o-an">WARRANTY ANALYST</span></div>
+    <p>The reversal or appeal document: what Autoliv claims back, what it concedes, on which clause, supported by which prior settlements. Conceding the marginal units explicitly is what makes the rest credible to the customer's engineer.</p>
+    <div class="feat"><div class="fl"><i>A</i>REVERSAL AND APPEAL PACKETS</div>
+      <p>Drafted from the playbook for that denial class, citing the clause and the precedents. The playbook is named on the output, so a supervisor improves the playbook rather than the individual letter &mdash; and the final wording stays with the person who signs it.</p></div>
+  </div></div>
+
+  <div class="hand"><span class="ht">HANDS OFF &rarr; CUSTOMER QUALITY ENGINEER, WHO OWNS THE CUSTOMER CHANNEL</span><span class="hl"></span></div>
+
+  <div class="step"><div class="sn">8</div><div class="sc">
+    <div class="sh"><b>File and negotiate</b><span class="own o-sp">CQE &middot; SUPPORTING</span></div>
+    <p>Filed through the customer's supplier portal and argued. The CQE holds the relationship, knows what that customer's engineer will accept, and carries the negotiation. The record and its evidence go with the filing.</p>
+  </div></div>
+
+  <div class="hand"><span class="ht">HANDS BACK &rarr; WARRANTY MANAGER, WITH THE CUSTOMER'S REPLY</span><span class="hl"></span></div>
+
+  <div class="step"><div class="sn">9</div><div class="sc">
+    <div class="sh"><b>Recovery position</b><span class="own o-mg">WARRANTY MANAGER</span><span class="own o-sp">GATE</span></div>
+    <p>Accept the customer's response, settle at a negotiated factor, or write it off. A write-off is a decision with a reason code, not a status change, and above the band it needs a named approver.</p>
+  </div></div>
+
+  <div class="hand"><span class="ht">THE SAME CLAIM DATA FEEDS IMPROVEMENT CONTINUOUSLY &mdash; NOT ONLY ONCE A CASE CLOSES</span><span class="hl"></span></div>
+
+  <div class="step"><div class="sn">10</div><div class="sc">
+    <div class="sh"><b>Signal and containment</b><span class="own o-mg">WARRANTY MANAGER</span><span class="own o-sp">GATE</span></div>
+    <p>Emerging failures are found in the same claim data, by part, plant and build week, in the 3-MIS band. Each build lot is then decided individually: contain, hold and watch, or stand down &mdash; with the measure and the customer notification set alongside.</p>
+    <div class="feat"><div class="fl"><i>A</i>SIGNAL DETECTION AT 3 MIS</div>
+      <p>The dealer-concentration and seasonality controls are run before a signal reaches a person, so what arrives is already worth a decision. A median nineteen days ahead of customer notice is the difference between containing 18,600 reachable units at about $41 each and a field action at customer rates.</p></div>
+    <div class="feat"><div class="fl"><i>A</i>NARRATIVE CLUSTERING</div>
+      <p>The capability with no manual equivalent anywhere in the industry. Dealer free text is read at volume and clustered, so ninety-four narratives describing a ratcheting retractor under a "no fault found" code become a named failure mode instead of a flat claim curve. Clusters are proposed for review, never auto-recoded, and the original claim text is never overwritten.</p></div>
+  </div></div>
+
+  <div class="hand"><span class="ht">BRANCH &rarr; PRODUCT SAFETY, IF THE MECHANISM COULD BE SAFETY-RELEVANT</span><span class="hl"></span></div>
+
+  <div class="step"><div class="sn">&mdash;</div><div class="sc">
+    <div class="sh"><b>Safety referral</b><span class="own o-sp">PRODUCT SAFETY &middot; SUPPORTING</span></div>
+    <p>A hard gate with no dollar band. Product safety takes the referral or declines it, within an acknowledgement window, and the answer is only possible if the affected population can be defined.</p>
+    <div class="feat"><div class="fl"><i>A</i>POPULATION SCOPING FROM TRACEABILITY</div>
+      <p>Build records, lot genealogy and shipment data resolve into a VIN and lot population inside the clock &mdash; 40,400 units across four assembly plants, from four sealed units &mdash; with chain of custody preserved on the retained parts.</p></div>
+  </div></div>
+
+  <div class="hand"><span class="ht">HANDS BACK &rarr; WARRANTY MANAGER, AND ON TO THE PLANT AND THE 8D TEAM</span><span class="hl"></span></div>
+
+  <div class="step"><div class="sn">11</div><div class="sc">
+    <div class="sh"><b>8D and the design loop</b><span class="own o-mg">WARRANTY MANAGER</span></div>
+    <p>D1 to D8, with the part that usually gets skipped tracked explicitly: D7, the update to the DFMEA, the PFMEA or the control plan. An 8D that closes without changing one of those has taught the organisation nothing, and the same claim will arrive again next year.</p>
+    <div class="feat"><div class="fl"><i>A</i>THE LOOP BACK TO STEP 1</div>
+      <p>This is the only step that reduces future work rather than processing present work. Currently 67% of closed D7s carry a design or process change against a target of 80% &mdash; and that percentage, not the recovery rate, is what decides how much of this process is needed in three years.</p></div>
+  </div></div>
+
+  </div>
+</section>
+
+<div class="rule"></div>
+
+<section id="who">
+  <div class="num">04 &mdash; WHO DOES WHAT</div>
+  <h2>Two owners, four visitors</h2>
+  <p>The distinction matters for the build. The two owners work in this application all day and need speed, keyboard reach and a queue that ranks itself. The four supporting roles arrive at one step, need context immediately without training, and leave.</p>
+  <div class="wrapt">
+  <table>
+    <thead><tr><th style="width:20%">ROLE</th><th style="width:9%">STEPS</th><th style="width:36%">WHAT THEY OWN</th><th style="width:35%">WHAT TRIGGERS THEIR INVOLVEMENT</th></tr></thead>
+    <tbody>
+      <tr><td><b>Warranty analyst</b><br><span style="color:var(--slate);font-size:12.5px">Elena Vargas</span></td>
+        <td><span class="stepref">1&ndash;3, 5, 7</span></td>
+        <td>The record, from arrival to the point it is ready to argue. Mapping, screening, matching returns, assembling the case, drafting the packet.</td>
+        <td>Everything arrives here. This is the default owner of any new record, and the person the record returns to after every gate.</td></tr>
+      <tr><td><b>Warranty manager</b><br><span style="color:var(--slate);font-size:12.5px">Ingrid Halvorsen</span></td>
+        <td><span class="stepref">6, 9&ndash;11</span></td>
+        <td>Every decision that costs money or changes the product. Disposition, recovery position, containment scope, and 8D closure.</td>
+        <td>A case reaching disposition, a signal firing, or a value crossing a policy band. Also the approver for the analyst above $25,000.</td></tr>
+      <tr><td>RPA bench<br><span style="color:var(--slate);font-size:12.5px">supporting</span></td>
+        <td><span class="stepref">4</span></td>
+        <td>The physical finding per unit, and the specification revision it was tested against.</td>
+        <td>Matched units booked to the bench at step 3. Returns the test records and nothing else.</td></tr>
+      <tr><td>Customer quality engineer<br><span style="color:var(--slate);font-size:12.5px">Kenji Sato &middot; supporting</span></td>
+        <td><span class="stepref">8</span></td>
+        <td>The customer channel. Filing through the portal, and the negotiation itself.</td>
+        <td>A packet drafted at step 7, or the customer disputing a disposition already filed.</td></tr>
+      <tr><td>Controller<br><span style="color:var(--slate);font-size:12.5px">Anders Berg &middot; supporting</span></td>
+        <td><span class="stepref">6 branch</span></td>
+        <td>Whether an exposure is accrued or disclosed, and the disclosure wording.</td>
+        <td>Product-related liability, or a disposition above $250,000. Never enters the claim workflow itself.</td></tr>
+      <tr><td>Product safety<br><span style="color:var(--slate);font-size:12.5px">Dr. Lena Fischer &middot; supporting</span></td>
+        <td><span class="stepref">10 branch</span></td>
+        <td>Taking or declining a safety referral, and the population it covers.</td>
+        <td>Any inadvertent-deployment or rupture claim. A hard gate: no dollar band applies and warranty cannot close it alone.</td></tr>
+    </tbody>
+  </table>
+  </div>
+  <div class="callout warn">
+    <div class="ct">THE QUESTION THIS MAP ASSUMES AN ANSWER TO</div>
+    <p>The map above assumes the analyst carries the record through steps 1 to 7 and hands decisions up, rather than the record changing teams at the intake/case boundary. If Autoliv works it the other way &mdash; one team creating and submitting, a separate team handling reconciliation and disputes &mdash; the queue design and the role model both change. <strong>That single answer is worth settling before the schema is frozen; it is expensive to change afterwards.</strong></p>
+  </div>
+</section>
+
+<div class="rule"></div>
+<section id="built">
+  <div class="num">05 &mdash; HOW IT IS BUILT</div>
+  <h2>Two ways to do the same step, one record of what happened</h2>
+  <p>Every step in the map opens as a worksheet on the right of the screen with an agent on the left. The worksheet is a normal application: fields, options, a submit button. The agent can complete any of it. They write the same values to the same record and the same activity trail, and the choice between them is the user's, step by step, not a setting somebody configures once.</p>
+  <div class="grid2">
+    <div class="card"><div class="ct">PATH ONE</div><b>Do it yourself</b>
+      <p>Open a finding, read the evidence assembled under it, set the attribution, complete the wrap-up panel, submit. No AI involved in the decision at all. This path has to be good enough to use on its own, because on the day the model is wrong it is the path people fall back to.</p></div>
+    <div class="card"><div class="ct">PATH TWO</div><b>Ask the agent</b>
+      <p>"Run the validity screen." The agent proposes every finding at once, cites what it read, and waits. Apply or discard. Applying writes exactly the values the controls would have written, and the trail records that the agent proposed it and a named person confirmed it.</p></div>
+  </div>
+  <h3>Three rules that hold at every step</h3>
+  <ul>
+    <li><strong>The agent proposes; a person confirms.</strong> No agent action changes a record without an explicit apply, and anything with money attached passes the policy gate as well. The agent has no authority band of its own.</li>
+    <li><strong>Unknown and clean do not look the same.</strong> A test with no returned units shows as needing review, not as passing. Pending fields say "pending" rather than sitting blank. This sounds small; it is the most common way an internal tool loses the trust of the people using it.</li>
+    <li><strong>One trail, not two.</strong> Human and agent write the same shape of record with the actor named. There is no separate, quieter log of what the AI did.</li>
+  </ul>
+</section>
+
+<div class="rule"></div>
+
+<section id="caps">
+  <div class="num">06 &mdash; CAPABILITIES</div>
+  <h2>Nine capabilities, placed on the steps, with an honest note on which need a model</h2>
+  <p>The mechanism column is the part most capability briefs leave out. Three of these nine would be better served by a deterministic rule, and are built that way. Calling them AI would make the brief longer and the system worse.</p>
+  <div class="wrapt">
+  <table>
+    <thead><tr><th style="width:17%">CAPABILITY</th><th style="width:7%">STEP</th><th style="width:22%">WHAT IT REPLACES</th><th style="width:26%">WHY IT IS BETTER</th><th style="width:11%">MECHANISM</th><th style="width:17%">HOW IT FAILS SAFELY</th></tr></thead>
+    <tbody>
+      <tr><td><b>Dialect normalisation</b></td><td><span class="stepref">1</span></td>
+        <td>A monthly reconciliation of five extracts into a spreadsheet, by hand, one customer at a time.</td>
+        <td>Runs on arrival rather than on a monthly cycle, so a signal is visible in days rather than weeks. Five rate metrics resolve to one IPTV series that still reconciles to each customer's own number.</td>
+        <td><span class="tag t-rule">RULES</span></td>
+        <td>Schema drift is detected and reported, not absorbed.</td></tr>
+      <tr><td><b>Part mapping</b></td><td><span class="stepref">1</span></td>
+        <td>Reading a renamed labour operation and deciding from memory which part it means.</td>
+        <td>Maps on claim-line part number, code history and the schema diff together. When a customer renames four codes mid-quarter, 185 of 187 claims resolve without a person.</td>
+        <td><span class="tag t-both">BOTH</span></td>
+        <td>Returns unresolved rather than inferring a code.</td></tr>
+      <tr><td><b>Agreement screening</b></td><td><span class="stepref">2</span></td>
+        <td>Reading the agreement, the MIS value on every claim line and the settlement history &mdash; per memo, inside the window.</td>
+        <td>Screens every memo instead of the largest few. The look-back, technical-factor and prior-settlement tests are the three that recover money, and all three need the agreement text read against the claim data.</td>
+        <td><span class="tag t-ai">MODEL</span></td>
+        <td>Cites the clause it relies on; an unciteable finding is returned as not found.</td></tr>
+      <tr><td><b>Evidence assembly</b></td><td><span class="stepref">5</span></td>
+        <td>Chasing bench records, claim text and clauses across three systems when a disposition is disputed.</td>
+        <td>Evidence is attached at the decision rather than reconstructed after it. Eighteen months later the argument is still readable.</td>
+        <td><span class="tag t-both">BOTH</span></td>
+        <td>Names the evidence it could not find.</td></tr>
+      <tr><td><b>NTF adjudication</b></td><td><span class="stepref">4&ndash;5</span></td>
+        <td>Reading 214 test records and forming a view on which failures are ours.</td>
+        <td>Groups the population by finding rather than by count, so marginal units can be conceded deliberately. Conceding 44 is what makes the other 152 credible.</td>
+        <td><span class="tag t-both">BOTH</span></td>
+        <td>Records the specification revision each unit was tested to.</td></tr>
+      <tr><td><b>Packet drafting</b></td><td><span class="stepref">7</span></td>
+        <td>Writing a reversal or appeal letter from scratch, in a hurry, without the precedents to hand.</td>
+        <td>Drafts from the playbook for that denial class, citing the clause and the prior settlements. The playbook is named on the output.</td>
+        <td><span class="tag t-ai">MODEL</span></td>
+        <td>The user owns the final wording; nothing sends unread.</td></tr>
+      <tr><td><b>Signal detection</b></td><td><span class="stepref">10</span></td>
+        <td>Waiting for the claim curve to become obvious, or for the customer to raise it.</td>
+        <td>Watches part &times; plant &times; build week in the 3-MIS band and runs the credibility controls before a person sees it. Nineteen days of median lead converts directly into containment scope.</td>
+        <td><span class="tag t-rule">RULES</span></td>
+        <td>False-positive rate is published, not hidden. Currently 21%.</td></tr>
+      <tr><td><b>Narrative clustering</b></td><td><span class="stepref">10</span></td>
+        <td>Nothing. Free-text narratives are not read at volume anywhere in the industry.</td>
+        <td>The one capability with no manual equivalent. Ninety-four narratives on the same mechanism under a "no fault found" code is a failure mode that reporting says does not exist.</td>
+        <td><span class="tag t-ai">MODEL</span></td>
+        <td>Proposed for review, never auto-recoded. Original text never overwritten.</td></tr>
+      <tr><td><b>Provision drafting</b></td><td><span class="stepref">6 branch</span></td>
+        <td>Building the exposure position and the disclosure note by hand each quarter.</td>
+        <td>Names every open input rather than estimating it, and drafts the note in the wording of the prior filing.</td>
+        <td><span class="tag t-ai">MODEL</span></td>
+        <td>Proposes only. The posting is a gated write.</td></tr>
+    </tbody>
+  </table>
+  </div>
+  <p style="font-size:13px;color:var(--slate)"><span class="tag t-rule">RULES</span> deterministic and testable &mdash; no model involved. <span class="tag t-both">BOTH</span> a rule decides, a model handles the residual it cannot. <span class="tag t-ai">MODEL</span> requires reading unstructured text; no rule reaches it.</p>
+</section>
+
+<div class="rule"></div>
+
+<section id="alt">
+  <div class="num">07 &mdash; ALTERNATIVES</div>
+  <h2>Compared honestly against what else you could do</h2>
+  <div class="wrapt">
+  <table>
+    <thead><tr><th style="width:20%"></th><th style="width:26%">SPREADSHEETS AND THE OEM PORTALS</th><th style="width:26%">A RULES-BASED WARRANTY MODULE</th><th style="width:28%">WARRANTYAI</th></tr></thead>
+    <tbody>
+      <tr><td><b>Coverage</b></td>
+        <td>The largest memos and the loudest signals. Everything else is triaged out by capacity.</td>
+        <td>Every claim, on the fields that are coded.</td>
+        <td>Every claim, plus the free text the coded fields discard.</td></tr>
+      <tr><td><b>Speed to a decision</b></td>
+        <td>Weeks. The reconciliation is the bottleneck, not the judgement.</td>
+        <td>Days. Fast on structured data, silent on anything unstructured.</td>
+        <td>Hours for the assembly; the judgement stays with a person.</td></tr>
+      <tr><td><b>Where it fails</b></td>
+        <td>Deadlines. Recovery lost to a closed window, not to a lost argument.</td>
+        <td>Anything requiring a document or a narrative to be read.</td>
+        <td>A confident wrong reading of a clause. Mitigated by citation and by a person confirming every change.</td></tr>
+      <tr><td><b>Auditability</b></td>
+        <td>Whatever the analyst happened to save.</td>
+        <td>Good on transactions, thin on why a person overrode one.</td>
+        <td>Append-only, actor named on every row, agent confidence recorded where an agent acted.</td></tr>
+      <tr><td><b>Change cost</b></td>
+        <td>Free, and invisible. Nobody knows the process changed.</td>
+        <td>A release. A customer changing policy waits for the next sprint.</td>
+        <td>Configuration. Bands, floors and validation rules are edits a supervisor makes.</td></tr>
+      <tr><td><b>Honest weakness</b></td><td>&mdash;</td><td>&mdash;</td>
+        <td>It needs Autoliv's agreements, playbooks and claim history to be worth anything. Empty, it is a competent shell. The knowledge is the product.</td></tr>
+    </tbody>
+  </table>
+  </div>
+</section>
+
+<div class="rule"></div>
+
+<section id="guard">
+  <div class="num">08 &mdash; GUARDRAILS</div>
+  <h2>What the agent will not do</h2>
+  <p>A capability list is easy to write. This is the list that decides whether the tool gets used or routed around.</p>
+  <div class="won">
+    <div class="x">&times;</div><div><b>It does not decide anything with money attached.</b><p>Every proposal waits on an explicit apply, and every submission passes the policy gate at step 6, 9 or 10. The agent has no authority band of its own.</p></div>
+    <div class="x">&times;</div><div><b>It does not post to the ledger.</b><p>Provision movements are proposed and drafted. The posting happens in the system of record through a gated write, on the controller's confirmation.</p></div>
+    <div class="x">&times;</div><div><b>It does not answer what it cannot cite.</b><p>An answer that cannot be grounded in a knowledge-base passage or a tool result is returned as not found &mdash; not improvised, and not hedged into something that reads like an answer.</p></div>
+    <div class="x">&times;</div><div><b>It does not overwrite the original.</b><p>Claim narratives, bench records and customer documents are preserved unmodified alongside anything extracted from them, so any extracted field can be checked against its source.</p></div>
+    <div class="x">&times;</div><div><b>It does not train on your data for anyone else.</b><p>Claim history trains a model for Autoliv. It is not used to train any general-purpose model and does not leave the tenant for that purpose.</p></div>
+    <div class="x">&times;</div><div><b>It does not fight an experienced engineer.</b><p>Where a person overrides the model, the override and its eventual outcome are captured and become training signal. Disagreement is the mechanism, not a failure of it.</p></div>
+  </div>
+  <div class="callout warn">
+    <div class="ct">ONE EXPECTATION TO SET NOW RATHER THAN AFTER GO-LIVE</div>
+    <p>The predictive model is advisory and will stay advisory. It ranks a queue and names its drivers; it never blocks a submission, makes a disposition, or overrides a person. If anyone in the organisation is expecting it to auto-decide, that expectation is worth correcting before go-live.</p>
+  </div>
+</section>
+
+<div class="rule"></div>
+
+<section id="meas">
+  <div class="num">09 &mdash; MEASUREMENT</div>
+  <h2>How you would know whether it worked</h2>
+  <p>Measured against Autoliv's own pre-tool figures, on claims the model has never seen. Reviewed monthly for the first quarter after go-live, then on a fixed cadence, with drift tracked against the live rate.</p>
+  <div class="wrapt">
+  <table>
+    <thead><tr><th style="width:28%">MEASURE</th><th style="width:8%">STEP</th><th style="width:22%">WHY IT IS THE RIGHT ONE</th><th style="width:18%">WHAT MOVES IT</th><th style="width:24%">WHAT WOULD DISPROVE THE CASE</th></tr></thead>
+    <tbody>
+      <tr><td><b>Recovery rate</b><br><span style="color:var(--slate);font-size:12.5px">Value recovered &divide; value debited, rolling 12 months, counted on customer acceptance</span></td>
+        <td><span class="stepref">2, 7, 9</span></td>
+        <td>The only figure reflecting money actually returned rather than effort spent.</td><td>Agreement screening and packet drafting.</td>
+        <td>Rate flat after two quarters with memo coverage at 100%.</td></tr>
+      <tr><td><b>Memos screened inside the window</b></td><td><span class="stepref">2</span></td>
+        <td>Recovery lost to a closed window is the largest avoidable loss in the function.</td><td>Screening at intake rather than on triage.</td>
+        <td>Screening completes but findings are not acted on.</td></tr>
+      <tr><td><b>Detection lead against customer notice</b></td><td><span class="stepref">10</span></td>
+        <td>Days of lead time convert directly into containment scope.</td><td>Signal detection and narrative clustering.</td>
+        <td>Lead time gained but containment decisions still taken late.</td></tr>
+      <tr><td><b>Disposition cycle time</b></td><td><span class="stepref">5&ndash;6</span></td>
+        <td>Slow dispositions expire filing windows and inflate provisions.</td><td>Evidence assembly.</td>
+        <td>Faster dispositions, higher reversal rate on appeal.</td></tr>
+      <tr><td><b>Appeal success rate</b></td><td><span class="stepref">7&ndash;8</span></td>
+        <td>Tests whether the arguments are better, not just faster.</td><td>Packet drafting and the playbook library.</td>
+        <td>More packets filed, lower success rate.</td></tr>
+      <tr><td><b>D7s carrying a design change</b></td><td><span class="stepref">11</span></td>
+        <td>The only measure that reduces future claims rather than processing present ones.</td><td>The design loop at step 11.</td>
+        <td>8Ds closing on schedule with the DFMEA untouched.</td></tr>
+      <tr><td><b>Engineer override rate</b></td><td><span class="stepref">all</span></td>
+        <td>The clearest signal of whether the tool is trusted or worked around.</td><td>Everything.</td>
+        <td>Overrides rising over time, or falling to zero &mdash; both mean the proposals are not being read.</td></tr>
+    </tbody>
+  </table>
+  </div>
+</section>
+
+<div class="rule"></div>
+
+<section id="need">
+  <div class="num">10 &mdash; WHAT IT NEEDS FROM AUTOLIV</div>
+  <h2>The knowledge is the product</h2>
+  <p>The interface takes weeks. The material below is what decides whether the agent is useful, and none of it can be sourced externally.</p>
+  <div class="grid2">
+    <div class="card"><div class="ct">MUST HAVE &middot; STEPS 2, 6, 9</div><b>Recovery agreements, per customer</b>
+      <p>Technical-factor schedules, look-back limits, coverage definitions and NTF clauses. Every money-recovering finding cites one of these documents. Without them, step 2 does not exist.</p></div>
+    <div class="card"><div class="ct">MUST HAVE &middot; STEPS 5, 10</div><b>Claim history with the original outcome intact</b>
+      <p>Roughly two years across at least two customers, with a spread &mdash; paid, short-paid, denied, appealed. Critically: if appeal outcomes overwrite the original decision in the source system, the training label is corrupted before we start.</p></div>
+    <div class="card"><div class="ct">HIGH VALUE &middot; STEP 7</div><b>The traps that are not written down</b>
+      <p>The phrasings your engineers know reliably trigger a denial, and the arguments that reliably work. Worth more than the documented policy, and almost never a document.</p></div>
+    <div class="card"><div class="ct">HIGH VALUE &middot; ALL STEPS</div><b>Your vocabulary</b>
+      <p>Labour-operation names, plant abbreviations, the informal names people use out loud. An agent that writes in the company's own language gets read; one that writes in generic English gets ignored.</p></div>
+  </div>
+  <div class="callout">
+    <div class="ct">WHERE TO START</div>
+    <p>Steps 1 and 2 alone. They need only the claim extracts and the recovery agreements, they sit entirely inside the analyst's own work so nothing depends on another team changing how it operates, and the recovery they find is measurable in one quarter. Everything downstream of step 5 depends on decisions about ownership and gates that are worth taking deliberately rather than early.</p>
+  </div>
+</section>
+
+</div>
+
+<footer class="ftr">
+  <span>Autoliv WarrantyAI &middot; process map &amp; AI capability brief &middot; September 2026 &middot; demo build 0.4</span>
+  <span class="r">Prepared by <img src="assets/infinite-possibilities.png" alt="Infinite Possibilities"></span>
+</footer>
+</div>
+</body>
+</html>
